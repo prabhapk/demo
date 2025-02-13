@@ -1,12 +1,37 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, Image, StatusBar } from 'react-native';
+import { applogo } from '../../assets/assets';
 
-const splashScreen = () => {
+const SplashScreen = ({ navigation }: { navigation: any }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('Login');
+    }, 3000); 
+
+    return () => clearTimeout(timer); 
+  }, []);
+
   return (
-    <View style = {{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>splashScreen</Text>
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+      <Image source={applogo} style={styles.logoImg}/>
     </View>
-  )
-}
+  );
+};
 
-export default splashScreen
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  logoImg:{
+    resizeMode:"contain",
+    width: 200,
+    height: 200
+  }
+
+});
+
+export default SplashScreen;
