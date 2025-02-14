@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
-import { setValue } from '../redux/Slice/counterSlice'
+import { setValue } from '../Redux/Slice/counterSlice'
 
 
 const Login = () => {

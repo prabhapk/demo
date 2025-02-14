@@ -148,7 +148,7 @@ const openDrawerdd=()=>{
           </Swiper>
         </View>
 
-        <FlatList
+        {/* <FlatList
           data={referalArray}
           horizontal
           keyExtractor={item => item.id}
@@ -168,7 +168,26 @@ const openDrawerdd=()=>{
               <Text>{item.name}</Text>
             </TouchableOpacity>
           )}
-        />
+        /> */}
+        <View style ={{flexDirection:"row", justifyContent:"space-between", paddingHorizontal:10, marginTop:20}}>
+          <TouchableOpacity style ={{alignItems:"center"}}>
+            <Image source={applogo} style={{width: 70, height: 80, resizeMode: 'contain'}}/>
+          <Text>Referral</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style ={{alignItems:"center"}}>
+            <Image source={applogo} style={{width: 70, height: 80, resizeMode: 'contain'}}/>
+          <Text>Referral</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style ={{alignItems:"center"}}>
+            <Image source={applogo} style={{width: 70, height: 80, resizeMode: 'contain'}}/>
+          <Text>Referral</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style ={{alignItems:"center"}}>
+            <Image source={applogo} style={{width: 70, height: 80, resizeMode: 'contain'}}/>
+          <Text>Referral</Text>
+          </TouchableOpacity>
+      
+        </View>
         <View style={{backgroundColor:"white", padding:5}}>
         <FlatList
           ref={horizontalListRef} // Attach ref
@@ -225,9 +244,10 @@ const openDrawerdd=()=>{
   );
 };
 const {width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   swiperContainer: {height: 180, marginTop: 20},
-  container: {flex: 1, backgroundColor: '#fff'},
+  container: {flex: 1, backgroundColor: '#fff',},
   horizontalList: {paddingVertical: 10},
   headerItem: {
     padding: 10,

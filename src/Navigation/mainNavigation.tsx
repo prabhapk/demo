@@ -11,9 +11,9 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'splashScreen'} screenOptions={{headerShown: false}}>
+        initialRouteName={'SplashScreen'} screenOptions={{headerShown: false}}>
         <Stack.Screen
-          name="splashScreen"
+          name="SplashScreen"
           component={SplashScreen}
         />
          <Stack.Screen
