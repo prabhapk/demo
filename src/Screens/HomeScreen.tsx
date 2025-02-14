@@ -8,15 +8,17 @@ import {
   ScrollView,
   Image,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {applogo} from '../../assets/assets';
 import Swiper from 'react-native-swiper';
 import Entypo from 'react-native-vector-icons/Entypo';
+import CustomHeader from '../Components/CustomHeader';
 const data = [
   {
     id: '1',
     title: 'Header 1',
-    content: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6'],
+    content: ['Item 1'],
   },
   {
     id: '2',
@@ -33,30 +35,7 @@ const data = [
     title: 'Header 4',
     content: ['Item 19', 'Item 20', 'Item 21', 'Item 22', 'Item 23', 'Item 24'],
   },
-  {
-    id: '5',
-    title: 'Header 5',
-    content: ['Item 25', 'Item 26', 'Item 27', 'Item 28', 'Item 29', 'Item 30'],
-  },
-  {
-    id: '6',
-    title: 'Header 6',
-    content: ['Item 31', 'Item 32', 'Item 33', 'Item 34', 'Item 35', 'Item 36'],
-  },
-  {
-    id: '7',
-    title: 'Header 7',
-    content: [
-      'Item 37',
-      'Item 38',
-      'Item 31',
-      'Item 32',
-      'Item 33',
-      'Item 34',
-      'Item 35',
-      'Item 36',
-    ],
-  },
+
 ];
 
 const banners = [
@@ -81,7 +60,7 @@ const HomeScreen = () => {
   const handleHeaderPress = (id: string, index: number) => {
     setActiveHeader(id);
 
-    const sectionHeight = 200;
+    const sectionHeight = 500;
     const scrollPosition = index * sectionHeight;
 
     scrollViewRef.current?.scrollTo({
@@ -123,7 +102,7 @@ const HomeScreen = () => {
 
     let activeIndex = 0;
     for (let i = 0; i < data.length; i++) {
-      if (scrollY >= i * 200) {
+      if (scrollY >= i * 500) {
         activeIndex = i;
       } else {
         break;
@@ -143,32 +122,12 @@ const HomeScreen = () => {
       }, 200);
     }
   };
-
+const openDrawerdd=()=>{
+  Alert.alert("llll")
+}
   return (
     <View style={{flex: 1}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 10,
-          alignItems: 'center',
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Entypo name="menu" size={30} color="#900" />
-          <Text>Menu</Text>
-        </View>
-        <TouchableOpacity
-          style={{
-            padding: 8,
-            paddingHorizontal: 20,
-            backgroundColor: '#ccc',
-            borderRadius: 50,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text>Login</Text>
-        </TouchableOpacity>
-      </View>
+      <CustomHeader onMenuPress={ openDrawerdd} onLoginPress={()=>{Alert.alert("login")}} />
       <ScrollView
         ref={scrollViewRef}
         style={styles.container}
@@ -210,6 +169,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
           )}
         />
+        <View style={{backgroundColor:"white", padding:5}}>
         <FlatList
           ref={horizontalListRef} // Attach ref
           data={data}
@@ -221,13 +181,14 @@ const HomeScreen = () => {
             <TouchableOpacity
               style={[
                 styles.headerItem,
-                activeHeader === item.id && styles.activeHeader,
+                activeHeader === item.id && styles.activeHeaderText,
               ]}
               onPress={() => handleHeaderPress(item.id, index)}>
               <Text style={styles.headerText}>{item.title}</Text>
             </TouchableOpacity>
           )}
         />
+        </View>
 
         {/* Vertical Content List */}
         <FlatList
@@ -246,8 +207,11 @@ const HomeScreen = () => {
               <FlatList
                 data={item.content}
                 keyExtractor={(subItem, index) => index.toString()}
+                numColumns={2}
                 renderItem={({item}) => (
+                  <View style={{backgroundColor:"red", flex:1, margin:5, width:"100%", padding:10, borderRadius:10, marginTop:5, height:180}}>
                   <Text style={styles.contentItem}>{item}</Text>
+                  </View>
                 )}
               />
             </View>
@@ -271,37 +235,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
     borderRadius: 5,
   },
-  activeHeader: {backgroundColor: '#007bff'},
+  activeHeaderText: {backgroundColor: '#007bff'},
   headerText: {fontSize: 16, color: '#fff'},
   section: {padding: 15, borderBottomWidth: 1, borderBottomColor: '#ccc'},
   verticalHeader: {fontSize: 18, marginBottom: 5},
   verticalActiveHeader: {fontSize: 18, fontWeight: 'bold', marginBottom: 5},
   contentItem: {fontSize: 16, paddingVertical: 2},
-  child: {width, justifyContent: 'center', alignItems: 'center'},
-  slide1: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#9DD6EB',
-  },
-  slide2: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#97CAE5',
-  },
-  slide3: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#92BBD9',
-  },
   text: {
     color: '#fff',
     fontSize: 30,
     fontWeight: 'bold',
   },
-  wrapper: {},
   swiperContainer1: {
     borderRadius: 10,
     overflow: 'hidden',
@@ -314,12 +258,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRadius: 10,
   },
-  image: {
-    width: width - 40,
-    height: 150,
-    borderRadius: 10,
-    resizeMode: 'cover',
-  },
+
   dot: {
     backgroundColor: '#ccc',
     width: 8,
@@ -331,7 +270,7 @@ const styles = StyleSheet.create({
   activeDot: {
     backgroundColor: '#ff5aaf',
     width: 30,
-    height: 10,
+    height: 8,
     borderRadius: 5,
     marginHorizontal: 3,
     top: 10,
