@@ -5,7 +5,7 @@ import { applogo } from '../../assets/assets';
 const SplashScreen = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('BottomNavigation');
+      navigation.replace('ThreeDigitMain');
     }, 3000); 
 
     return () => clearTimeout(timer); 

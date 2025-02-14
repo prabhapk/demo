@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from '../Screens/SplashScreen';
 import Login from '../Screens/Login';
 import BottomNavigation from './BottomNavigation';
+import ThreeDigitMain from '../Screens/ThreeDigitMain';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,10 @@ function MainNavigation() {
         <Stack.Screen
           name="BottomNavigation"
           component={BottomNavigation}
+        />
+        <Stack.Screen
+          name="ThreeDigitMain"
+          component={ThreeDigitMain}
         />
       </Stack.Navigator>
     </NavigationContainer>

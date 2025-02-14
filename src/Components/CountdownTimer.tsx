@@ -1,154 +1,98 @@
-import * as colors from '../styles/Colors';
-
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-
-import Scale from './Scale';
-import moment from 'moment';
-
-interface TimeLeft {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 interface CountdownTimerProps {
   targetDate: string;
   onComplete: () => void;
 }
 
-const calculateTimeLeft = (date: string): TimeLeft => {
-  const difference = moment(date).diff(moment());
-  let timeLeft: TimeLeft = {
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  };
-
-  if (difference > 0) {
-    timeLeft = {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
-    };
-  }
-
-  return timeLeft;
-};
-
-const CountdownTimer: React.FC<CountdownTimerProps> = ({
-  targetDate,
-  onComplete,
-}) => {
- 
-  const difference = targetDate?.getTime() - new Date().getTime();
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, onComplete }) => {
+  const targetDateTime = new Date(targetDate).getTime();
 
   const calculateTimeLeft = () => {
-    if (difference > 0) {
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-      );
-      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+    const now = new Date().getTime();
+    const difference = targetDateTime - now;
 
-      return {days, hours, minutes, seconds};
+    if (difference > 0) {
+      const minutes = Math.floor((difference / (1000 * 60)) % 60);
+      const seconds = Math.floor((difference / 1000) % 60);
+
+      return { minutes, seconds };
     } else {
-      return {days: 0, hours: 0, minutes: 0, seconds: 0};
+      onComplete();
+      return { minutes: 0, seconds: 0 };
     }
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft);
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(timer);
   }, [timeLeft]);
 
-  return timeLeft.days > 0 ||
-    timeLeft.hours > 0 ||
-    timeLeft.minutes > 0 ||
-    timeLeft.seconds > 0 ? (
+  // Convert numbers into two-digit strings
+  const minuteString = String(timeLeft.minutes).padStart(2, '0');
+  const secondString = String(timeLeft.seconds).padStart(2, '0');
+
+  return (
     <View style={styles.container}>
-      <Text style={styles.label}>Closes in</Text>
-      <View style={styles.timerContainer}>
-        <TimeComponent value={timeLeft.days} label="Days" />
-        <Text style={styles.separator}>:</Text>
-        <TimeComponent value={timeLeft.hours} label="Hrs" />
-        <Text style={styles.separator}>:</Text>
-        <TimeComponent value={timeLeft.minutes} label="Mins" />
-        <Text style={styles.separator}>:</Text>
-        <TimeComponent value={timeLeft.seconds} label="Secs" />
+      {/* Minutes - Two Blocks */}
+      <View style={styles.timerBlock}>
+        <Text style={styles.timerText}>{minuteString[0]}</Text>
+      </View>
+      <View style={styles.timerBlock}>
+        <Text style={styles.timerText}>{minuteString[1]}</Text>
+      </View>
+
+      {/* Separator */}
+      <View style={styles.timerBlock}>
+      <Text style={styles.separator}>:</Text>
+      </View>
+
+      {/* Seconds - Two Blocks */}
+      <View style={styles.timerBlock}>
+        <Text style={styles.timerText}>{secondString[0]}</Text>
+      </View>
+      <View style={styles.timerBlock}>
+        <Text style={styles.timerText}>{secondString[1]}</Text>
       </View>
     </View>
-  ) : (
-    <></>
   );
 };
 
-interface TimeComponentProps {
-  value: number;
-  label: string;
-}
-
-const TimeComponent: React.FC<TimeComponentProps> = ({value, label}) => (
-  <View style={styles.timeComponent}>
-    <Text style={styles.timeValue}>{value}</Text>
-    <Text style={styles.timeLabel}>{label}</Text>
-  </View>
-);
-
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.transparent,
-    padding: Scale(20),
-    borderRadius: Scale(10),
-    top: Scale(30),
-    borderColor: colors.red,
-    borderWidth: Scale(1),
-    alignItems: 'center',
-   
-  },
-  label: {
-    color: colors.red,
-    fontSize: Scale(15),
-    marginBottom: Scale(10),
-    marginHorizontal: Scale(30),
-    fontWeight: '600',
-    textAlign: 'center',
-    marginTop: Scale(10),
-  },
-  timerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: Scale(30),
-    marginTop: Scale(10),
+    // backgroundColor: '#DCC8F0', // Light purple background
+    // padding: 5,
+    borderRadius: 10,
+    marginTop: 5,
   },
-  timeComponent: {
+  timerBlock: {
+    backgroundColor: '#000', // Black background for digits
+    paddingVertical: 5,
+    paddingHorizontal: 6,
+    borderRadius: 5,
+    // minWidth: 30,
     alignItems: 'center',
-    marginBottom: Scale(50),
+    justifyContent: 'center',
+    marginHorizontal: 2, // Space between digits
   },
-  timeValue: {
-    color: colors.red,
-    fontSize: Scale(24),
-    fontWeight: '600',
-  },
-  timeLabel: {
-    color: colors.red,
-    fontSize: Scale(16),
-    fontWeight: '600',
+  timerText: {
+    color: '#FFF', // White text
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   separator: {
-    color: colors.red,
-    fontSize: Scale(24),
-    marginHorizontal: Scale(15),
-    bottom: Scale(10),
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'white', // Black separator ":"
+    // marginHorizontal: 5,
   },
 });
 
