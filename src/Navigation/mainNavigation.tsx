@@ -12,7 +12,7 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'SplashScreen'} screenOptions={{headerShown: false}}>
+        initialRouteName={'BottomNavigation'} screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
