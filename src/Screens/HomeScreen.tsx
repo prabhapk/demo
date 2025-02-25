@@ -13,9 +13,17 @@ import {
 } from 'react-native';
 import {
   agent,
+  banner1,
+  banner2,
+  banner3,
+  banner4,
   colourPrediction,
   dice1,
   dice3,
+  gifAgent,
+  gifLottery,
+  gifPromotion,
+  gifRefer,
   lottery,
   promotion,
   refer,
@@ -24,6 +32,7 @@ import CustomHeader from '../Components/CustomHeader';
 import CommonDice from '../Components/CommonDice';
 import CommonDigits from '../Components/CommonDigits';
 import CommonBanner from '../Components/CommonBanner';
+import FastImage from 'react-native-fast-image';
 const data = [
   {
     id: '1',
@@ -114,9 +123,10 @@ const ThreeDigits = [
   },
 ];
 const banners = [
-  {id: 1, name: 'https://via.placeholder.com/420x150.png?text=Banner+1'},
-  {id: 2, name: 'https://via.placeholder.com/420x150.png?text=Banner+2'},
-  {id: 3, name: 'https://via.placeholder.com/420x150.png?text=Banner+3'},
+  {id: 1, name: banner1},
+  {id: 2, name: banner2},
+  {id: 3, name: banner3},
+  {id: 4, name: banner4},
 ];
 
 const referalArray = [
@@ -126,7 +136,7 @@ const referalArray = [
   {id: '4', name: 'Promotions'},
 ];
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: {navigation: any}) => {
   const [activeHeader, setActiveHeader] = useState(data[0].id);
   const verticalListRef = useRef<FlatList>(null);
   const horizontalListRef = useRef<FlatList>(null);
@@ -297,19 +307,35 @@ const HomeScreen = () => {
         <CommonBanner banners={banners} />
         <View style={styles.referalView}>
           <TouchableOpacity style={styles.refButton}>
-            <Image source={agent} style={styles.refImage} />
+            <FastImage
+              source={gifAgent}
+              style={styles.refImage}
+              resizeMode={FastImage.resizeMode.contain}
+            />
             <Text style={styles.refText}>Agent</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.refButton}>
-            <Image source={refer} style={styles.refImage} />
+            <FastImage
+              source={gifRefer}
+              style={styles.refImage}
+              resizeMode={FastImage.resizeMode.contain}
+            />
             <Text style={styles.refText}>Refer Friend</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.refButton}>
-            <Image source={lottery} style={styles.refImage} />
+            <FastImage
+              source={gifLottery}
+              style={styles.refImage}
+              resizeMode={FastImage.resizeMode.contain}
+            />
             <Text style={styles.refText}>Free Lottery</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.refButton}>
-            <Image source={promotion} style={styles.refImage} />
+            <FastImage
+              source={gifPromotion}
+              style={styles.refImage}
+              resizeMode={FastImage.resizeMode.contain}
+            />
             <Text style={styles.refText}>Promotions</Text>
           </TouchableOpacity>
         </View>
@@ -322,6 +348,7 @@ const HomeScreen = () => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.horizontalList}
             renderItem={({item, index}) => (
+            <View style ={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TouchableOpacity
                 style={[
                   styles.headerItem,
@@ -330,6 +357,7 @@ const HomeScreen = () => {
                 onPress={() => handleHeaderPress(item.id, index)}>
                 <Text style={styles.headerText}>{item.title}</Text>
               </TouchableOpacity>
+              </View>
             )}
           />
         </View>
@@ -339,7 +367,9 @@ const HomeScreen = () => {
           ref={verticalListRef}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <View style={styles.section}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ThreeDigitMain')}
+              style={styles.section}>
               <Text
                 style={[
                   activeHeader === item.id && styles.verticalActiveHeader,
@@ -358,7 +388,7 @@ const HomeScreen = () => {
                   renderGameItem(item.title, subItem)
                 }
               />
-            </View>
+            </TouchableOpacity>
           )}
         />
       </ScrollView>
@@ -369,7 +399,13 @@ const {width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {flex: 1},
-  horizontalList: {paddingVertical: 10},
+  horizontalList: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    flex: 1,
+  },
   headerItem: {
     padding: 10,
     marginHorizontal: 5,
@@ -392,7 +428,7 @@ const styles = StyleSheet.create({
   refImage: {width: 70, height: 80, resizeMode: 'cover'},
   refText: {marginTop: 10},
   refButton: {alignItems: 'center'},
-  stickyHeader: {backgroundColor: 'white', padding: 5},
+  stickyHeader: {backgroundColor: 'white', padding: 5,},
 });
 
 export default HomeScreen;

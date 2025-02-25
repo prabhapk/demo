@@ -1,37 +1,33 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
-import Scale from './Scale';
+import { View, StyleSheet, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 interface Props {
-  banners: any;
+  banners: { id: number; name: any }[]; // Ensure proper type for banners
 }
 
-const CommonBanner: React.FC<Props> = ({ banners}) => {
-
+const CommonBanner: React.FC<Props> = ({ banners }) => {
   return (
     <View style={styles.swiperContainer}>
-              <Swiper
-                autoplay
-                autoplayTimeout={3}
-                showsPagination
-                dot={<View style={styles.dot} />}
-                activeDot={<View style={styles.activeDot} />}
-                containerStyle={styles.swiperContainer1}>
-                {banners.map((banner: { id: React.Key | null | undefined; }) => (
-                  <View key={banner.id} style={styles.slide}></View>
-                ))}
-              </Swiper>
-            </View>
+      <Swiper
+        autoplay
+        autoplayTimeout={3}
+        showsPagination
+        dot={<View style={styles.dot} />}
+        activeDot={<View style={styles.activeDot} />}
+        containerStyle={styles.swiperContainer1}>
+        {banners.map((banner) => (
+          <View key={banner.id} style={styles.slide}>
+            <Image source={banner.name} style={styles.bannerImage} resizeMode="cover" />
+          </View>
+        ))}
+      </Swiper>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  swiperContainer: {height: 180, marginTop: 20},
+  swiperContainer: { height: 180, marginTop: 20 },
   dot: {
     backgroundColor: '#ccc',
     width: 8,
@@ -56,8 +52,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
     marginHorizontal: 10,
+    borderRadius: 10,
+  },
+  bannerImage: {
+    width: '100%',
+    height: '100%',
     borderRadius: 10,
   },
 });
