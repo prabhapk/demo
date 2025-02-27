@@ -108,11 +108,19 @@ const ThreeDigitMain = () => {
   const goBack = () => {
     navigation.goBack();
   };
-  // const handleClose = () => {
-  //   if (refRBSheet && refRBSheet.current) {
-  //     refRBSheet.current.close();
-  //   }
-  // };
+
+  const [numbers, setNumbers] = useState([
+    { id: 1, label: 'AB', value: '11', count: '3' },
+    { id: 2, label: 'CD', value: '22', count: '2' },
+    { id: 3, label: 'EF', value: '33', count: '1' },
+    { id: 4, label: 'GH', value: '44', count: '2' },
+    { id: 5, label: 'IJ', value: '55', count: '5' },
+  ]);
+
+  const removeNumber = (id: number) => {
+    setNumbers(numbers.filter(item => item.id !== id));
+  };
+
 
   const toggleSheet = () => {
     if (isSheetOpen) {
@@ -635,6 +643,75 @@ const ThreeDigitMain = () => {
               />
             </TouchableOpacity>
           </View>
+             {/* inside */}
+
+             <View style={{ marginHorizontal: Scale(10), marginTop: Scale(20) }}>
+  {/* Wrapper to hold all number pills */}
+  <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Scale(10) }}>
+        {numbers.map((item) => (
+          <View
+            key={item.id}
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: '#F1F1F3',
+              borderRadius: Scale(20),
+              paddingHorizontal: Scale(15),
+              paddingVertical: Scale(8),
+              position: 'relative',
+            }}
+          >
+            {/* Text Content */}
+            <Text style={{ fontSize: Scale(14), fontWeight: 'bold', color: '#000' }}>
+              {item.label}={item.value}
+            </Text>
+
+            {/* Count Badge */}
+            <View
+              style={{
+                backgroundColor: '#F27842',
+                borderRadius: Scale(5),
+                paddingHorizontal: Scale(5),
+                marginLeft: Scale(5),
+              }}
+            >
+              <Text style={{ fontSize: Scale(12), fontWeight: 'bold', color: 'white' }}>
+                x{item.count}
+              </Text>
+            </View>
+
+            {/* Close Button */}
+            <TouchableOpacity
+              onPress={() => removeNumber(item.id)}
+              style={{
+                position: 'absolute',
+                top: Scale(-5),
+                right: Scale(-5),
+                backgroundColor: 'white',
+                width: Scale(18),
+                height: Scale(18),
+                borderRadius: Scale(9),
+                justifyContent: 'center',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.2,
+                shadowRadius: 3,
+                elevation: 3, // Android shadow
+              }}
+            >
+              <Image
+                source={cancel}
+                style={{ width: Scale(10), height: Scale(10) }}
+                tintColor={'black'}
+              />
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+</View>
+
+
+
         </View>
       </RBSheet>
       <SafeAreaView
