@@ -12,15 +12,15 @@ import {
   Platform,
   GestureResponderEvent,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {cancel, clock1, lefArrow, sameClock} from '../../assets/assets';
 import CountdownTimer from '../Components/CountdownTimer';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {showHowToPlay} from '../Redux/Slice/commonSlice';
 import HowToPlayModal from '../Components/HowToPlayModal';
 import CommonBall from '../Components/CommonBall';
 import Scale from '../Components/Scale';
-import SingleIntegerTextInput from '../Redux/Slice/SingleIntegerTextInput';
+import SingleIntegerTextInput from '../Components/SingleIntegerTextInput';
 import GameFooter from '../Components/GameFooter';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GameHeader from '../Components/GameHeader';
@@ -29,16 +29,29 @@ import ResultTable from '../Components/ResultTable';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommonAddButton from '../Components/CommonAddButton';
 import CommonQuickGuess from '../Components/CommonQuickGuess';
+import { RootState } from '../Redux/store';
+import { setSingleDigitA, setSingleDigitB, setSingleDigitC } from '../Redux/Slice/threeDigitSlice';
 
 const ThreeDigitMain = () => {
+  const {singleDigitA,singleDigitB,singleDigitC} = useSelector((state: RootState) => state.threeDigit);
+const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState('3 Mins');
   const now = new Date();
   const targetDate = new Date(now.getTime() + 3 * 60 * 1000).toISOString();
-  const dispatch = useDispatch();
   const [valueOne, setValueOne] = useState(null);
+  const [isOnFocus, setIsOnFocus] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const onChangeOne = (value: any) => {
-    setValueOne(value);
+  const onChangeSingleDigitA = (value: any) => {
+    dispatch(setSingleDigitA(value));
+  };
+  const onChangeSingleDigitB = (value: any) => {
+    dispatch(setSingleDigitB(value));
+  };
+  const onChangeSingleDigitC = (value: any) => {
+    dispatch(setSingleDigitC(value));
+  };
+  const onBlurOne = () => {
+    setIsOnFocus(false);
   };
   const refRBSheet: any = useRef();
   const navigation = useNavigation();
@@ -121,6 +134,26 @@ const ThreeDigitMain = () => {
     setNumbers(numbers.filter(item => item.id !== id));
   };
 
+  const handleAdd = (innerText:any, value:any) => {
+    if (!value) {
+      Alert.alert('Error', 'Please enter a value');
+      return;
+    }
+  
+    setNumbers((prevNumbers) => [
+      ...prevNumbers,
+      { id: prevNumbers.length + 1, label: innerText, value: value, count: '1' },
+    ]);
+  
+    // Clear the input after adding the value
+    if (innerText === 'A') onChangeSingleDigitA(null);
+ 
+  };
+  
+  // Debugging: Log `numbers` after state update
+  useEffect(() => {
+    console.log('Updated Numbers:', numbers);
+  }, [numbers]);
 
   const toggleSheet = () => {
     if (isSheetOpen) {
@@ -295,18 +328,19 @@ const ThreeDigitMain = () => {
                       <CommonBall backgroundColor="#cc3939" innerText="A" />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={singleDigitA}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
-                        onBlur={undefined}
+                        onChange={onChangeSingleDigitA}
+                        onBlur={onBlurOne}
                         keyboardType={undefined}
                         maxChar={1}
                       />
                     </View>
+                    {singleDigitA && <Text>{"singleACount"}</Text>}
                     <CommonAddButton
-                      innerText={'Add'}
+                      innerText={'add'}
                       onPress={() => {
-                        Alert.alert('Implement soon');
+                        handleAdd('A', singleDigitA);
                       }}
                     />
                   </View>
@@ -321,9 +355,9 @@ const ThreeDigitMain = () => {
                       <CommonBall backgroundColor="orange" innerText="B" />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={singleDigitB}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitB}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -332,7 +366,7 @@ const ThreeDigitMain = () => {
                     <CommonAddButton
                       innerText={'Add'}
                       onPress={() => {
-                        Alert.alert('Implement soon');
+                        handleAdd('B', valueOne);
                       }}
                     />
                   </View>
@@ -347,9 +381,9 @@ const ThreeDigitMain = () => {
                       <CommonBall backgroundColor="blue" innerText="C" />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={singleDigitC}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitC}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -358,7 +392,7 @@ const ThreeDigitMain = () => {
                     <CommonAddButton
                       innerText={'Add'}
                       onPress={() => {
-                        Alert.alert('Implement soon');
+                        handleAdd('C', singleDigitC);
                       }}
                     />
                   </View>
@@ -399,7 +433,7 @@ const ThreeDigitMain = () => {
                         isDisabled={false}
                         value={valueOne}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitA}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -408,7 +442,7 @@ const ThreeDigitMain = () => {
                         isDisabled={false}
                         value={valueOne}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitA}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -435,7 +469,7 @@ const ThreeDigitMain = () => {
                         isDisabled={false}
                         value={valueOne}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitA}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -444,7 +478,7 @@ const ThreeDigitMain = () => {
                         isDisabled={false}
                         value={valueOne}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitA}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -471,7 +505,7 @@ const ThreeDigitMain = () => {
                         isDisabled={false}
                         value={valueOne}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitA}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -480,7 +514,7 @@ const ThreeDigitMain = () => {
                         isDisabled={false}
                         value={valueOne}
                         placeholderText={'-'}
-                        onChange={onChangeOne}
+                        onChange={onChangeSingleDigitA}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
@@ -534,7 +568,7 @@ const ThreeDigitMain = () => {
                           isDisabled={false}
                           value={valueOne}
                           placeholderText={'-'}
-                          onChange={onChangeOne}
+                          onChange={onChangeSingleDigitA}
                           onBlur={undefined}
                           keyboardType={undefined}
                           maxChar={1}
@@ -543,7 +577,7 @@ const ThreeDigitMain = () => {
                           isDisabled={false}
                           value={valueOne}
                           placeholderText={'-'}
-                          onChange={onChangeOne}
+                          onChange={onChangeSingleDigitA}
                           onBlur={undefined}
                           keyboardType={undefined}
                           maxChar={1}
@@ -552,7 +586,7 @@ const ThreeDigitMain = () => {
                           isDisabled={false}
                           value={valueOne}
                           placeholderText={'-'}
-                          onChange={onChangeOne}
+                          onChange={onChangeSingleDigitA}
                           onBlur={undefined}
                           keyboardType={undefined}
                           maxChar={1}

@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterSlice from './Slice/counterSlice';
+import threeDigitSlice from './Slice/threeDigitSlice';
 import commonSlice from './Slice/commonSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice,
+    threeDigit: threeDigitSlice,
     commonSlice:commonSlice
   },
 })

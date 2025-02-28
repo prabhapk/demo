@@ -6,14 +6,14 @@ import {
     View,
   } from 'react-native';
   import React, {useState} from 'react';
-  import Scale from '../../Components/Scale';
+  import Scale from './Scale';
   
   interface Props {
     isDisabled: boolean;
     value: any;
     placeholderText: string;
     onChange: (value: any) => void;
-    onBlur: (value: any) => void;
+    onBlur: () => void;
     keyboardType: any;
     maxChar?: number;
   }
@@ -45,11 +45,11 @@ import {
             placeholderTextColor="#0D0C22"
             value={value}
             placeholder={placeholderText}
-            onFocus={() => setIsOnFocus(true)}
-            onBlur={text => {
+            onBlur={() => {
               setIsOnFocus(false);
-              onBlur(text);
+              onBlur && onBlur(); // Ensure it doesn't throw an error if onBlur is undefined
             }}
+            
             onChangeText={onChange}
             editable={!isDisabled}
             keyboardType={keyboardType}

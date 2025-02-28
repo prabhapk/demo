@@ -12,7 +12,7 @@ const CommonAddButton: React.FC<Props> = ({innerText, onPress }) => {
   return (
     <View>
        <TouchableOpacity
-                      onPress={()=> onPress}
+                      onPress={onPress}
                       style={{
                         backgroundColor: '#f8bdfc',
                         borderRadius: 5,
