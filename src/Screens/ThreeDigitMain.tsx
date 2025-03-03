@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   Platform,
   GestureResponderEvent,
+  TextInput,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {cancel, clock1, lefArrow, sameClock} from '../../assets/assets';
@@ -30,10 +31,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommonAddButton from '../Components/CommonAddButton';
 import CommonQuickGuess from '../Components/CommonQuickGuess';
 import { RootState } from '../Redux/store';
-import { setSingleDigitA, setSingleDigitB, setSingleDigitC } from '../Redux/Slice/threeDigitSlice';
+import { setSingleACount, setSingleBCount, setSingleCCount, setSingleDigitA, setSingleDigitB, setSingleDigitC } from '../Redux/Slice/threeDigitSlice';
+import CountButtons from '../Components/CountButtons';
 
 const ThreeDigitMain = () => {
-  const {singleDigitA,singleDigitB,singleDigitC} = useSelector((state: RootState) => state.threeDigit);
+  const {singleDigitA,singleDigitB,singleDigitC, singleACount, singleBCount, singleCCount} = useSelector((state: RootState) => state.threeDigit);
 const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState('3 Mins');
   const now = new Date();
@@ -123,18 +125,28 @@ const dispatch = useDispatch();
   };
 
   const [numbers, setNumbers] = useState([
-    { id: 1, label: 'AB', value: '11', count: '3' },
-    { id: 2, label: 'CD', value: '22', count: '2' },
-    { id: 3, label: 'EF', value: '33', count: '1' },
-    { id: 4, label: 'GH', value: '44', count: '2' },
-    { id: 5, label: 'IJ', value: '55', count: '5' },
   ]);
 
-  const removeNumber = (id: number) => {
-    setNumbers(numbers.filter(item => item.id !== id));
-  };
+  // const removeNumber = (id: number) => {
+  //   setNumbers(numbers.filter(item => item.id !== id));
+  // };
 
-  const handleAdd = (innerText:any, value:any) => {
+  // const handleAdd = (innerText:any, value:any) => {
+  //   if (!value) {
+  //     Alert.alert('Error', 'Please enter a value');
+  //     return;
+  //   }
+  
+  //   setNumbers((prevNumbers) => [
+  //     ...prevNumbers,
+  //     { id: prevNumbers.length + 1, label: innerText, value: value, count: '1' },
+  //   ]);
+  
+  //   // Clear the input after adding the value
+  //   if (innerText === 'A') onChangeSingleDigitA(null);
+ 
+  // };
+  const handleAdd = (label: string, value: string, count: number) => {
     if (!value) {
       Alert.alert('Error', 'Please enter a value');
       return;
@@ -142,12 +154,17 @@ const dispatch = useDispatch();
   
     setNumbers((prevNumbers) => [
       ...prevNumbers,
-      { id: prevNumbers.length + 1, label: innerText, value: value, count: '1' },
+      { id: prevNumbers.length + 1, label, value, count },
     ]);
   
-    // Clear the input after adding the value
-    if (innerText === 'A') onChangeSingleDigitA(null);
- 
+    // Clear input after adding data
+    if (label === 'A') {onChangeSingleDigitA(''), dispatch((setSingleACount(3))) }
+    else if (label === 'B') {onChangeSingleDigitB(''), dispatch((setSingleBCount(3)))}
+    else if (label === 'C'){ onChangeSingleDigitC(''), dispatch((setSingleCCount(3)))}
+  };
+  
+  const removeNumber = (id: number) => {
+    setNumbers((prevNumbers) => prevNumbers.filter((item) => item.id !== id));
   };
   
   // Debugging: Log `numbers` after state update
@@ -162,7 +179,6 @@ const dispatch = useDispatch();
       refRBSheet.current?.open();
     }
   };
-
   return (
     <View style={styles.mainContainer}>
       <GameHeader
@@ -336,13 +352,22 @@ const dispatch = useDispatch();
                         maxChar={1}
                       />
                     </View>
-                    {singleDigitA && <Text>{"singleACount"}</Text>}
-                    <CommonAddButton
+                    {singleDigitA && 
+                     <CountButtons 
+                     count={singleACount} 
+                     setCount={(value) => dispatch(setSingleACount(value))} // Pass function reference
+                     minValue={1} 
+                     maxValue={10} 
+                   />
+                    }
+                    {/* <CommonAddButton
                       innerText={'add'}
                       onPress={() => {
                         handleAdd('A', singleDigitA);
                       }}
-                    />
+                    /> */}
+                   <CommonAddButton innerText="Add" onPress={() => handleAdd('A', singleDigitA, singleACount)} />
+
                   </View>
                   <View
                     style={{
@@ -363,12 +388,21 @@ const dispatch = useDispatch();
                         maxChar={1}
                       />
                     </View>
-                    <CommonAddButton
+                    {singleDigitB && 
+                     <CountButtons 
+                     count={singleBCount} 
+                     setCount={(value) => dispatch(setSingleBCount(value))} // Pass function reference
+                     minValue={1} 
+                     maxValue={10} 
+                   />
+                    }
+                    {/* <CommonAddButton
                       innerText={'Add'}
                       onPress={() => {
                         handleAdd('B', valueOne);
                       }}
-                    />
+                    /> */}
+                    <CommonAddButton innerText="Add" onPress={() => handleAdd('B', singleDigitB, singleBCount)} />
                   </View>
                   <View
                     style={{
@@ -389,12 +423,15 @@ const dispatch = useDispatch();
                         maxChar={1}
                       />
                     </View>
-                    <CommonAddButton
-                      innerText={'Add'}
-                      onPress={() => {
-                        handleAdd('C', singleDigitC);
-                      }}
-                    />
+                    {singleDigitC && 
+                   <CountButtons 
+                   count={singleCCount} 
+                   setCount={(value) => dispatch(setSingleBCount(value))} // Pass function reference
+                   minValue={1} 
+                   maxValue={10} 
+                 />  
+                  }
+                     <CommonAddButton innerText="Add" onPress={() => handleAdd('C', singleDigitC, singleCCount)} />
                   </View>
                 </View>
                 <View style={styles.card}>
@@ -668,7 +705,9 @@ const dispatch = useDispatch();
               }}>
               My Numbers
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={()=> setNumbers([])}
+            >
               <AntDesign
                 name={'delete'}
                 size={Scale(18)}
@@ -680,68 +719,61 @@ const dispatch = useDispatch();
              {/* inside */}
 
              <View style={{ marginHorizontal: Scale(10), marginTop: Scale(20) }}>
-  {/* Wrapper to hold all number pills */}
   <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Scale(10) }}>
-        {numbers.map((item) => (
-          <View
-            key={item.id}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: '#F1F1F3',
-              borderRadius: Scale(20),
-              paddingHorizontal: Scale(15),
-              paddingVertical: Scale(8),
-              position: 'relative',
-            }}
-          >
-            {/* Text Content */}
-            <Text style={{ fontSize: Scale(14), fontWeight: 'bold', color: '#000' }}>
-              {item.label}={item.value}
-            </Text>
+    {numbers.map((item) => (
+      <View
+        key={item.id}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: '#F1F1F3',
+          borderRadius: Scale(20),
+          paddingHorizontal: Scale(15),
+          paddingVertical: Scale(8),
+          position: 'relative',
+        }}
+      >
+        <Text style={{ fontSize: Scale(14), fontWeight: 'bold', color: '#000' }}>
+          {item.label} = {item.value}
+        </Text>
 
-            {/* Count Badge */}
-            <View
-              style={{
-                backgroundColor: '#F27842',
-                borderRadius: Scale(5),
-                paddingHorizontal: Scale(5),
-                marginLeft: Scale(5),
-              }}
-            >
-              <Text style={{ fontSize: Scale(12), fontWeight: 'bold', color: 'white' }}>
-                x{item.count}
-              </Text>
-            </View>
+        <View
+          style={{
+            backgroundColor: '#F27842',
+            borderRadius: Scale(5),
+            paddingHorizontal: Scale(5),
+            marginLeft: Scale(5),
+          }}
+        >
+          <Text style={{ fontSize: Scale(12), fontWeight: 'bold', color: 'white' }}>
+            x{item.count}
+          </Text>
+        </View>
 
-            {/* Close Button */}
-            <TouchableOpacity
-              onPress={() => removeNumber(item.id)}
-              style={{
-                position: 'absolute',
-                top: Scale(-5),
-                right: Scale(-5),
-                backgroundColor: 'white',
-                width: Scale(18),
-                height: Scale(18),
-                borderRadius: Scale(9),
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOpacity: 0.2,
-                shadowRadius: 3,
-                elevation: 3, // Android shadow
-              }}
-            >
-              <Image
-                source={cancel}
-                style={{ width: Scale(10), height: Scale(10) }}
-                tintColor={'black'}
-              />
-            </TouchableOpacity>
-          </View>
-        ))}
+        {/* Remove Button */}
+        <TouchableOpacity
+          onPress={() => removeNumber(item.id)}
+          style={{
+            position: 'absolute',
+            top: Scale(-5),
+            right: Scale(-5),
+            backgroundColor: 'white',
+            width: Scale(18),
+            height: Scale(18),
+            borderRadius: Scale(9),
+            justifyContent: 'center',
+            alignItems: 'center',
+            shadowColor: '#000',
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            elevation: 3, // Android shadow
+          }}
+        >
+          <Image source={cancel} style={{ width: Scale(10), height: Scale(10) }} tintColor={'black'} />
+        </TouchableOpacity>
       </View>
+    ))}
+  </View>
 </View>
 
 
@@ -807,6 +839,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#bea2eb',
     overflow: 'hidden',
   },
-
+  showCountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#EEF0F6",
+    borderRadius: 30,
+    paddingHorizontal: 5,
+    height: 40,
+    marginLeft: 30,
+  },
+  button: {
+    backgroundColor: "#F5F7FB",
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    // marginHorizontal: 20,
+  },
+  symbol: {
+    fontSize: 15,
+    color: "black",
+  },
+  input: {
+    width: 50, // Set an explicit width to ensure visibility
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000", // Ensure text is visible
+    textAlign: "center",
+  },
+  
 });
 export default ThreeDigitMain;

@@ -25,28 +25,18 @@ export const threeDigitSlice = createSlice({
       setSingleDigitC: (state, action: PayloadAction<number>) => {
         state.singleDigitC = action.payload
       },
-      increaseSingleACount: (state, action: PayloadAction<number>) => {
-        state.singleACount += 1
+      setSingleACount: (state, action: PayloadAction<number>) => {
+        state.singleACount = action.payload
       },
-      increaseSingleBCount: (state, action: PayloadAction<number>) => {
-        state.singleBCount += 1
+      setSingleBCount: (state, action: PayloadAction<number>) => {
+        state.singleBCount = action.payload 
       },
-      increaseSingleCCount: (state, action: PayloadAction<number>) => {
-        state.singleCCount += 1
+      setSingleCCount : (state, action: PayloadAction<number>) => {
+        state.singleCCount = action.payload
       },
-      decreaseSingleACount: (state, action: PayloadAction<number>) => {
-        state.singleACount -= 1
-      },
-      decreaseSingleBCount: (state, action: PayloadAction<number>) => {
-        state.singleBCount -= 1
-      },
-      decreaseSingleCCount: (state, action: PayloadAction<number>) => {
-        state.singleCCount -= 1
-      }
   },
 })
 
-export const {  setSingleDigitA,setSingleDigitB,setSingleDigitC,increaseSingleACount,increaseSingleBCount,increaseSingleCCount,
-  decreaseSingleACount,decreaseSingleBCount,decreaseSingleCCount  } = threeDigitSlice.actions
+export const {  setSingleDigitA,setSingleDigitB,setSingleDigitC, setSingleACount, setSingleBCount, setSingleCCount  } = threeDigitSlice.actions
 
 export default threeDigitSlice.reducer
