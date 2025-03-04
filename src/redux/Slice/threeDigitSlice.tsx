@@ -16,25 +16,29 @@ export const threeDigitSlice = createSlice({
   name: 'threeDigit',
   initialState:initialvalues,
   reducers: {
-    setSingleDigitA: (state, action: PayloadAction<number>) => {
-      state.singleDigitA = action.payload
+    setSingleDigitA: (state, action: PayloadAction<number | null>) => {
+      state.singleDigitA = action.payload;
+      if (action.payload !== null) state.singleACount = 3;
     },
-    setSingleDigitB: (state, action: PayloadAction<number>) => {
-        state.singleDigitB = action.payload
-      },
-      setSingleDigitC: (state, action: PayloadAction<number>) => {
-        state.singleDigitC = action.payload
-      },
-      setSingleACount: (state, action: PayloadAction<number>) => {
-        state.singleACount = action.payload
-      },
-      setSingleBCount: (state, action: PayloadAction<number>) => {
-        state.singleBCount = action.payload 
-      },
-      setSingleCCount : (state, action: PayloadAction<number>) => {
-        state.singleCCount = action.payload
-      },
-  },
+    setSingleDigitB: (state, action: PayloadAction<number | null>) => {
+      state.singleDigitB = action.payload;
+      if (action.payload !== null) state.singleBCount = 3;
+    },
+    setSingleDigitC: (state, action: PayloadAction<number | null>) => {
+      state.singleDigitC = action.payload;
+      if (action.payload !== null) state.singleCCount = 3;
+    },
+    setSingleACount: (state, action: PayloadAction<number>) => {
+      state.singleACount = action.payload === 0 ? 3 : action.payload;
+    },
+    setSingleBCount: (state, action: PayloadAction<number>) => {
+      state.singleBCount = action.payload === 0 ? 3 : action.payload;
+    },
+    setSingleCCount: (state, action: PayloadAction<number>) => {
+      state.singleCCount = action.payload === 0 ? 3 : action.payload;
+    },
+},
+
 })
 
 export const {  setSingleDigitA,setSingleDigitB,setSingleDigitC, setSingleACount, setSingleBCount, setSingleCCount  } = threeDigitSlice.actions

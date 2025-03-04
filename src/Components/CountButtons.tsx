@@ -1,42 +1,34 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import {  setSingleDigitA} from '../Redux/Slice/threeDigitSlice';
 
 interface CountButtonsProps {
   count: number;
-  setCount: (value: number) => void; // Function to update count in parent
-  minValue?: number; // Optional: Minimum count value (default 0)
-  maxValue?: number; // Optional: Maximum count value (default Infinity)
+  setCount: (value: number) => void;
+  onHide: () => void;
+  minValue?: number;
+  maxValue?: number;
 }
 
-const CountButtons: React.FC<CountButtonsProps> = ({ count, setCount, minValue = 0, maxValue = Infinity }) => {
-  const dispatch = useDispatch();
-    const onChangeSingleDigitA = (value: any) => {
-      dispatch(setSingleDigitA(value));
-    };
-
+const CountButtons: React.FC<CountButtonsProps> = ({ count, setCount, onHide, minValue = 0, maxValue = Infinity }) => {
   const handleIncrease = () => {
     setCount(Math.min(maxValue, count + 1));
   };
 
   const handleDecrease = () => {
-    if(count>1){
-    setCount(Math.max(minValue, count - 1));
-
-    }
-    else{
-      onChangeSingleDigitA(null);
-      setCount(Math.min(maxValue, 3));
+    if (count > 1) {
+      setCount(count - 1);
+    } else {
+      setCount(0);
+      onHide();
     }
   };
 
   const handleTextChange = (text: string) => {
     const numericValue = parseInt(text, 10);
     if (!isNaN(numericValue)) {
-      setCount(Math.min(maxValue, Math.max(minValue, numericValue))); // Ensure within range
+      setCount(Math.min(maxValue, Math.max(minValue, numericValue)));
     } else if (text === "") {
-      setCount(minValue); 
+      setCount(minValue);
     }
   };
 
