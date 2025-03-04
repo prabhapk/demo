@@ -5,14 +5,14 @@ import Scale from './Scale'
 
 interface Props {
   innerText: string;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress: () => void;
 }
 
 const CommonQuickGuess: React.FC<Props> = ({innerText, onPress }) => {
   return (
     <View>
        <TouchableOpacity
-                      onPress={()=> onPress}
+                      onPress={onPress}
                       style={{
                         backgroundColor: '#f7f3f2',
                         borderRadius: 5,

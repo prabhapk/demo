@@ -84,10 +84,11 @@ import {
       fontWeight: '500',
       color: 'black',
       fontFamily: 'Inter',
-      height: Scale(35),
+      height: Scale(40),
       textAlign: 'center',
       textAlignVertical: 'center',
       paddingHorizontal: 0, // Ensures text does not shift
+      width:Scale(40),
     },
     focusedContainer: {
       borderColor: '#5c4280',

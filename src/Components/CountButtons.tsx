@@ -1,5 +1,7 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import {  setSingleDigitA} from '../Redux/Slice/threeDigitSlice';
 
 interface CountButtonsProps {
   count: number;
@@ -9,13 +11,24 @@ interface CountButtonsProps {
 }
 
 const CountButtons: React.FC<CountButtonsProps> = ({ count, setCount, minValue = 0, maxValue = Infinity }) => {
-  
+  const dispatch = useDispatch();
+    const onChangeSingleDigitA = (value: any) => {
+      dispatch(setSingleDigitA(value));
+    };
+
   const handleIncrease = () => {
-    setCount(Math.min(maxValue, count + 1)); // Prevent exceeding max value
+    setCount(Math.min(maxValue, count + 1));
   };
 
   const handleDecrease = () => {
-    setCount(Math.max(minValue, count - 1)); // Prevent going below min value
+    if(count>1){
+    setCount(Math.max(minValue, count - 1));
+
+    }
+    else{
+      onChangeSingleDigitA(null);
+      setCount(Math.min(maxValue, 3));
+    }
   };
 
   const handleTextChange = (text: string) => {
@@ -23,7 +36,7 @@ const CountButtons: React.FC<CountButtonsProps> = ({ count, setCount, minValue =
     if (!isNaN(numericValue)) {
       setCount(Math.min(maxValue, Math.max(minValue, numericValue))); // Ensure within range
     } else if (text === "") {
-      setCount(minValue); // Prevents empty input issues
+      setCount(minValue); 
     }
   };
 

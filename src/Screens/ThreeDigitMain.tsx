@@ -146,7 +146,7 @@ const dispatch = useDispatch();
   //   if (innerText === 'A') onChangeSingleDigitA(null);
  
   // };
-  const handleAdd = (label: string, value: string, count: number) => {
+  const handleAdd = (label: string, value: number, count: number) => {
     if (!value) {
       Alert.alert('Error', 'Please enter a value');
       return;
@@ -163,10 +163,17 @@ const dispatch = useDispatch();
     else if (label === 'C'){ onChangeSingleDigitC(''), dispatch((setSingleCCount(3)))}
   };
   
+  const getRandomNumber = () => Math.floor(Math.random() * 10);
   const removeNumber = (id: number) => {
     setNumbers((prevNumbers) => prevNumbers.filter((item) => item.id !== id));
   };
   
+  const generateRandomNumbers = () => {
+    dispatch(setSingleDigitA(getRandomNumber()));
+    dispatch(setSingleDigitB(getRandomNumber()));
+    dispatch(setSingleDigitC(getRandomNumber()));
+   };
+
   // Debugging: Log `numbers` after state update
   useEffect(() => {
     console.log('Updated Numbers:', numbers);
@@ -326,10 +333,11 @@ const dispatch = useDispatch();
                       </View>
                       <Text style={{marginVertical: Scale(5)}}>$11.00</Text>
                     </View>
+                    <Text style={{marginVertical: Scale(5)}}>{singleDigitA}{singleDigitB}{singleDigitC}</Text>
                     <CommonQuickGuess
                       innerText={'Quick Guess'}
                       onPress={() => {
-                        Alert.alert('Implement soon');
+                        generateRandomNumbers();
                       }}
                     />
                   </View>
