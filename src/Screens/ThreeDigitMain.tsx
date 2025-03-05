@@ -159,15 +159,15 @@ const ThreeDigitMain = () => {
   //   if (innerText === 'A') onChangeSingleDigitA(null);
 
   // };
-  const handleAdd = (label: string, value: number, count: number) => {
-    if (!value) {
+  const handleAdd = (label: string, value: string, count: number, selectedOption:string) => {
+    if (value=="") {
       Alert.alert('Error', 'Please enter a value');
       return;
     }
 
     setNumbers(prevNumbers => [
       ...prevNumbers,
-      {id: prevNumbers.length + 1, label, value, count},
+      {id: prevNumbers.length + 1, label, value, count, type:selectedOption},
     ]);
 
     // Clear input after adding data
@@ -179,6 +179,33 @@ const ThreeDigitMain = () => {
       onChangeSingleDigitC(''), dispatch(setSingleCCount(3));
     }
   };
+
+  const handleHeader = (value: string) => {
+    const isAdded = numbers.find((item:any) => item.type !== value);
+
+    if (isAdded) {
+      Alert.alert(
+        'Confirmation Reminder',
+        `You have placed an order for the Text\n${selectedOption} time.\nAre you sure you want to remove your previous selections?`,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Confirm',
+            onPress: () =>{setNumbers([]), setSelectedOption(value);},
+          },
+        ],
+        { cancelable: false } 
+      );
+      
+      return;
+    }
+
+    setSelectedOption(value);
+  }
 
   const getRandomNumber = () => Math.floor(Math.random() * 10);
   const removeNumber = (id: number) => {
@@ -203,6 +230,11 @@ const ThreeDigitMain = () => {
       refRBSheet.current?.open();
     }
   };
+
+
+const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
+
+
   return (
     <View style={styles.mainContainer}>
       <GameHeader
@@ -219,7 +251,7 @@ const ThreeDigitMain = () => {
         <View style={styles.subContainer}>
           <View style={styles.startView}>
             <TouchableOpacity
-              onPress={() => setSelectedOption('3 Mins')}
+              onPress={() => {handleHeader('3 Mins')}}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -245,7 +277,7 @@ const ThreeDigitMain = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => setSelectedOption('5 Mins')}
+            onPress={() => {handleHeader('5 Mins')}}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -347,11 +379,6 @@ const ThreeDigitMain = () => {
                       </View>
                       <Text style={{marginVertical: Scale(5)}}>$11.00</Text>
                     </View>
-                    <Text style={{marginVertical: Scale(5)}}>
-                      {singleDigitA}
-                      {singleDigitB}
-                      {singleDigitC}
-                    </Text>
                     <CommonQuickGuess
                       innerText={'Quick Guess'}
                       onPress={() => {
@@ -378,11 +405,11 @@ const ThreeDigitMain = () => {
                         maxChar={1}
                       />
                     </View>
-                    {singleDigitA !== null && singleACount > 0 && (
+                    {singleDigitA !== ""&& (
                       <CountButtons
                         count={singleACount}
                         setCount={value => dispatch(setSingleACount(value))}
-                        onHide={() => dispatch(setSingleDigitA(null))} // Hide only A
+                        onHide={() => dispatch(setSingleDigitA(""))}
                         minValue={1}
                         maxValue={10}
                       />
@@ -395,7 +422,7 @@ const ThreeDigitMain = () => {
                     /> */}
                     <CommonAddButton
                       innerText="Add"
-                      onPress={() => handleAdd('A', singleDigitA, singleACount)}
+                      onPress={() => handleAdd('A', singleDigitA, singleACount, selectedOption)}
                     />
                   </View>
                   <View
@@ -417,11 +444,11 @@ const ThreeDigitMain = () => {
                         maxChar={1}
                       />
                     </View>
-                    {singleDigitB !== null && singleBCount > 0 && (
+                    {singleDigitB !== "" && (
                       <CountButtons
                         count={singleBCount}
                         setCount={value => dispatch(setSingleBCount(value))}
-                        onHide={() => dispatch(setSingleDigitB(null))} // Hide only B
+                        onHide={() => dispatch(setSingleDigitB(""))} // Hide only B
                         minValue={1}
                         maxValue={10}
                       />
@@ -434,7 +461,7 @@ const ThreeDigitMain = () => {
                     /> */}
                     <CommonAddButton
                       innerText="Add"
-                      onPress={() => handleAdd('B', singleDigitB, singleBCount)}
+                      onPress={() => handleAdd('B', singleDigitB, singleBCount,selectedOption)}
                     />
                   </View>
                   <View
@@ -456,18 +483,18 @@ const ThreeDigitMain = () => {
                         maxChar={1}
                       />
                     </View>
-                    {singleDigitC !== null && singleCCount > 0 && (
+                    {singleDigitC !== "" && (
                       <CountButtons
                         count={singleCCount}
                         setCount={value => dispatch(setSingleCCount(value))}
-                        onHide={() => dispatch(setSingleDigitC(null))} // Hide only C
+                        onHide={() => dispatch(setSingleDigitC(""))} // Hide only C
                         minValue={1}
                         maxValue={10}
                       />
                     )}
                     <CommonAddButton
                       innerText="Add"
-                      onPress={() => handleAdd('C', singleDigitC, singleCCount)}
+                      onPress={() => handleAdd('C', singleDigitC, singleCCount,selectedOption)}
                     />
                   </View>
                 </View>
@@ -716,7 +743,7 @@ const ThreeDigitMain = () => {
             borderTopLeftRadius: Scale(20),
             borderTopRightRadius: Scale(20),
             paddingHorizontal: Scale(10),
-            marginBottom: Scale(110), // Ensures footer stays visible
+            marginBottom: Scale(110), 
           },
           draggableIcon: {
             width: Scale(75),
@@ -827,7 +854,11 @@ const ThreeDigitMain = () => {
       <SafeAreaView
         style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
         <View style={{backgroundColor: 'white', height: Scale(110)}}>
-          <GameFooter openSheet={() => refRBSheet.current.open()} />
+          <GameFooter 
+          openSheet={() => refRBSheet.current.open()} 
+          totalAmount={sum * 11}
+          totalCount={sum}
+          />
         </View>
       </SafeAreaView>
     </View>

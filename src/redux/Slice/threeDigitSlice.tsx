@@ -5,9 +5,9 @@ import { threeDigitState } from './types'
 
 
 const initialvalues: threeDigitState = {
-  singleDigitA: null,
-  singleDigitB: null,
-  singleDigitC: null,
+  singleDigitA: "",
+  singleDigitB: "",
+  singleDigitC: "",
   singleACount: 3,
   singleBCount: 3,
   singleCCount: 3,
@@ -16,15 +16,15 @@ export const threeDigitSlice = createSlice({
   name: 'threeDigit',
   initialState:initialvalues,
   reducers: {
-    setSingleDigitA: (state, action: PayloadAction<number | null>) => {
+    setSingleDigitA: (state, action: PayloadAction<any>) => {
       state.singleDigitA = action.payload;
       if (action.payload !== null) state.singleACount = 3;
     },
-    setSingleDigitB: (state, action: PayloadAction<number | null>) => {
+    setSingleDigitB: (state, action: PayloadAction<any>) => {
       state.singleDigitB = action.payload;
       if (action.payload !== null) state.singleBCount = 3;
     },
-    setSingleDigitC: (state, action: PayloadAction<number | null>) => {
+    setSingleDigitC: (state, action: PayloadAction<any>) => {
       state.singleDigitC = action.payload;
       if (action.payload !== null) state.singleCCount = 3;
     },

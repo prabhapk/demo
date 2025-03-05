@@ -3,9 +3,9 @@ export interface CommonSliceState {
   }
 
   export interface threeDigitState {
-    singleDigitA: number | null;
-    singleDigitB: number | null;
-    singleDigitC: number | null;
+    singleDigitA: any;
+    singleDigitB: any;
+    singleDigitC: any;
     singleACount: number;
     singleBCount: number;
     singleCCount: number;
