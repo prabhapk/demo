@@ -32,12 +32,21 @@ import CommonAddButton from '../Components/CommonAddButton';
 import CommonQuickGuess from '../Components/CommonQuickGuess';
 import {RootState} from '../Redux/store';
 import {
+  setDoubleDigitA1,
+  setDoubleDigitA2,
+  setDoubleDigitB1,
+  setDoubleDigitB2,
+  setDoubleDigitC1,
+  setDoubleDigitC2,
   setSingleACount,
   setSingleBCount,
   setSingleCCount,
   setSingleDigitA,
   setSingleDigitB,
   setSingleDigitC,
+  setDoubleABCount,
+  setDoubleACCount,
+  setDoubleBCCount,
 } from '../Redux/Slice/threeDigitSlice';
 import CountButtons from '../Components/CountButtons';
 
@@ -49,6 +58,19 @@ const ThreeDigitMain = () => {
     singleACount,
     singleBCount,
     singleCCount,
+    doubleDigitA1,
+    doubleDigitA2,
+    doubleDigitB1,
+    doubleDigitB2,
+    doubleDigitC1,
+    doubleDigitC2,
+    doubleABCount,
+    doubleACCount,
+    doubleBCCount,
+    threeDigitA,
+    threeDigitB,
+    threeDigitC,
+    threeDigitCount,
   } = useSelector((state: RootState) => state.threeDigit);
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState('3 Mins');
@@ -57,6 +79,9 @@ const ThreeDigitMain = () => {
   const [valueOne, setValueOne] = useState(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const singleDigitPrice = 11.00;
+  const doubleDigitPrice = 11.00;
+  const threeDigitPrice = 21.00;
   const onChangeSingleDigitA = (value: any) => {
     dispatch(setSingleDigitA(value));
   };
@@ -65,6 +90,24 @@ const ThreeDigitMain = () => {
   };
   const onChangeSingleDigitC = (value: any) => {
     dispatch(setSingleDigitC(value));
+  };
+  const doubleDigitA1OnChange = (value: any) => {
+    dispatch(setDoubleDigitA1(value));
+  };
+  const doubleDigitA2OnChange = (value: any) => {
+    dispatch(setDoubleDigitA2(value));
+  };
+  const doubleDigitB1OnChange = (value: any) => {
+    dispatch(setDoubleDigitB1(value));
+  };
+  const doubleDigitB2OnChange = (value: any) => {
+    dispatch(setDoubleDigitB2(value));
+  };
+  const doubleDigitC1OnChange = (value: any) => {
+    dispatch(setDoubleDigitC1(value));
+  };
+  const doubleDigitC2OnChange = (value: any) => {
+    dispatch(setDoubleDigitC2(value));
   };
   const onBlurOne = () => {
     setIsOnFocus(false);
@@ -140,26 +183,7 @@ const ThreeDigitMain = () => {
 
   const [numbers, setNumbers] = useState([]);
 
-  // const removeNumber = (id: number) => {
-  //   setNumbers(numbers.filter(item => item.id !== id));
-  // };
-
-  // const handleAdd = (innerText:any, value:any) => {
-  //   if (!value) {
-  //     Alert.alert('Error', 'Please enter a value');
-  //     return;
-  //   }
-
-  //   setNumbers((prevNumbers) => [
-  //     ...prevNumbers,
-  //     { id: prevNumbers.length + 1, label: innerText, value: value, count: '1' },
-  //   ]);
-
-  //   // Clear the input after adding the value
-  //   if (innerText === 'A') onChangeSingleDigitA(null);
-
-  // };
-  const handleAdd = (label: string, value: string, count: number, selectedOption:string) => {
+  const handleAdd = (label: string, value: string, count: number, selectedOption:string, price: number) => {
     if (value=="") {
       Alert.alert('Error', 'Please enter a value');
       return;
@@ -167,9 +191,10 @@ const ThreeDigitMain = () => {
 
     setNumbers(prevNumbers => [
       ...prevNumbers,
-      {id: prevNumbers.length + 1, label, value, count, type:selectedOption},
+      {id: prevNumbers.length + 1, label, value, count, type:selectedOption, price},
     ]);
-
+    console.log('Label==>', label);
+    
     // Clear input after adding data
     if (label === 'A') {
       onChangeSingleDigitA(''), dispatch(setSingleACount(3));
@@ -177,6 +202,18 @@ const ThreeDigitMain = () => {
       onChangeSingleDigitB(''), dispatch(setSingleBCount(3));
     } else if (label === 'C') {
       onChangeSingleDigitC(''), dispatch(setSingleCCount(3));
+    }
+    else if (label === 'AB') {
+      doubleDigitA1OnChange(''), dispatch(setDoubleABCount(3));
+      doubleDigitB1OnChange('')
+    }
+    else if (label === 'AC') {
+      doubleDigitA2OnChange(''), dispatch(setDoubleACCount(3));
+      doubleDigitC1OnChange('')
+    }
+    else if (label === 'BC') {
+      doubleDigitB2OnChange(''), dispatch(setDoubleBCCount(3));
+      doubleDigitC2OnChange('')
     }
   };
 
@@ -217,6 +254,15 @@ const ThreeDigitMain = () => {
     dispatch(setSingleDigitB(getRandomNumber()));
     dispatch(setSingleDigitC(getRandomNumber()));
   };
+  const generateDoubleDigitRandomNumbers = () => {
+    dispatch(setDoubleDigitA1(getRandomNumber()));
+    dispatch(setDoubleDigitA2(getRandomNumber()));
+    dispatch(setDoubleDigitB1(getRandomNumber()));
+    dispatch(setDoubleDigitB2(getRandomNumber()));
+    dispatch(setDoubleDigitC1(getRandomNumber()));    
+    dispatch(setDoubleDigitC2(getRandomNumber()));     
+  };
+
 
   // Debugging: Log `numbers` after state update
   useEffect(() => {
@@ -232,8 +278,104 @@ const ThreeDigitMain = () => {
   };
 
 
-const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
+const sum = numbers.reduce((acc:any, item:any,) => acc + item.count * item.price, 0);
+const sum1 = numbers.reduce((acc:any, item:any,) => acc + item.count, 0);
+console.log('sum==>', sum);
+console.log('sum1==>', sum1);
 
+
+// const generateUniquePermutations = (values: string[]) => {
+//   const results: Set<string> = new Set();
+
+//   const permute = (arr: string[], m: string[] = []) => {
+//     if (arr.length === 0) {
+//       results.add(m.join('')); // Store only unique values
+//     } else {
+//       for (let i = 0; i < arr.length; i++) {
+//         const current = [...arr];
+//         const next = current.splice(i, 1);
+//         permute(current, [...m, ...next]);
+//       }
+//     }
+//   };
+
+//   permute(values);
+//   return Array.from(results).map(value => ({ label: 'ABC', value, count:threeDigitCount, type:selectedOption })); // Format output
+// };
+const handleAddPermutations = (
+  label: string,
+  values: string[],
+  count: number,
+  selectedOption: string,
+  price: number,
+) => {
+  if (values.length === 0) {
+    Alert.alert("Error", "Please enter a value");
+    return;
+  }
+
+  // Generate permutations
+  const results: Set<string> = new Set();
+
+  const permute = (arr: string[], m: string[] = []) => {
+    if (arr.length === 0) {
+      results.add(m.join(""));
+    } else {
+      for (let i = 0; i < arr.length; i++) {
+        const current = [...arr];
+        const next = current.splice(i, 1);
+        permute(current, [...m, ...next]);
+      }
+    }
+  };
+
+  permute(values);
+
+  // Add generated values with ID to state
+  setNumbers((prevNumbers) => [
+    ...prevNumbers,
+    ...Array.from(results).map((value, index) => ({
+      id: prevNumbers.length + index + 1, // Unique ID based on array length
+      label,
+      value,
+      count,
+      type: selectedOption,
+      price,
+    })),
+  ]);
+
+  console.log("Label==>", label);
+
+  // Clear input after adding data
+  if (label === "A") {
+    onChangeSingleDigitA(""), dispatch(setSingleACount(3));
+  } else if (label === "B") {
+    onChangeSingleDigitB(""), dispatch(setSingleBCount(3));
+  } else if (label === "C") {
+    onChangeSingleDigitC(""), dispatch(setSingleCCount(3));
+  } else if (label === "AB") {
+    doubleDigitA1OnChange(""), dispatch(setDoubleABCount(3));
+    doubleDigitB1OnChange("");
+  } else if (label === "AC") {
+    doubleDigitA2OnChange(""), dispatch(setDoubleACCount(3));
+    doubleDigitC1OnChange("");
+  } else if (label === "BC") {
+    doubleDigitB2OnChange(""), dispatch(setDoubleBCCount(3));
+    doubleDigitC2OnChange("");
+  }
+};
+
+
+// Handle button press
+const handleGenerate = () => {
+  if (threeDigitA !== "" && threeDigitB !== "" && threeDigitC !== "") {
+    const values = [threeDigitA, threeDigitB, threeDigitC]; // Take values only
+    // setPermutations(generateUniquePermutations(values));
+    // setPermutations(generatePermutations(values));
+    console.log('generatePermutationsValues==>', handleAddPermutations('ABC', values, threeDigitCount, selectedOption, threeDigitPrice));
+    
+  }
+};
 
   return (
     <View style={styles.mainContainer}>
@@ -356,7 +498,7 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                       </Text>
                       <CountdownTimer
                         targetDate={targetDate}
-                        onComplete={() => console.log('Countdown Completed!')}
+                        onComplete={() => {}}
                       />
                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>
                         123000112
@@ -422,7 +564,7 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                     /> */}
                     <CommonAddButton
                       innerText="Add"
-                      onPress={() => handleAdd('A', singleDigitA, singleACount, selectedOption)}
+                      onPress={() => handleAdd('A', singleDigitA, singleACount, selectedOption, singleDigitPrice)}
                     />
                   </View>
                   <View
@@ -461,7 +603,7 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                     /> */}
                     <CommonAddButton
                       innerText="Add"
-                      onPress={() => handleAdd('B', singleDigitB, singleBCount,selectedOption)}
+                      onPress={() => handleAdd('B', singleDigitB, singleBCount,selectedOption, singleDigitPrice)}
                     />
                   </View>
                   <View
@@ -494,10 +636,13 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                     )}
                     <CommonAddButton
                       innerText="Add"
-                      onPress={() => handleAdd('C', singleDigitC, singleCCount,selectedOption)}
+                      onPress={() => handleAdd('C', singleDigitC, singleCCount,selectedOption, singleDigitPrice)}
                     />
                   </View>
                 </View>
+
+                {/* Double digit start  */}
+
                 <View style={styles.card}>
                   <View
                     style={{
@@ -516,7 +661,7 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                     <CommonQuickGuess
                       innerText={'Quick Guess'}
                       onPress={() => {
-                        Alert.alert('Implement soon');
+                        generateDoubleDigitRandomNumbers();
                       }}
                     />
                   </View>
@@ -532,28 +677,38 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                       <CommonBall backgroundColor="orange" innerText="B" />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={doubleDigitA1?.toString()}
                         placeholderText={'-'}
-                        onChange={onChangeSingleDigitA}
+                        onChange={doubleDigitA1OnChange}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
                       />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={doubleDigitB1?.toString()}
                         placeholderText={'-'}
-                        onChange={onChangeSingleDigitA}
+                        onChange={doubleDigitB1OnChange}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
                       />
                     </View>
+                    {doubleDigitA1 !== "" && doubleDigitB1 !== "" && (
+                      <CountButtons
+                        count={doubleABCount}
+                        setCount={value => dispatch(setDoubleABCount(value))}
+                        onHide={() => {
+                          dispatch(setDoubleDigitA1(""));
+                          dispatch(setDoubleDigitB1(""));
+                        }}
+                        minValue={1}
+                        maxValue={10}
+                      />
+                    )}
                     <CommonAddButton
-                      innerText={'Add'}
-                      onPress={() => {
-                        Alert.alert('Implement soon');
-                      }}
+                      innerText="Add"
+                      onPress={() => handleAdd('AB', doubleDigitA1.toString() + doubleDigitB1.toString(), doubleABCount, selectedOption, doubleDigitPrice)}
                     />
                   </View>
                   <View
@@ -568,28 +723,38 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                       <CommonBall backgroundColor="blue" innerText="C" />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={doubleDigitA2?.toString()}
                         placeholderText={'-'}
-                        onChange={onChangeSingleDigitA}
+                        onChange={doubleDigitA2OnChange}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
                       />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={doubleDigitC1?.toString()}
                         placeholderText={'-'}
-                        onChange={onChangeSingleDigitA}
+                        onChange={doubleDigitC1OnChange}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
                       />
                     </View>
-                    <CommonAddButton
-                      innerText={'Add'}
-                      onPress={() => {
-                        Alert.alert('Implement soon');
-                      }}
+                    {doubleDigitA2 !== "" && doubleDigitC1 !== "" && (
+                     <CountButtons
+                     count={doubleACCount}
+                     setCount={value => dispatch(setDoubleACCount(value))}
+                     onHide={() => {
+                       dispatch(setDoubleDigitA2(""));
+                       dispatch(setDoubleDigitC1(""));
+                     }}
+                     minValue={1}
+                     maxValue={10}
+                   />
+                    )}
+                   <CommonAddButton
+                      innerText="Add"
+                      onPress={() => handleAdd('AC', doubleDigitA2.toString() + doubleDigitC1.toString(), doubleACCount, selectedOption, doubleDigitPrice)}
                     />
                   </View>
                   <View
@@ -604,31 +769,43 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                       <CommonBall backgroundColor="blue" innerText="C" />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={doubleDigitB2?.toString()}
                         placeholderText={'-'}
-                        onChange={onChangeSingleDigitA}
+                        onChange={doubleDigitB2OnChange}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
                       />
                       <SingleIntegerTextInput
                         isDisabled={false}
-                        value={valueOne}
+                        value={doubleDigitC2?.toString()}
                         placeholderText={'-'}
-                        onChange={onChangeSingleDigitA}
+                        onChange={doubleDigitC2OnChange}
                         onBlur={undefined}
                         keyboardType={undefined}
                         maxChar={1}
                       />
                     </View>
-                    <CommonAddButton
-                      innerText={'Add'}
-                      onPress={() => {
-                        Alert.alert('Implement soon');
-                      }}
+                    {doubleDigitB2 !== "" && doubleDigitC2 !== "" && (
+                     <CountButtons
+                     count={doubleBCCount}
+                     setCount={value => dispatch(setDoubleBCCount(value))}
+                     onHide={() => {
+                       dispatch(setDoubleDigitB2(""));
+                       dispatch(setDoubleDigitC2(""));
+                     }}
+                     minValue={1}
+                     maxValue={10}
+                   />
+                    )}
+                     <CommonAddButton
+                      innerText="Add"
+                      onPress={() => handleAdd('BC', doubleDigitB2.toString() + doubleDigitC2.toString(), doubleBCCount, selectedOption, doubleDigitPrice)}
                     />
                   </View>
                 </View>
+
+                {/* Three Digit start  */}
                 <View style={styles.card}>
                   <View
                     style={{
@@ -642,7 +819,7 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                         <Text>Triple Digit</Text>
                         <Text>Win $100.00</Text>
                       </View>
-                      <Text style={{marginVertical: Scale(5)}}>$21.00</Text>
+                      <Text style={{marginVertical: Scale(5)}}>${threeDigitPrice}</Text>
                     </View>
                     <CommonQuickGuess
                       innerText={'Quick Guess'}
@@ -693,6 +870,7 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                           maxChar={1}
                         />
                       </View>
+                
                       <View
                         style={{
                           flexDirection: 'row',
@@ -701,16 +879,12 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
                         }}>
                         <CommonAddButton
                           innerText={'Box'}
-                          onPress={() => {
-                            Alert.alert('Implement soon');
-                          }}
+                          onPress={() =>handleGenerate()}
                         />
-                        <CommonAddButton
-                          innerText={'Add'}
-                          onPress={() => {
-                            Alert.alert('Implement soon');
-                          }}
-                        />
+                         <CommonAddButton
+                      innerText="Add"
+                      onPress={() => handleAdd('ABC', threeDigitA.toString() + threeDigitB.toString() + threeDigitC.toString(), threeDigitCount, selectedOption, threeDigitPrice)}
+                    />
                       </View>
                     </View>
                   </View>
@@ -856,8 +1030,8 @@ const sum = numbers.reduce((acc:any, item:any) => acc + item.count, 0);
         <View style={{backgroundColor: 'white', height: Scale(110)}}>
           <GameFooter 
           openSheet={() => refRBSheet.current.open()} 
-          totalAmount={sum * 11}
-          totalCount={sum}
+          totalAmount={sum}
+          totalCount={sum1}
           />
         </View>
       </SafeAreaView>
@@ -942,6 +1116,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000', // Ensure text is visible
     textAlign: 'center',
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+  },
+  valueText: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  boxButton: {
+    backgroundColor: "#007AFF",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
   },
 });
 export default ThreeDigitMain;
