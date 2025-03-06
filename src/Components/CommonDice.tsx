@@ -9,11 +9,13 @@ import {
 
 interface Props {
   data: any;
+  onPressDice: () => void;
 }
 
-const CommonDice: React.FC<Props> = ({data}) => {
+const CommonDice: React.FC<Props> = ({data, onPressDice}) => {
   return (
-    <View
+    <TouchableOpacity
+    onPress={onPressDice}
       style={styles.container}>
       <ImageBackground
         source={data.image}
@@ -28,7 +30,9 @@ const CommonDice: React.FC<Props> = ({data}) => {
           </Text>
         </View>
         <TouchableOpacity
-          style={styles.playNowBtn}>
+          style={styles.playNowBtn}
+          onPress={onPressDice}
+          >
           <View
             style={styles.playNowView}>
             <Text style={styles.playNowBtnText}>
@@ -37,7 +41,7 @@ const CommonDice: React.FC<Props> = ({data}) => {
           </View>
         </TouchableOpacity>
       </ImageBackground>
-    </View>
+    </TouchableOpacity>
   );
 };
 

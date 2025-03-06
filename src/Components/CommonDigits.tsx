@@ -1,14 +1,17 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import CountdownTimer from './CountdownTimer';
 
 interface Props {
   data: any;
+  onPress3Digits: () => void;
 }
 
-const CommonDigits: React.FC<Props> = ({data}) => {
+const CommonDigits: React.FC<Props> = ({data, onPress3Digits}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+    onPress={onPress3Digits}
+    style={styles.container}>
       <View style={styles.subConatiner}>
         <Text style={styles.digitTitle}>{data.title}</Text>
         <View style={{marginTop: 10}}>
@@ -27,7 +30,7 @@ const CommonDigits: React.FC<Props> = ({data}) => {
       <Text style={{margin: 5}}>
         ₹{data.price}/<Text style={{color: 'grey', fontSize: 10}}>Ticket</Text>
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

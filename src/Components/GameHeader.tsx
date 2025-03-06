@@ -28,16 +28,6 @@ const GameHeader: React.FC<Props> = ({
   rightImage,
 }) => {
 
-
-  //   const handlePress = () => {
-  //     if (!isSaveSelected) {
-  //       dispatch(addWatchList({companyId: companyId, productId: productId}));
-  //     } else {
-  //       dispatch(removeWatchList({companyId: companyId, productId: productId}));
-  //     }
-  //     setSaveSelected(!isSaveSelected);
-  //   };
-
   return (
     <View style={styles.mainContainer}>
       <View

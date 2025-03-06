@@ -26,7 +26,7 @@ import SingleIntegerTextInput from '../Components/SingleIntegerTextInput';
 import GameFooter from '../Components/GameFooter';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GameHeader from '../Components/GameHeader';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import ResultTable from '../Components/ResultTable';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommonAddButton from '../Components/CommonAddButton';
@@ -57,7 +57,7 @@ import { handleShowAlert } from '../Redux/Slice/commonSlice';
 import CountButtons from '../Components/CountButtons';
 import Show30SecondsModal from '../Components/Show30SecondsModal';
 
-const ThreeDigitMain = () => {
+const ThreeDigitMain = ({navigation}: any) => {
   const {
     singleDigitA,
     singleDigitB,
@@ -83,7 +83,7 @@ const ThreeDigitMain = () => {
   const [selectedOption, setSelectedOption] = useState('3 Mins');
   const now = new Date();
   const [targetDate, setTargetDate] = useState(
-    new Date(new Date().getTime() + 3 * 60 * 1000).toISOString()
+    new Date(new Date().getTime() + 10 * 60 * 1000).toISOString()
   );
   const [valueOne, setValueOne] = useState(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
@@ -104,8 +104,8 @@ const ThreeDigitMain = () => {
 
   const handleTimerComplete = () => {
     console.log("Timer Complete, Restarting...");
-    setTargetDate(new Date(new Date().getTime() + 3 * 60 * 1000).toISOString());
-
+    setTargetDate(new Date(new Date().getTime() + 10 * 60 * 1000).toISOString());
+    console.log('Target Date==>', targetDate);
     setLast30sec(false);
   };
 
@@ -164,7 +164,7 @@ const ThreeDigitMain = () => {
     setIsOnFocus(false);
   };
   const refRBSheet: any = useRef();
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
   const tableData = [
     {
       id: 1,
@@ -229,7 +229,7 @@ const ThreeDigitMain = () => {
   ];
 
   const goBack = () => {
-    navigation.goBack();
+    navigation.navigate('BottomNavigation');
   };
 
   const [numbers, setNumbers] = useState([]);
@@ -317,6 +317,11 @@ const ThreeDigitMain = () => {
     dispatch(setDoubleDigitB2(getRandomNumber()));
     dispatch(setDoubleDigitC1(getRandomNumber()));    
     dispatch(setDoubleDigitC2(getRandomNumber()));     
+  };
+  const generateThreeDigitRandomNumbers = () => {
+    dispatch(setThreeDigitA(getRandomNumber()));
+    dispatch(setThreeDigitB(getRandomNumber()));
+    dispatch(setThreeDigitC(getRandomNumber()));
   };
 
 
@@ -432,12 +437,13 @@ const handleGenerate = () => {
     
   }
 };
+const OPTIONS = ['3 Mins', '5 Mins', ];
 
   return (
     <View style={styles.mainContainer}>
       <GameHeader
         HeaderText={'Avis Game'}
-        leftonPress={() => goBack()}
+        leftonPress={goBack}
         leftImage={lefArrow}
         rightImage={lefArrow}
       />
@@ -445,9 +451,14 @@ const handleGenerate = () => {
         scrollEnabled
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
+        nestedScrollEnabled
         contentContainerStyle={{paddingBottom: Scale(100)}}>
         <View style={styles.subContainer}>
-          <View style={styles.startView}>
+          <View style= {{flexDirection: 'row',  backgroundColor: 'white'}}>
+            <Image source={sameClock} resizeMode="contain" style={{width: 30, height: 30}} />
+            <Text style={{color: 'black', marginLeft: 5}}>3 Mins</Text>
+          </View>
+          {/* <View style={styles.startView}>
             <TouchableOpacity
               onPress={() => {handleHeader('3 Mins')}}
               style={{
@@ -500,7 +511,43 @@ const handleGenerate = () => {
                 5 Mins
               </Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
+
+<FlatList
+      data={OPTIONS}
+      keyExtractor={(item) => item}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.startView}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+        onPress={() => handleHeader(item)}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                // width: '45%',
+                backgroundColor: selectedOption === item ? 'pink' : 'white',
+                marginLeft: 10,
+                borderRadius: 5,
+                borderWidth: 1,
+                padding: 10,
+                justifyContent: 'center',
+              }}>
+          <Image
+                source={sameClock}
+                resizeMode="contain"
+                style={{width: 30, height: 30}}
+              />
+           <Text
+                style={{
+                  color: selectedOption === item ? 'white' : 'black',
+                  marginLeft: 5,
+                }}>
+            {item}
+          </Text>
+        </TouchableOpacity>
+      )}
+    />
 
           {/* Conditionally Render UI Based on Selection */}
           <View style={styles.renderDataView}>
@@ -880,9 +927,7 @@ const handleGenerate = () => {
                     </View>
                     <CommonQuickGuess
                       innerText={'Quick Guess'}
-                      onPress={() => {
-                        Alert.alert('Implement soon');
-                      }}
+                      onPress={() => generateThreeDigitRandomNumbers()}
                     />
                   </View>
                   <View
@@ -900,7 +945,7 @@ const handleGenerate = () => {
                       <View style={{flexDirection: 'row'}}>
                         <SingleIntegerTextInput
                           isDisabled={false}
-                          value={threeDigitA}
+                          value={threeDigitA?.toString()}
                           placeholderText={'-'}
                           onChange={onChangeThreeDigitA}
                           onBlur={undefined}
@@ -909,7 +954,7 @@ const handleGenerate = () => {
                         />
                         <SingleIntegerTextInput
                           isDisabled={false}
-                          value={threeDigitB}
+                          value={threeDigitB?.toString()}
                           placeholderText={'-'}
                           onChange={onChangeThreeDigitB}
                           onBlur={undefined}
@@ -918,7 +963,7 @@ const handleGenerate = () => {
                         />
                         <SingleIntegerTextInput
                           isDisabled={false}
-                          value={threeDigitC}
+                          value={threeDigitC?.toString()}
                           placeholderText={'-'}
                           onChange={onChangeThreeDigitC}
                           onBlur={undefined}
@@ -933,23 +978,23 @@ const handleGenerate = () => {
                         style={{
                           flexDirection: 'row',
                           marginVertical: Scale(20),
-                          justifyContent: 'space-around',
+                          justifyContent: 'space-between',
                           flex:1
                         }}>
                           <View
                         style={{
                           flexDirection: 'row',
-                          marginHorizontal: Scale(10),
-                          justifyContent: 'space-evenly',
-                          flex:1.2
+                          justifyContent: 'space-between',
+                          flex:1
                         }}>
                           {threeDigitA !== "" && threeDigitB !== "" && threeDigitC !== "" && (
                      <CountButtons
                      count={threeDigitCount}
                      setCount={value => dispatch(setThreeDigitCount(value))}
                      onHide={() => {
-                       dispatch(setDoubleDigitB2(""));
-                       dispatch(setDoubleDigitC2(""));
+                       dispatch(setThreeDigitA(""));
+                       dispatch(setThreeDigitB(""));
+                       dispatch(setThreeDigitC(""));
                      }}
                      minValue={1}
                      maxValue={10}
@@ -960,7 +1005,7 @@ const handleGenerate = () => {
                         style={{
                           flexDirection: 'row',
                           justifyContent: 'space-evenly',
-                          flex:0.9
+                          flex:0.7
                         }}>
                         <CommonAddButton
                           innerText={'Box'}
@@ -1039,76 +1084,84 @@ const handleGenerate = () => {
             </TouchableOpacity>
           </View>
           {/* inside */}
-
-          <View style={{marginHorizontal: Scale(10), marginTop: Scale(20)}}>
-            <View
-              style={{flexDirection: 'row', flexWrap: 'wrap', gap: Scale(10)}}>
-              {numbers.map(item => (
-                <View
-                  key={item.id}
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    backgroundColor: '#F1F1F3',
-                    borderRadius: Scale(20),
-                    paddingHorizontal: Scale(15),
-                    paddingVertical: Scale(8),
-                    position: 'relative',
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: Scale(14),
-                      fontWeight: 'bold',
-                      color: '#000',
-                    }}>
-                    {item.label} = {item.value}
+              {islast30sec ? (
+                <View>
+                  <Text>
+                    Empty 
                   </Text>
-
-                  <View
-                    style={{
-                      backgroundColor: '#F27842',
-                      borderRadius: Scale(5),
-                      paddingHorizontal: Scale(5),
-                      marginLeft: Scale(5),
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: Scale(12),
-                        fontWeight: 'bold',
-                        color: 'white',
-                      }}>
-                      x{item.count}
-                    </Text>
-                  </View>
-
-                  {/* Remove Button */}
-                  <TouchableOpacity
-                    onPress={() => removeNumber(item.id)}
-                    style={{
-                      position: 'absolute',
-                      top: Scale(-5),
-                      right: Scale(-5),
-                      backgroundColor: 'white',
-                      width: Scale(18),
-                      height: Scale(18),
-                      borderRadius: Scale(9),
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      shadowColor: '#000',
-                      shadowOpacity: 0.2,
-                      shadowRadius: 3,
-                      elevation: 3, // Android shadow
-                    }}>
-                    <Image
-                      source={cancel}
-                      style={{width: Scale(10), height: Scale(10)}}
-                      tintColor={'black'}
-                    />
-                  </TouchableOpacity>
                 </View>
-              ))}
-            </View>
-          </View>
+              ): (
+                <View style={{marginHorizontal: Scale(10), marginTop: Scale(20)}}>
+                <View
+                  style={{flexDirection: 'row', flexWrap: 'wrap', gap: Scale(10)}}>
+                  {numbers.map(item => (
+                    <View
+                      key={item.id}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        backgroundColor: '#F1F1F3',
+                        borderRadius: Scale(20),
+                        paddingHorizontal: Scale(15),
+                        paddingVertical: Scale(8),
+                        position: 'relative',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: Scale(14),
+                          fontWeight: 'bold',
+                          color: '#000',
+                        }}>
+                        {item.label} = {item.value}
+                      </Text>
+    
+                      <View
+                        style={{
+                          backgroundColor: '#F27842',
+                          borderRadius: Scale(5),
+                          paddingHorizontal: Scale(5),
+                          marginLeft: Scale(5),
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: Scale(12),
+                            fontWeight: 'bold',
+                            color: 'white',
+                          }}>
+                          x{item.count}
+                        </Text>
+                      </View>
+    
+                      {/* Remove Button */}
+                      <TouchableOpacity
+                        onPress={() => removeNumber(item.id)}
+                        style={{
+                          position: 'absolute',
+                          top: Scale(-5),
+                          right: Scale(-5),
+                          backgroundColor: 'white',
+                          width: Scale(18),
+                          height: Scale(18),
+                          borderRadius: Scale(9),
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          shadowColor: '#000',
+                          shadowOpacity: 0.2,
+                          shadowRadius: 3,
+                          elevation: 3, // Android shadow
+                        }}>
+                        <Image
+                          source={cancel}
+                          style={{width: Scale(10), height: Scale(10)}}
+                          tintColor={'black'}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </View>
+              </View>
+              )}
+        
         </View>
       </RBSheet>
       <SafeAreaView
@@ -1118,7 +1171,7 @@ const handleGenerate = () => {
           openSheet={() => refRBSheet.current.open()} 
           totalAmount={sum}
           totalCount={sum1}
-          isDisabled={sum1 === 0 }
+          isDisabled={sum1 === 0 || islast30sec}
           />
         </View>
       </SafeAreaView>
@@ -1156,10 +1209,12 @@ const styles = StyleSheet.create({
     marginTop: Scale(10),
   },
   startView: {
-    flexDirection: 'row',
-    borderRadius: 10,
-    width: '100%',
+    // flexDirection: 'row',
+    // borderRadius: 10,
+    // width: '100%',
     marginHorizontal: 10,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   renderDataView: {
     padding: 10,

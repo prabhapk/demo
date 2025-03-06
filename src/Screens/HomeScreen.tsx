@@ -75,7 +75,7 @@ const Dice = [
 
 const Color = [{win_price: '10 K', image: colourPrediction}];
 const now = new Date();
-const targetDate = new Date(now.getTime() + 3 * 60 * 1000).toISOString();
+const targetDate = new Date(now.getTime() + 0.70 * 60 * 1000).toISOString();
 const ThreeDigits = [
   {
     win_price: '10,000',
@@ -222,10 +222,13 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
   const renderGameItem = (title: any, item: any) => {
     switch (title) {
       case 'Dice':
-        return <CommonDice data={item} />;
+        return <CommonDice data={item} 
+        onPressDice={()=> Alert.alert('will implement soon')}
+        />;
 
       case 'Color':
         return (
+      
           <ImageBackground
             source={item.image}
             resizeMode="cover"
@@ -237,6 +240,17 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
               flexDirection: 'row',
               height: 180,
             }}>
+                  <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    borderRadius: 10,
+                    overflow: 'hidden',
+                    flexDirection: 'row',
+                    height: 180,
+                  }}
+          onPress={()=> Alert.alert('will implement soon')}
+          > 
             <View style={{flex: 0.6, flexWrap: 'wrap'}}></View>
             <View style={{flex: 1, flexWrap: 'wrap'}}>
               <Text
@@ -279,11 +293,15 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                 </View>
               </TouchableOpacity>
             </View>
+            </TouchableOpacity>
           </ImageBackground>
+          
         );
 
       case '3Digits':
-        return <CommonDigits data={item} />;
+        return <CommonDigits data={item} 
+        onPress3Digits={ ()=> navigation.navigate('ThreeDigitMain')}
+        />;
 
       default:
         return null;
@@ -367,8 +385,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
           ref={verticalListRef}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('ThreeDigitMain')}
+            <View
               style={styles.section}>
               <Text
                 style={[
@@ -388,7 +405,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
                   renderGameItem(item.title, subItem)
                 }
               />
-            </TouchableOpacity>
+            </View>
           )}
         />
       </ScrollView>
