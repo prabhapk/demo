@@ -4,6 +4,7 @@ import { CommonSliceState } from './types'
 
 const initialValues: CommonSliceState = {
   howToPlayVisible: false,
+  show30SecondsLeftAlert: false,
 }
 
 export const CommonSlice = createSlice({
@@ -16,10 +17,13 @@ export const CommonSlice = createSlice({
     hideHowToPlay: state => {
       state.howToPlayVisible = false;
     },
+    handleShowAlert:state=>{
+      state.show30SecondsLeftAlert = !state.show30SecondsLeftAlert;
+    }
    
   },
 })
 
-export const { showHowToPlay, hideHowToPlay } = CommonSlice.actions
+export const { showHowToPlay, hideHowToPlay, handleShowAlert } = CommonSlice.actions
 
 export default CommonSlice.reducer

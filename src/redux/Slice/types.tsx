@@ -1,5 +1,6 @@
 export interface CommonSliceState {
     howToPlayVisible: boolean;
+    show30SecondsLeftAlert:boolean
   }
 
   export interface threeDigitState {

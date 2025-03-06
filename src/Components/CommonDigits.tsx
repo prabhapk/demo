@@ -20,7 +20,7 @@ const CommonDigits: React.FC<Props> = ({data}) => {
           <Text style={styles.digitTitle}>{'Time for Next booking'}</Text>
           <CountdownTimer
             targetDate={data.ends_On}
-            onComplete={() => console.log('Countdown Completed!')}
+            onComplete={() => {}}
           />
         </View>
       </View>

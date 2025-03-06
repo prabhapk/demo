@@ -12,6 +12,7 @@ import {
   Platform,
   GestureResponderEvent,
   TextInput,
+  Modal,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {cancel, clock1, lefArrow, sameClock} from '../../assets/assets';
@@ -47,8 +48,14 @@ import {
   setDoubleABCount,
   setDoubleACCount,
   setDoubleBCCount,
+  setThreeDigitA,
+  setThreeDigitB,
+  setThreeDigitC,
+  setThreeDigitCount,
 } from '../Redux/Slice/threeDigitSlice';
+import { handleShowAlert } from '../Redux/Slice/commonSlice';
 import CountButtons from '../Components/CountButtons';
+import Show30SecondsModal from '../Components/Show30SecondsModal';
 
 const ThreeDigitMain = () => {
   const {
@@ -75,40 +82,84 @@ const ThreeDigitMain = () => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState('3 Mins');
   const now = new Date();
-  const targetDate = new Date(now.getTime() + 3 * 60 * 1000).toISOString();
+  const [targetDate, setTargetDate] = useState(
+    new Date(new Date().getTime() + 3 * 60 * 1000).toISOString()
+  );
   const [valueOne, setValueOne] = useState(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [islast30sec, setLast30sec] = useState(false);
   const singleDigitPrice = 11.00;
   const doubleDigitPrice = 11.00;
   const threeDigitPrice = 21.00;
+
+  const handleThirtySecondsLeft = () => {
+    setLast30sec(true);
+    dispatch(handleShowAlert());
+    setTimeout(() => {
+      dispatch(handleShowAlert());
+    }, 2000);
+  };
+  
+
+  const handleTimerComplete = () => {
+    console.log("Timer Complete, Restarting...");
+    setTargetDate(new Date(new Date().getTime() + 3 * 60 * 1000).toISOString());
+
+    setLast30sec(false);
+  };
+
+  const filterNumericInput = (value: string) => {
+    return value.replace(/[^0-9]/g, ""); 
+  };
   const onChangeSingleDigitA = (value: any) => {
-    dispatch(setSingleDigitA(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setSingleDigitA(filteredValue));
   };
   const onChangeSingleDigitB = (value: any) => {
-    dispatch(setSingleDigitB(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setSingleDigitB(filteredValue));
   };
   const onChangeSingleDigitC = (value: any) => {
-    dispatch(setSingleDigitC(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setSingleDigitC(filteredValue));
   };
   const doubleDigitA1OnChange = (value: any) => {
-    dispatch(setDoubleDigitA1(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setDoubleDigitA1(filteredValue));
   };
   const doubleDigitA2OnChange = (value: any) => {
-    dispatch(setDoubleDigitA2(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setDoubleDigitA2(filteredValue));
   };
   const doubleDigitB1OnChange = (value: any) => {
-    dispatch(setDoubleDigitB1(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setDoubleDigitB1(filteredValue));
   };
   const doubleDigitB2OnChange = (value: any) => {
-    dispatch(setDoubleDigitB2(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setDoubleDigitB2(filteredValue));
   };
   const doubleDigitC1OnChange = (value: any) => {
-    dispatch(setDoubleDigitC1(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setDoubleDigitC1(filteredValue));
   };
   const doubleDigitC2OnChange = (value: any) => {
-    dispatch(setDoubleDigitC2(value));
+    const filteredValue = filterNumericInput(value);
+    dispatch(setDoubleDigitC2(filteredValue));
   };
+  const onChangeThreeDigitA = (value: any) => {
+    const filteredValue = filterNumericInput(value);
+    dispatch(setThreeDigitA(filteredValue)); 
+  }
+  const onChangeThreeDigitB = (value: any) => {
+    const filteredValue = filterNumericInput(value);
+    dispatch(setThreeDigitB(filteredValue));
+  }
+  const onChangeThreeDigitC = (value: any) => {
+    const filteredValue = filterNumericInput(value);
+    dispatch(setThreeDigitC(filteredValue));
+  }
   const onBlurOne = () => {
     setIsOnFocus(false);
   };
@@ -214,6 +265,11 @@ const ThreeDigitMain = () => {
     else if (label === 'BC') {
       doubleDigitB2OnChange(''), dispatch(setDoubleBCCount(3));
       doubleDigitC2OnChange('')
+    }
+    else if (label === 'ABC') {
+      onChangeThreeDigitA(''), dispatch(setThreeDigitCount(3));
+      onChangeThreeDigitB(''),  onChangeThreeDigitC('')
+      Alert.alert('Implement soon');
     }
   };
 
@@ -497,9 +553,10 @@ const handleGenerate = () => {
                         Time Remaining
                       </Text>
                       <CountdownTimer
-                        targetDate={targetDate}
-                        onComplete={() => {}}
-                      />
+        targetDate={targetDate}
+        onComplete={handleTimerComplete}
+        onThirtySecondsLeft={handleThirtySecondsLeft} // Pass function to child
+      />
                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>
                         123000112
                       </Text>
@@ -543,7 +600,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={onChangeSingleDigitA}
                         onBlur={onBlurOne}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                     </View>
@@ -582,7 +639,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={onChangeSingleDigitB}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                     </View>
@@ -621,7 +678,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={onChangeSingleDigitC}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                     </View>
@@ -681,7 +738,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={doubleDigitA1OnChange}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                       <SingleIntegerTextInput
@@ -690,7 +747,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={doubleDigitB1OnChange}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                     </View>
@@ -727,7 +784,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={doubleDigitA2OnChange}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                       <SingleIntegerTextInput
@@ -736,7 +793,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={doubleDigitC1OnChange}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                     </View>
@@ -773,7 +830,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={doubleDigitB2OnChange}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                       <SingleIntegerTextInput
@@ -782,7 +839,7 @@ const handleGenerate = () => {
                         placeholderText={'-'}
                         onChange={doubleDigitC2OnChange}
                         onBlur={undefined}
-                        keyboardType={undefined}
+                        keyboardType={"numeric"}
                         maxChar={1}
                       />
                     </View>
@@ -839,43 +896,71 @@ const handleGenerate = () => {
                       <CommonBall backgroundColor="#cc3939" innerText="A" />
                       <CommonBall backgroundColor="orange" innerText="B" />
                       <CommonBall backgroundColor="blue" innerText="C" />
-                    </View>
-                    <View>
+                      </View>
                       <View style={{flexDirection: 'row'}}>
                         <SingleIntegerTextInput
                           isDisabled={false}
-                          value={valueOne}
+                          value={threeDigitA}
                           placeholderText={'-'}
-                          onChange={onChangeSingleDigitA}
+                          onChange={onChangeThreeDigitA}
                           onBlur={undefined}
-                          keyboardType={undefined}
+                          keyboardType={"numeric"}
                           maxChar={1}
                         />
                         <SingleIntegerTextInput
                           isDisabled={false}
-                          value={valueOne}
+                          value={threeDigitB}
                           placeholderText={'-'}
-                          onChange={onChangeSingleDigitA}
+                          onChange={onChangeThreeDigitB}
                           onBlur={undefined}
-                          keyboardType={undefined}
+                          keyboardType={"numeric"}
                           maxChar={1}
                         />
                         <SingleIntegerTextInput
                           isDisabled={false}
-                          value={valueOne}
+                          value={threeDigitC}
                           placeholderText={'-'}
-                          onChange={onChangeSingleDigitA}
+                          onChange={onChangeThreeDigitC}
                           onBlur={undefined}
-                          keyboardType={undefined}
+                          keyboardType={"numeric"}
                           maxChar={1}
                         />
                       </View>
-                
-                      <View
+
+                  </View>
+
+                  <View
                         style={{
                           flexDirection: 'row',
                           marginVertical: Scale(20),
                           justifyContent: 'space-around',
+                          flex:1
+                        }}>
+                          <View
+                        style={{
+                          flexDirection: 'row',
+                          marginHorizontal: Scale(10),
+                          justifyContent: 'space-evenly',
+                          flex:1.2
+                        }}>
+                          {threeDigitA !== "" && threeDigitB !== "" && threeDigitC !== "" && (
+                     <CountButtons
+                     count={threeDigitCount}
+                     setCount={value => dispatch(setThreeDigitCount(value))}
+                     onHide={() => {
+                       dispatch(setDoubleDigitB2(""));
+                       dispatch(setDoubleDigitC2(""));
+                     }}
+                     minValue={1}
+                     maxValue={10}
+                   />
+                    )}
+                   </View>
+                          <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-evenly',
+                          flex:0.9
                         }}>
                         <CommonAddButton
                           innerText={'Box'}
@@ -886,8 +971,7 @@ const handleGenerate = () => {
                       onPress={() => handleAdd('ABC', threeDigitA.toString() + threeDigitB.toString() + threeDigitC.toString(), threeDigitCount, selectedOption, threeDigitPrice)}
                     />
                       </View>
-                    </View>
-                  </View>
+                      </View>
                 </View>
                 <View>
                   <ResultTable tableData={tableData} />
@@ -901,6 +985,8 @@ const handleGenerate = () => {
           </View>
           <View>
             <HowToPlayModal />
+            <Show30SecondsModal />
+           
           </View>
         </View>
       </ScrollView>
@@ -1027,11 +1113,12 @@ const handleGenerate = () => {
       </RBSheet>
       <SafeAreaView
         style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
-        <View style={{backgroundColor: 'white', height: Scale(110)}}>
+        <View style={{backgroundColor: 'white', height: Scale(80), elevation:10}}>
           <GameFooter 
           openSheet={() => refRBSheet.current.open()} 
           totalAmount={sum}
           totalCount={sum1}
+          isDisabled={sum1 === 0 }
           />
         </View>
       </SafeAreaView>
@@ -1132,5 +1219,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
   },
+
 });
 export default ThreeDigitMain;

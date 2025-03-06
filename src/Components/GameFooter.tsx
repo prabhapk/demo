@@ -9,12 +9,13 @@ interface Props {
     openSheet: (event: GestureResponderEvent) => void;
     totalAmount : number;
     totalCount: number;
+    isDisabled: boolean;
   }
 
-const GameFooter: React.FC<Props> = ({ openSheet, totalAmount, totalCount}) =>{
+const GameFooter: React.FC<Props> = ({ openSheet, totalAmount, totalCount, isDisabled}) =>{
   return (
-    <View style={{flex: 1,marginVertical: Scale(20),flexDirection: 'row', justifyContent: 'space-between',backgroundColor: 'white', paddingVertical: Scale(20)}}>
-     <TouchableOpacity onPress={openSheet}
+    <View style={{flex: 1,marginVertical: Scale(5),flexDirection: 'row', justifyContent: 'space-between',backgroundColor: 'white', paddingVertical: Scale(20)}}>
+     <TouchableOpacity onPress={openSheet} 
     style ={{flexDirection: 'row', marginHorizontal: Scale(10),}}>
       <Image source={FooterWallet} style={{width: 30, height: 30, resizeMode: 'contain'}}/>
       <View style ={{marginHorizontal: Scale(10)}}>
@@ -31,9 +32,10 @@ const GameFooter: React.FC<Props> = ({ openSheet, totalAmount, totalCount}) =>{
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: Scale(20),
-      backgroundColor: '#5c4280',
-      borderColor: '#5c4280',
+      backgroundColor:isDisabled?"#e9c9f0": '#a24eb5',
+      borderColor: isDisabled?"#e9c9f0": '#a24eb5',
     }}
+    disabled={isDisabled}
     >
       <Text
       style ={{

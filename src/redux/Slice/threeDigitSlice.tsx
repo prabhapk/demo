@@ -20,9 +20,9 @@ const initialvalues: threeDigitState = {
   doubleABCount: 3,
   doubleACCount: 3,
   doubleBCCount: 3,
-  threeDigitA: 1,
-  threeDigitB: 2,
-  threeDigitC: 3,
+  threeDigitA: "",
+  threeDigitB: "",
+  threeDigitC: "",
   threeDigitCount: 3,
 }
 export const threeDigitSlice = createSlice({
