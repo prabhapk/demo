@@ -53,6 +53,7 @@ import {handleShowAlert} from '../Redux/Slice/commonSlice';
 import CountButtons from '../Components/CountButtons';
 import Show30SecondsModal from '../Components/Show30SecondsModal';
 import AnimatedText from '../Components/AnimatedText';
+import { tableData } from '../Utils/Constants';
 
 const ThreeDigitMain = ({navigation}: any) => {
   const {
@@ -163,136 +164,6 @@ const ThreeDigitMain = ({navigation}: any) => {
   };
   const refRBSheet: any = useRef();
   // const navigation = useNavigation();
-  const tableData = [
-    {
-      id: 1,
-      name: '222222222',
-      time: '08:15:00 PM',
-      balls: ['4', '5', '5'],
-    },
-    {
-      id: 2,
-      name: '222222223',
-      time: '08:16:00 PM',
-      balls: ['5', '1', '0'],
-    },
-    {
-      id: 3,
-      name: '222222224',
-      time: '08:17:00 PM',
-      balls: ['5', '5', '5'],
-    },
-    {
-      id: 4,
-      name: '222222225',
-      time: '08:18:00 PM',
-      balls: ['2', '0', '1'],
-    },
-    {
-      id: 5,
-      name: '222222226',
-      time: '08:19:00 PM',
-      balls: ['5', '2', '0'],
-    },
-    {
-      id: 6,
-      name: '222222227',
-      time: '08:20:00 PM',
-      balls: ['5', '5', '0'],
-    },
-    {
-      id: 7,
-      name: '222222228',
-      time: '08:21:00 PM',
-      balls: ['5', '5', '1'],
-    },
-    {
-      id: 8,
-      name: '222222229',
-      time: '08:22:00 PM',
-      balls: ['5', '4', '5'],
-    },
-    {
-      id: 9,
-      name: '222222230',
-      time: '08:23:00 PM',
-      balls: ['1', '3', '0'],
-    },
-    {
-      id: 10,
-      name: '222222231',
-      time: '08:24:00 PM',
-      balls: ['1', '2', '3'],
-    },
-    {
-      id: 11,
-      name: '222222222',
-      time: '08:15:00 PM',
-      balls: ['1', '1', '1'],
-    },
-    {
-      id: 12,
-      name: '222222223',
-      time: '08:16:00 PM',
-      balls: ['5', '1', '0'],
-    },
-    {
-      id: 13,
-      name: '222222224',
-      time: '08:17:00 PM',
-      balls: ['5', '5', '5'],
-    },
-    {
-      id: 14,
-      name: '222222225',
-      time: '08:18:00 PM',
-      balls: ['2', '0', '1'],
-    },
-    {
-      id: 15,
-      name: '222222226',
-      time: '08:19:00 PM',
-      balls: ['5', '2', '0'],
-    },
-    {
-      id: 16,
-      name: '222222227',
-      time: '08:20:00 PM',
-      balls: ['5', '5', '0'],
-    },
-    {
-      id: 17,
-      name: '222222228',
-      time: '08:21:00 PM',
-      balls: ['5', '5', '1'],
-    },
-    {
-      id: 18,
-      name: '222222229',
-      time: '08:22:00 PM',
-      balls: ['5', '4', '5'],
-    },
-    {
-      id: 19,
-      name: '222222230',
-      time: '08:23:00 PM',
-      balls: ['1', '3', '0'],
-    },
-    {
-      id: 20,
-      name: '222222231',
-      time: '08:24:00 PM',
-      balls: ['1', '2', '3'],
-    },
-    {
-      id: 21,
-      name: '222222231',
-      time: '08:24:00 PM',
-      balls: ['1', '1', '8'],
-    },
-    
-  ];
-
   const goBack = () => {
     navigation.navigate('BottomNavigation');
   };
@@ -400,7 +271,6 @@ const ThreeDigitMain = ({navigation}: any) => {
     dispatch(setThreeDigitC(getRandomNumber()));
   };
 
-  // Debugging: Log `numbers` after state update
   useEffect(() => {
     console.log('Updated Numbers:', numbers);
   }, [numbers]);
@@ -421,24 +291,6 @@ const ThreeDigitMain = ({navigation}: any) => {
   console.log('sum==>', sum);
   console.log('sum1==>', sum1);
 
-  // const generateUniquePermutations = (values: string[]) => {
-  //   const results: Set<string> = new Set();
-
-  //   const permute = (arr: string[], m: string[] = []) => {
-  //     if (arr.length === 0) {
-  //       results.add(m.join('')); // Store only unique values
-  //     } else {
-  //       for (let i = 0; i < arr.length; i++) {
-  //         const current = [...arr];
-  //         const next = current.splice(i, 1);
-  //         permute(current, [...m, ...next]);
-  //       }
-  //     }
-  //   };
-
-  //   permute(values);
-  //   return Array.from(results).map(value => ({ label: 'ABC', value, count:threeDigitCount, type:selectedOption })); // Format output
-  // };
   const handleAddPermutations = (
     label: string,
     values: string[],
@@ -505,9 +357,7 @@ const ThreeDigitMain = ({navigation}: any) => {
   // Handle button press
   const handleGenerate = () => {
     if (threeDigitA !== '' && threeDigitB !== '' && threeDigitC !== '') {
-      const values = [threeDigitA, threeDigitB, threeDigitC]; // Take values only
-      // setPermutations(generateUniquePermutations(values));
-      // setPermutations(generatePermutations(values));
+      const values = [threeDigitA, threeDigitB, threeDigitC];
       console.log(
         'generatePermutationsValues==>',
         handleAddPermutations(
@@ -708,12 +558,6 @@ const ThreeDigitMain = ({navigation}: any) => {
                         maxValue={10}
                       />
                     )}
-                    {/* <CommonAddButton
-                      innerText={'add'}
-                      onPress={() => {
-                        handleAdd('A', singleDigitA);
-                      }}
-                    /> */}
                     <CommonAddButton
                       innerText="ADD"
                       opacity={singleDigitA !== ''  ? 1 : 0.5}
@@ -760,12 +604,6 @@ const ThreeDigitMain = ({navigation}: any) => {
                         maxValue={10}
                       />
                     )}
-                    {/* <CommonAddButton
-                      innerText={'Add'}
-                      onPress={() => {
-                        handleAdd('B', valueOne);
-                      }}
-                    /> */}
                     <CommonAddButton
                      innerText="ADD"
                      opacity={singleDigitB !== ''  ? 1 : 0.5}
