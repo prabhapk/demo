@@ -14,7 +14,7 @@ const CommonQuickGuess: React.FC<Props> = ({innerText, onPress }) => {
        <TouchableOpacity
                       onPress={onPress}
                       style={{
-                        backgroundColor: '#f7f3f2',
+                        backgroundColor: '#F7F8FC',
                         borderRadius: 5,
                         paddingVertical: Scale(10),
                         paddingHorizontal: Scale(20),
@@ -28,6 +28,7 @@ const CommonQuickGuess: React.FC<Props> = ({innerText, onPress }) => {
                           color: 'black',
                           fontWeight: 'bold',
                           textAlign: 'center',
+                          fontSize: Scale(16),
                         }}>
                        {innerText}
                       </Text>

@@ -80,8 +80,8 @@ import {
       marginHorizontal: Scale(5),
     },
     textInput: {
-      fontSize: Scale(14),
-      fontWeight: '500',
+      fontSize: Scale(16),
+      fontWeight: 'bold',
       color: 'black',
       fontFamily: 'Inter',
       height: Scale(40),

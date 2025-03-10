@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
   },
   timerBlock: {
     backgroundColor: "#000",
-    paddingVertical: 5,
-    paddingHorizontal: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",

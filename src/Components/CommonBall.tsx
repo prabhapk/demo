@@ -9,19 +9,22 @@ import Scale from './Scale';
 interface Props {
   backgroundColor: string;
   innerText: string;
+  borderColor: string;
 }
 
-const CommonBall: React.FC<Props> = ({ backgroundColor, innerText}) => {
+const CommonBall: React.FC<Props> = ({ backgroundColor, innerText, borderColor}) => {
 
   return (
     <View
                     style={{
                       backgroundColor: backgroundColor,
-                      width: Scale(40),
-                      height: Scale(40),
-                      borderRadius: Scale(20),
+                      width: Scale(35),
+                      height: Scale(35),
+                      borderRadius: Scale(17.5),
                       marginHorizontal: Scale(5),
                       marginTop: Scale(5),
+                      borderColor:borderColor,
+                      borderWidth: Scale(0.5)
                     }}>
                     <Text
                       style={styles.innerTextStyle}>
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
     fontSize: Scale(16),
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: Scale(7),
+    marginTop: Scale(5),
   }
 });
 
