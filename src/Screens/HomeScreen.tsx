@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -25,122 +25,167 @@ import {
   gifPromotion,
   gifRefer,
   lottery,
+  LucwinImage,
   promotion,
+  Quick3DImage,
   refer,
+  DearLotteryImage,
+  KeralaLotteryImage,
+  KubberLotteryImage
+
 } from '../../assets/assets';
 import CustomHeader from '../Components/CustomHeader';
 import CommonDice from '../Components/CommonDice';
 import CommonDigits from '../Components/CommonDigits';
 import CommonBanner from '../Components/CommonBanner';
 import FastImage from 'react-native-fast-image';
-const data = [
-  {
-    id: '1',
-    title: 'Header 1',
-    content: ['Item 1'],
-  },
-  {
-    id: '2',
-    title: 'Header 2',
-    content: ['Item 7', 'Item 8', 'Item 9', 'Item 10', 'Item 11', 'Item 12'],
-  },
-  {
-    id: '3',
-    title: 'Header 3',
-    content: ['Item 13', 'Item 14', 'Item 15', 'Item 16', 'Item 17', 'Item 18'],
-  },
-];
 
-const gamesArray = [
-  {
-    id: '1',
-    title: 'Dice',
-    name: 'Dice Game',
-  },
-  {
-    id: '2',
-    title: 'Color',
-    name: 'Color Prediction',
-  },
-  {
-    id: '3',
-    title: '3Digits',
-    name: '3 Digit Game',
-  },
-];
-const Dice = [
-  {time: '1 Minutes', image: dice1},
-  {time: '3 Minutes', image: dice3},
-];
-
-const Color = [{win_price: '10 K', image: colourPrediction}];
-const now = new Date();
-const targetDate = new Date(now.getTime() + 0.70 * 60 * 1000).toISOString();
-const ThreeDigits = [
-  {
-    win_price: '10,000',
-    price: '11.00',
-    title: 'Quick 3D 3min',
-    ends_On: targetDate,
-  },
-  {
-    win_price: '30,000',
-    price: '11.00',
-    title: 'Bhutan Jackpot',
-    ends_On: targetDate,
-  },
-  {win_price: '25,000', price: '11.00', title: 'Skywin', ends_On: targetDate},
-  {
-    win_price: '30,000',
-    price: '11.00',
-    title: 'Chennai lottery',
-    ends_On: targetDate,
-  },
-  {
-    win_price: '10,000',
-    price: '11.00',
-    title: 'Quick 3D 5min',
-    ends_On: targetDate,
-  },
-  {win_price: '15,000', price: '11.00', title: 'Lucwin', ends_On: targetDate},
-  {
-    win_price: '50,000',
-    price: '11.00',
-    title: 'Kubeer lottery',
-    ends_On: targetDate,
-  },
-  {
-    win_price: '15,000',
-    price: '11.00',
-    title: 'Dear lottery',
-    ends_On: targetDate,
-  },
-  {
-    win_price: '15,000',
-    price: '11.00',
-    title: 'Kerala lottery',
-    ends_On: targetDate,
-  },
-];
-const banners = [
-  {id: 1, name: banner1},
-  {id: 2, name: banner2},
-  {id: 3, name: banner3},
-  {id: 4, name: banner4},
-];
-
-const referalArray = [
-  {id: '1', name: 'Agent'},
-  {id: '2', name: 'Refer Friend'},
-  {id: '3', name: 'Free Lottery'},
-  {id: '4', name: 'Promotions'},
-];
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
+  const data = [
+    {
+      id: '1',
+      title: 'Header 1',
+      content: ['Item 1'],
+    },
+    {
+      id: '2',
+      title: 'Header 2',
+      content: ['Item 7', 'Item 8', 'Item 9', 'Item 10', 'Item 11', 'Item 12'],
+    },
+    {
+      id: '3',
+      title: 'Header 3',
+      content: ['Item 13', 'Item 14', 'Item 15', 'Item 16', 'Item 17', 'Item 18'],
+    },
+  ];
+
   const [activeHeader, setActiveHeader] = useState(data[0].id);
   const verticalListRef = useRef<FlatList>(null);
   const horizontalListRef = useRef<FlatList>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  const getNextInterval = () => {
+    const now = new Date();
+    const minutes = now.getMinutes();
+    const remainder = minutes % 30;
+    const nextMinutes = remainder === 0 ? minutes + 30 : minutes - remainder + 30;
+    
+    now.setMinutes(nextMinutes);
+    now.setSeconds(0);
+    
+    return now.toISOString();
+  };
+  
+
+  
+  const gamesArray = [
+    {
+      id: '1',
+      title: 'Dice',
+      name: 'Dice Game',
+    },
+    {
+      id: '2',
+      title: 'Color',
+      name: 'Color Prediction',
+    },
+    {
+      id: '3',
+      title: '3Digits',
+      name: '3 Digit Game',
+    },
+  ];
+  const Dice = [
+    {time: '1 Minutes', image: dice1},
+    {time: '3 Minutes', image: dice3},
+  ];
+  
+  const Color = [{win_price: '10 K', image: colourPrediction}];
+  const now = new Date();
+  const targetDate = new Date(now.getTime() + 0.70 * 60 * 1000).toISOString();
+  const [bhutanEndsOn, setBhutanEndsOn] = useState(getNextInterval());
+  
+  
+  const ThreeDigits = [
+    {
+      win_price: '10,000',
+      price: '11.00',
+      title: 'Quick 3D 3min',
+      ends_On: new Date(now.getTime() + 3 * 60 * 1000).toISOString(),
+      bgImage:Quick3DImage
+    },
+    {
+      win_price: '30,000',
+      price: '11.00',
+      title: 'Bhutan Jackpot',
+      ends_On: bhutanEndsOn,
+      bgImage:Quick3DImage
+    },
+    {win_price: '25,000', price: '11.00', title: 'Skywin', ends_On: targetDate,  bgImage:Quick3DImage},
+    {
+      win_price: '30,000',
+      price: '11.00',
+      title: 'Chennai lottery',
+      ends_On: targetDate,
+      bgImage:Quick3DImage
+    },
+    {
+      win_price: '10,000',
+      price: '11.00',
+      title: 'Quick 3D 5min',
+      ends_On: targetDate,
+      bgImage:Quick3DImage
+    },
+    {win_price: '15,000', price: '11.00', title: 'Lucwin', ends_On: targetDate,  bgImage:LucwinImage},
+    {
+      win_price: '50,000',
+      price: '11.00',
+      title: 'Kubeer lottery',
+      ends_On: targetDate,
+      bgImage:KubberLotteryImage
+    },
+    {
+      win_price: '15,000',
+      price: '11.00',
+      title: 'Dear lottery',
+      ends_On: targetDate,
+      bgImage:DearLotteryImage
+    },
+    {
+      win_price: '15,000',
+      price: '11.00',
+      title: 'Kerala lottery',
+      ends_On: targetDate,
+      bgImage:KeralaLotteryImage
+    },
+  ];
+  const banners = [
+    {id: 1, name: banner1},
+    {id: 2, name: banner2},
+    {id: 3, name: banner3},
+    {id: 4, name: banner4},
+  ];
+  
+  const referalArray = [
+    {id: '1', name: 'Agent'},
+    {id: '2', name: 'Refer Friend'},
+    {id: '3', name: 'Free Lottery'},
+    {id: '4', name: 'Promotions'},
+  ];
+
+
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBhutanEndsOn(getNextInterval());
+      console.log('====================================');
+      console.log("checkinffff",getNextInterval());
+      console.log('====================================');
+    }, 1000 * 60); 
+  
+    return () => clearInterval(interval);
+  }, []);
 
   const handleHeaderPress = (id: string, index: number) => {
     setActiveHeader(id);
@@ -231,68 +276,21 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
       
           <ImageBackground
             source={item.image}
-            resizeMode="cover"
+            resizeMode="stretch"
             style={{
               flex: 1,
               justifyContent: 'center',
               borderRadius: 10,
               overflow: 'hidden',
               flexDirection: 'row',
-              height: 180,
+                height: 180,
+              width:"100%"
             }}>
                   <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    borderRadius: 10,
-                    overflow: 'hidden',
-                    flexDirection: 'row',
-                    height: 180,
-                  }}
+                  
           onPress={()=> Alert.alert('will implement soon')}
           > 
-            <View style={{flex: 0.6, flexWrap: 'wrap'}}></View>
-            <View style={{flex: 1, flexWrap: 'wrap'}}>
-              <Text
-                style={{
-                  marginLeft: 10,
-                  marginTop: 10,
-                  fontSize: 22,
-                  color: 'white',
-                }}>
-                {'COLOR\nPREDICTION'}
-              </Text>
-              <View style={{flexDirection: 'row', marginTop: 10, flex: 1}}>
-                {['1min', '3min', '5min', '10min', '15min'].map(
-                  (item, index) => (
-                    <Text style={{marginLeft: 5, color: 'white'}}>{item}</Text>
-                  ),
-                )}
-              </View>
-              <TouchableOpacity
-                style={{
-                  borderRadius: 8,
-                  overflow: 'hidden',
-                  elevation: 5,
-                  backgroundColor: 'transparent',
-                  marginLeft: 10,
-                  marginBottom: 10,
-                  width: '90%',
-                }}>
-                <View
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'transparent',
-                    borderRadius: 8,
-                    height: 50,
-                  }}>
-                  <Text style={{color: 'white', fontWeight: 'bold', top: 3}}>
-                    Play Now
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
+           
             </TouchableOpacity>
           </ImageBackground>
           
