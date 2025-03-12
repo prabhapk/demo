@@ -31,7 +31,9 @@ import {
   refer,
   DearLotteryImage,
   KeralaLotteryImage,
-  KubberLotteryImage
+  KubberLotteryImage,
+  ActiveTabBg,
+  ActiveTabInitialImg
 
 } from '../../assets/assets';
 import CustomHeader from '../Components/CustomHeader';
@@ -39,6 +41,7 @@ import CommonDice from '../Components/CommonDice';
 import CommonDigits from '../Components/CommonDigits';
 import CommonBanner from '../Components/CommonBanner';
 import FastImage from 'react-native-fast-image';
+import Scale from '../Components/Scale';
 
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
@@ -307,7 +310,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: '#EEF1F6'}}>
       <CustomHeader
         onMenuPress={openDrawerdd}
         onLoginPress={() => {
@@ -356,6 +359,26 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.stickyHeader}>
+          <ImageBackground
+            source={ActiveTabBg}
+            style={{
+              flex: 1,
+              // justifyContent: 'center',
+              borderRadius: 10,
+              overflow: 'hidden',
+              flexDirection: 'row',
+              // height: 180,
+              width:"100%"
+            }}>
+           <Image source={ActiveTabInitialImg}
+           style={{
+            height: 30,
+            width:30,
+            marginHorizontal: Scale(10),
+            marginTop: Scale(20),
+           }}
+           resizeMode='contain'
+           />
           <FlatList
             ref={horizontalListRef}
             data={gamesArray}
@@ -364,6 +387,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.horizontalList}
             renderItem={({item, index}) => (
+             
             <View style ={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <TouchableOpacity
                 style={[
@@ -376,6 +400,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
               </View>
             )}
           />
+          </ImageBackground>
         </View>
 
         <FlatList
@@ -424,12 +449,18 @@ const styles = StyleSheet.create({
   headerItem: {
     padding: 10,
     marginHorizontal: 5,
-    backgroundColor: '#ddd',
+    // backgroundColor: 'red',
     borderRadius: 5,
     paddingHorizontal: 20,
+    // borderWidth: 1,
+
   },
-  activeHeaderText: {backgroundColor: '#007bff'},
-  headerText: {fontSize: 16, color: '#fff'},
+  activeHeaderText: {
+    backgroundColor: '#7C00EC',
+    
+
+  },
+  headerText: {fontSize: 16, color: 'black', fontWeight: 'bold'},
   section: {padding: 15, borderBottomWidth: 1, borderBottomColor: '#ccc'},
   verticalHeader: {fontSize: 18, marginBottom: 5},
   verticalActiveHeader: {fontSize: 18, fontWeight: 'bold', marginBottom: 5},
@@ -441,9 +472,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   refImage: {width: 70, height: 80, resizeMode: 'cover'},
-  refText: {marginTop: 10},
+  refText: {color: 'black', fontWeight: 'bold', fontSize: 16, marginVertical: 5},
   refButton: {alignItems: 'center'},
-  stickyHeader: {backgroundColor: 'white', padding: 5,},
+  stickyHeader: { padding: 5,},
 });
 
 export default HomeScreen;

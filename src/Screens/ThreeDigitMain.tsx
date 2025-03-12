@@ -728,7 +728,7 @@ const ThreeDigitMain = ({navigation}: any) => {
                       />
                     </View>
                     {doubleDigitA1 !== '' && doubleDigitB1 !== '' && (
-                      <View style ={{right: 10}}> 
+                      <View style ={{right: Scale(10)}}> 
                       <CountButtons
                         count={doubleABCount}
                         setCount={value => dispatch(setDoubleABCount(value))}
@@ -793,7 +793,7 @@ const ThreeDigitMain = ({navigation}: any) => {
                       />
                     </View>
                     {doubleDigitA2 !== '' && doubleDigitC1 !== '' && (
-                       <View style ={{right: 10}}> 
+                       <View style ={{right: Scale(10)}}> 
                       <CountButtons
                         count={doubleACCount}
                         setCount={value => dispatch(setDoubleACCount(value))}
@@ -858,7 +858,7 @@ const ThreeDigitMain = ({navigation}: any) => {
                       />
                     </View>
                     {doubleDigitB2 !== '' && doubleDigitC2 !== '' && (
-                       <View style ={{right: 10}}> 
+                       <View style ={{right: Scale(10)}}> 
                       <CountButtons
                         count={doubleBCCount}
                         setCount={value => dispatch(setDoubleBCCount(value))}

@@ -27,3 +27,6 @@ export const KeralaLotteryImage = require('./3DigitHomeImage/KeralaLotteryImage.
 export const KubberLotteryImage = require('./3DigitHomeImage/KubberLotteryImage.webp');
 export const LucwinImage = require('./3DigitHomeImage/LucwinImage.webp');
 export const Quick3DImage = require('./3DigitHomeImage/Quick3DImage.webp');
+export const ActiveTabBg = require('./Home/ActiveTabBackground.webp');
+export const ActiveTabInitialImg = require('./Home/ActiveTab.webp');
+

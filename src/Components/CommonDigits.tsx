@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     resizeMode:"stretch",
     position:"absolute"
   },
-  digitTitle: {fontSize: 12, color: 'white'},
+  digitTitle: {fontSize: 8, color: 'white', fontWeight: '600',},
   win_priceText: {fontSize: 16, color: 'gold', fontWeight: 'bold'},
   priceText: {fontSize: 30, color: 'white', fontWeight: 'bold', bottom: 10},
 });
