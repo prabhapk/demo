@@ -10,6 +10,7 @@ import {
   FlatList,
   SafeAreaView,
   Platform,
+  Dimensions,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {cancel, lefArrow, sameClock} from '../../assets/assets';
@@ -81,7 +82,7 @@ const ThreeDigitMain = ({navigation}: any) => {
   const [selectedOption, setSelectedOption] = useState('3 Mins');
   const now = new Date();
   const [targetDate, setTargetDate] = useState(
-    new Date(new Date().getTime() + 10 * 60 * 1000).toISOString(),
+    new Date(new Date().getTime() + 3 * 60 * 1000).toISOString(),
   );
   const [valueOne, setValueOne] = useState(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
@@ -95,6 +96,7 @@ const ThreeDigitMain = ({navigation}: any) => {
     setLast30sec(true);
     dispatch(handleShowAlert());
     setTimeout(() => {
+      setLast30sec(false);
       dispatch(handleShowAlert());
     }, 2000);
   };
@@ -102,7 +104,7 @@ const ThreeDigitMain = ({navigation}: any) => {
   const handleTimerComplete = () => {
     console.log('Timer Complete, Restarting...');
     setTargetDate(
-      new Date(new Date().getTime() + 10 * 60 * 1000).toISOString(),
+      new Date(new Date().getTime() + 3 * 60 * 1000).toISOString(),
     );
     console.log('Target Date==>', targetDate);
     setLast30sec(false);
@@ -177,7 +179,7 @@ const ThreeDigitMain = ({navigation}: any) => {
     selectedOption: string,
     price: number,
   ) => {
-    if (value == '') {
+    if (value === '') {
       Alert.alert('Error', 'Please enter a value');
       return;
     }
@@ -380,6 +382,7 @@ const ThreeDigitMain = ({navigation}: any) => {
         leftImage={lefArrow}
         rightImage={lefArrow}
       />
+      {islast30sec && <Show30SecondsModal />}
       <ScrollView
         scrollEnabled
         showsVerticalScrollIndicator={false}
@@ -498,7 +501,7 @@ const ThreeDigitMain = ({navigation}: any) => {
                         targetDate={targetDate}
                         onComplete={handleTimerComplete}
                         onThirtySecondsLeft={handleThirtySecondsLeft} // Pass function to child
-                      />
+      />
                       <Text style={{fontSize: 14, fontWeight: 'bold'}}>
                         123000112
                       </Text>
@@ -1041,7 +1044,6 @@ const ThreeDigitMain = ({navigation}: any) => {
           </View>
           <View>
             <HowToPlayModal />
-            <Show30SecondsModal />
           </View>
         </View>
       </ScrollView>
@@ -1225,7 +1227,6 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     // width: '100%',
     marginHorizontal: 10,
-    flex: 1,
     justifyContent: 'space-between',
   },
   renderDataView: {

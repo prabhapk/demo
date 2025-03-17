@@ -29,4 +29,7 @@ export const LucwinImage = require('./3DigitHomeImage/LucwinImage.webp');
 export const Quick3DImage = require('./3DigitHomeImage/Quick3DImage.webp');
 export const ActiveTabBg = require('./Home/ActiveTabBackground.webp');
 export const ActiveTabInitialImg = require('./Home/ActiveTab.webp');
-
+export const bhutan = require('./3DigitHomeImage/bhutan.webp');
+export const chennaiLottery = require('./3DigitHomeImage/chennaiLottery.webp');
+export const quick3min = require('./3DigitHomeImage/quick3min.webp');
+export const skywin = require('./3DigitHomeImage/skywin.webp');
