@@ -5,12 +5,14 @@ import CountdownTimer from './CountdownTimer';
 interface Props {
   data: any;
   onPress3Digits: () => void;
+  disabled: boolean;
 }
 
-const CommonDigits: React.FC<Props> = ({data, onPress3Digits}) => {
+const CommonDigits: React.FC<Props> = ({data, onPress3Digits, disabled}) => {
   return (
     <TouchableOpacity
     onPress={onPress3Digits}
+    disabled={disabled}
     style={styles.container}>
       <Image source={data.bgImage} style={styles.subConatiner} />
       <View style={{margin:5}}>
