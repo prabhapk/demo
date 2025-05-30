@@ -12,6 +12,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import {
+  agent,
   banner1,
   banner2,
   banner3,
@@ -23,8 +24,11 @@ import {
   gifLottery,
   gifPromotion,
   gifRefer,
+  lottery,
   LucwinImage,
+  promotion,
   Quick3DImage,
+  refer,
   DearLotteryImage,
   KeralaLotteryImage,
   KubberLotteryImage,
@@ -297,12 +301,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
 
       case '3Digits':
         return <CommonDigits data={item} 
-        onPress3Digits={() =>
-          navigation.navigate('ThreeDigitMain', {
-            endsOn: item.ends_On,
-          })
-        }
-        disabled= {false}
+        onPress3Digits={ ()=> navigation.navigate('ThreeDigitMain')}
         />;
 
       default:

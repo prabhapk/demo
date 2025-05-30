@@ -55,7 +55,7 @@ import Show30SecondsModal from '../Components/Show30SecondsModal';
 import AnimatedText from '../Components/AnimatedText';
 import { tableData } from '../Utils/Constants';
 
-const ThreeDigitMain = ({navigation, route}: {navigation: any, route: any}) => {
+const ThreeDigitMain = ({navigation}: any) => {
   const {
     singleDigitA,
     singleDigitB,
@@ -77,14 +77,12 @@ const ThreeDigitMain = ({navigation, route}: {navigation: any, route: any}) => {
     threeDigitC,
     threeDigitCount,
   } = useSelector((state: RootState) => state.threeDigit);
-  const { endsOn } = route.params;
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState('3 Mins');
   const now = new Date();
-  // const [targetDate, setTargetDate] = useState(
-  //   new Date(new Date().getTime() + 10 * 60 * 1000).toISOString(),
-  // );
-  const [targetDate, setTargetDate] = useState(endsOn ?? new Date(new Date().getTime() + 10 * 60 * 1000).toISOString());
+  const [targetDate, setTargetDate] = useState(
+    new Date(new Date().getTime() + 10 * 60 * 1000).toISOString(),
+  );
   const [valueOne, setValueOne] = useState(null);
   const [isOnFocus, setIsOnFocus] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
