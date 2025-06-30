@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 interface CountdownTimerProps {
-  targetDate: string;
-  onComplete: () => void;
+  targetDate?: string;
+  onComplete?: () => void;
   onThirtySecondsLeft?: () => void;
 }
 
@@ -12,6 +13,8 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   onComplete,
   onThirtySecondsLeft,
 }) => {
+  const isFocused = useIsFocused(); // Hook to detect screen focus
+
   const calculateTimeLeft = () => {
     const now = new Date().getTime();
     const targetDateTime = new Date(targetDate).getTime();
@@ -29,47 +32,31 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [alertTriggered, setAlertTriggered] = useState(false);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     const newTimeLeft = calculateTimeLeft();
-  //     setTimeLeft(newTimeLeft);
-
-  //     if (!alertTriggered && newTimeLeft.minutes === 0 && newTimeLeft.seconds === 30) {
-  //       setAlertTriggered(true);
-  //       onThirtySecondsLeft?.();
-  //     }
-
-  //     if (newTimeLeft.minutes === 0 && newTimeLeft.seconds === 0) {
-  //       clearInterval(timer);
-  //       onComplete(); // Call onComplete when the timer ends
-  //     }
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, [targetDate]); // Restart effect when targetDate changes
-
   useEffect(() => {
+    if (!isFocused) return; // Do nothing if the screen is not focused
+
     const timer = setInterval(() => {
       const newTimeLeft = calculateTimeLeft();
       setTimeLeft(newTimeLeft);
-  
+
       if (!alertTriggered && newTimeLeft.minutes === 0 && newTimeLeft.seconds === 30) {
         setAlertTriggered(true);
-        onThirtySecondsLeft?.();
+        onThirtySecondsLeft?.(); // Trigger the 30-second modal
       }
-  
+
       if (newTimeLeft.minutes === 0 && newTimeLeft.seconds === 0) {
         clearInterval(timer);
-        onComplete(); // Call onComplete when the timer ends
+        onComplete?.(); // Optional complete callback
       }
     }, 1000);
-  
+
     return () => {
-      clearInterval(timer); // Clear timer on unmount
+      clearInterval(timer); // Clear timer when screen blurs or unmounts
     };
-  }, [targetDate]);
+  }, [targetDate, isFocused]);
+
   useEffect(() => {
-    setAlertTriggered(false); // Reset alert trigger when the target time updates
+    setAlertTriggered(false); // Reset the 30s modal trigger when time resets
   }, [targetDate]);
 
   const minuteString = String(timeLeft.minutes).padStart(2, "0");

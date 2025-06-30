@@ -12,11 +12,11 @@ import {
   Platform,
   Dimensions,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
-import {cancel, lefArrow, sameClock} from '../../assets/assets';
+import React, { useEffect, useRef, useState } from 'react';
+import { cancel, lefArrow, sameClock } from '../../assets/assets';
 import CountdownTimer from '../Components/CountdownTimer';
-import {useDispatch, useSelector} from 'react-redux';
-import {showHowToPlay} from '../Redux/Slice/commonSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { showHowToPlay } from '../Redux/Slice/commonSlice';
 import HowToPlayModal from '../Components/HowToPlayModal';
 import CommonBall from '../Components/CommonBall';
 import Scale from '../Components/Scale';
@@ -28,7 +28,7 @@ import ResultTable from '../Components/ResultTable';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CommonAddButton from '../Components/CommonAddButton';
 import CommonQuickGuess from '../Components/CommonQuickGuess';
-import {RootState} from '../Redux/store';
+import { RootState } from '../Redux/store';
 import {
   setDoubleDigitA1,
   setDoubleDigitA2,
@@ -50,36 +50,22 @@ import {
   setThreeDigitC,
   setThreeDigitCount,
 } from '../Redux/Slice/threeDigitSlice';
-import {handleShowAlert} from '../Redux/Slice/commonSlice';
+import { handleShowAlert } from '../Redux/Slice/commonSlice';
 import CountButtons from '../Components/CountButtons';
 import Show30SecondsModal from '../Components/Show30SecondsModal';
 import AnimatedText from '../Components/AnimatedText';
 import { tableData } from '../Utils/Constants';
+import DigitComponent from '../Components/DigitComponent';
 
-const ThreeDigitMain = ({navigation}: any) => {
+const ThreeDigitMain = ({ navigation }: any) => {
   const {
-    singleDigitA,
-    singleDigitB,
-    singleDigitC,
-    singleACount,
-    singleBCount,
-    singleCCount,
-    doubleDigitA1,
-    doubleDigitA2,
-    doubleDigitB1,
-    doubleDigitB2,
-    doubleDigitC1,
-    doubleDigitC2,
-    doubleABCount,
-    doubleACCount,
-    doubleBCCount,
     threeDigitA,
     threeDigitB,
     threeDigitC,
     threeDigitCount,
   } = useSelector((state: RootState) => state.threeDigit);
   const dispatch = useDispatch();
-  const [selectedOption, setSelectedOption] = useState('3 Mins');
+  const [selectedOption, setSelectedOption] = useState('1 Mins');
   const now = new Date();
   const [targetDate, setTargetDate] = useState(
     new Date(new Date().getTime() + 3 * 60 * 1000).toISOString(),
@@ -88,10 +74,95 @@ const ThreeDigitMain = ({navigation}: any) => {
   const [isOnFocus, setIsOnFocus] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [islast30sec, setLast30sec] = useState(false);
-  const singleDigitPrice = 11.0;
+    const [numbers, setNumbers] = useState([]);
+    const [cartValues, setCartValues] = useState([]);
+  const singleDigitPrice = 10.0;
   const doubleDigitPrice = 11.0;
   const threeDigitPrice = 21.0;
 
+  const singleDigitWinningPrice = 110.0;
+  const doubleDigitWinningPrice = 220.0;
+  const threeDigitWinningPrice = 330.0;
+
+  const handleChildStateChange = (updatedValue:any) => {
+    console.log('Received from DigitComponent:', updatedValue);
+    setCartValues(updatedValue);
+  };
+
+  const renderContent = () => {
+    switch (selectedOption) {
+      case '1 Mins':
+        return (
+        <>
+          <DigitComponent
+            lastGameWiiningId="123456788"
+            nextGameId="678976567"
+            latGameWinningA='1'
+            lastGameWinningB='2'
+            lastGameWinningC='3'
+            singleDigitPrice={singleDigitPrice}
+            singleDigitWinningPrice={singleDigitWinningPrice}
+            handleAdd={handleAdd}
+            selectedOption={selectedOption}
+            doubleDigitPrice={doubleDigitPrice}
+            doubleDigitWinningPrice={doubleDigitWinningPrice}
+            tableData={tableData}
+            handleGenerate={handleGenerate}
+            threeDigitWinningPrice={threeDigitWinningPrice}
+            threeDigitPrice={threeDigitPrice}
+           onStateChange={handleChildStateChange}
+             />
+        </>)
+      case '3 Mins':
+        return (
+        <>
+        <DigitComponent
+            lastGameWiiningId="222222222"
+            nextGameId="12312122"
+            latGameWinningA='3'
+            lastGameWinningB='2'
+            lastGameWinningC='3'
+            singleDigitPrice={singleDigitPrice}
+            singleDigitWinningPrice={singleDigitWinningPrice}
+            handleAdd={handleAdd}
+            selectedOption={selectedOption}
+            doubleDigitPrice={doubleDigitPrice}
+            doubleDigitWinningPrice={doubleDigitWinningPrice}
+            tableData={tableData}
+            handleGenerate={handleGenerate}
+            threeDigitWinningPrice={threeDigitWinningPrice}
+            threeDigitPrice={threeDigitPrice}
+            onStateChange={handleChildStateChange}
+             />
+        </>
+        )
+      case '5 Mins':
+        return (
+        <>
+         <DigitComponent
+            lastGameWiiningId="111111111"
+            nextGameId="12312122"
+            latGameWinningA='3'
+            lastGameWinningB='2'
+            lastGameWinningC='3'
+            singleDigitPrice={singleDigitPrice}
+            singleDigitWinningPrice={singleDigitWinningPrice}
+            handleAdd={handleAdd}
+            selectedOption={selectedOption}
+            doubleDigitPrice={doubleDigitPrice}
+            doubleDigitWinningPrice={doubleDigitWinningPrice}
+            tableData={tableData}
+            handleGenerate={handleGenerate}
+            threeDigitWinningPrice={threeDigitWinningPrice}
+            threeDigitPrice={threeDigitPrice}
+            onStateChange={handleChildStateChange}
+             />
+        </>
+        )
+      default:
+        return <Text style={{ color: 'red' }}>Invalid Option</Text>;
+    }
+  }
   const handleThirtySecondsLeft = () => {
     setLast30sec(true);
     dispatch(handleShowAlert());
@@ -170,7 +241,7 @@ const ThreeDigitMain = ({navigation}: any) => {
     navigation.navigate('BottomNavigation');
   };
 
-  const [numbers, setNumbers] = useState([]);
+
 
   const handleAdd = (
     label: string,
@@ -198,6 +269,10 @@ const ThreeDigitMain = ({navigation}: any) => {
     console.log('Label==>', label);
 
     // Clear input after adding data
+  clearInputs(label);
+  };
+
+  const clearInputs = (label:string) => {  
     if (label === 'A') {
       onChangeSingleDigitA(''), dispatch(setSingleACount(3));
     } else if (label === 'B') {
@@ -216,12 +291,10 @@ const ThreeDigitMain = ({navigation}: any) => {
     } else if (label === 'ABC') {
       onChangeThreeDigitA(''), dispatch(setThreeDigitCount(3));
       onChangeThreeDigitB(''), onChangeThreeDigitC('');
-      Alert.alert('Implement soon');
     }
-  };
-
-  const handleHeader = (value: string) => {
-    const isAdded = numbers.find((item: any) => item.type !== value);
+  }
+  const handleHeader = (value: any) => {
+    const isAdded = numbers.find((item: any) => item.type !== value.name);
 
     if (isAdded) {
       Alert.alert(
@@ -240,13 +313,13 @@ const ThreeDigitMain = ({navigation}: any) => {
             },
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
 
       return;
     }
 
-    setSelectedOption(value);
+    setSelectedOption(value.name);
   };
 
   const getRandomNumber = () => Math.floor(Math.random() * 10);
@@ -337,42 +410,47 @@ const ThreeDigitMain = ({navigation}: any) => {
 
     console.log('Label==>', label);
 
-    // Clear input after adding data
-    if (label === 'A') {
-      onChangeSingleDigitA(''), dispatch(setSingleACount(3));
-    } else if (label === 'B') {
-      onChangeSingleDigitB(''), dispatch(setSingleBCount(3));
-    } else if (label === 'C') {
-      onChangeSingleDigitC(''), dispatch(setSingleCCount(3));
-    } else if (label === 'AB') {
-      doubleDigitA1OnChange(''), dispatch(setDoubleABCount(3));
-      doubleDigitB1OnChange('');
-    } else if (label === 'AC') {
-      doubleDigitA2OnChange(''), dispatch(setDoubleACCount(3));
-      doubleDigitC1OnChange('');
-    } else if (label === 'BC') {
-      doubleDigitB2OnChange(''), dispatch(setDoubleBCCount(3));
-      doubleDigitC2OnChange('');
-    }
+   
   };
 
   // Handle button press
   const handleGenerate = () => {
     if (threeDigitA !== '' && threeDigitB !== '' && threeDigitC !== '') {
       const values = [threeDigitA, threeDigitB, threeDigitC];
-      console.log(
-        'generatePermutationsValues==>',
         handleAddPermutations(
           'ABC',
           values,
           threeDigitCount,
           selectedOption,
           threeDigitPrice,
-        ),
-      );
-    }
-  };
-  const OPTIONS = ['3 Mins', '5 Mins'];
+        )
+        clearInputs('ABC');
+  }
+}
+  const OPTIONS = [{ id: 1, name: '1 Mins', isSelected: true },
+  { id: 2, name: '3 Mins', isSelected: false },
+  { id: 3, name: '5 Mins', isSelected: false }];
+
+  const renderHeader = ({ item }: any) => {
+    return (
+      <TouchableOpacity
+        onPress={() => handleHeader(item)}
+        style={[styles.headerBtn, { backgroundColor: selectedOption === item.name ? 'pink' : 'white', }]}>
+        <Image
+          source={sameClock}
+          resizeMode="contain"
+          style={styles.headerImg}
+        />
+        <Text
+          style={{
+            color: selectedOption === item.name ? 'white' : 'black',
+            marginLeft: 5,
+          }}>
+          {item.name}
+        </Text>
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -388,7 +466,7 @@ const ThreeDigitMain = ({navigation}: any) => {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="always"
         nestedScrollEnabled
-        contentContainerStyle={{paddingBottom: Scale(100)}}>
+        contentContainerStyle={{ paddingBottom: Scale(100) }}>
         <AnimatedText
           runningText={
             'Tickets will not be available for 3 mins before the draw'
@@ -397,650 +475,17 @@ const ThreeDigitMain = ({navigation}: any) => {
         <View style={styles.subContainer}>
           <FlatList
             data={OPTIONS}
-            keyExtractor={item => item}
+            keyExtractor={item => item.id.toString()}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.startView}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() => handleHeader(item)}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  // width: '45%',
-                  backgroundColor: selectedOption === item ? 'pink' : 'white',
-                  marginLeft: 10,
-                  borderRadius: 5,
-                  borderWidth: 1,
-                  padding: 10,
-                  justifyContent: 'center',
-                }}>
-                <Image
-                  source={sameClock}
-                  resizeMode="contain"
-                  style={{width: 30, height: 30}}
-                />
-                <Text
-                  style={{
-                    color: selectedOption === item ? 'white' : 'black',
-                    marginLeft: 5,
-                  }}>
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            )}
+            renderItem={renderHeader}
           />
 
           {/* Conditionally Render UI Based on Selection */}
           <View style={styles.renderDataView}>
-            {selectedOption === '3 Mins' ? (
-              <View style={styles.container}>
-                <View style={styles.gameDetailView}>
-                  <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
-                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                      Quick3D
-                    </Text>
-                    <View style={{flexDirection: 'row'}}>
-                      <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                        123000111
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => dispatch(showHowToPlay())}
-                        style={{
-                          backgroundColor: '#EAE2FF',
-                          marginHorizontal: 10,
-                          borderRadius: 5,
-                          bottom: 10,
-                        }}>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            fontWeight: '400',
-                            paddingHorizontal: 5,
-                            paddingVertical: 5,
-                            color: '#000',
-                          }}>
-                          How to Play
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        backgroundColor: '#B098D8',
-                        paddingLeft: 20,
-                        paddingVertical: 5,
-                        borderRadius: 10,
-                        width: '90%',
-                        marginTop: 5,
-                        paddingRight: 30,
-                      }}>
-                      <CommonBall
-                        backgroundColor="#DE3C3F"
-                        innerText="1"
-                        borderColor={'#DE3C3F'}
-                      />
-                      <CommonBall
-                        backgroundColor="#EC8204"
-                        innerText="5"
-                        borderColor={'#EC8204'}
-                      />
-                      <CommonBall
-                        backgroundColor="#066FEA"
-                        innerText="0"
-                        borderColor={'#066FEA'}
-                      />
-                    </View>
-                  </View>
-                  <View style={{paddingHorizontal: 10, paddingVertical: 20}}>
-                    <View>
-                      <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                        Time Remaining
-                      </Text>
-                      <CountdownTimer
-                        targetDate={targetDate}
-                        onComplete={handleTimerComplete}
-                        onThirtySecondsLeft={handleThirtySecondsLeft} // Pass function to child
-      />
-                      <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                        123000112
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={styles.card}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(20),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View>
-                      <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.DigitTitleText}>Single Digit</Text>
-                        <Text style={styles.DigitTitleText1}> Win $100.00</Text>
-                      </View>
-                      <Text style={[styles.DigitTitleText,{marginVertical: Scale(5)}]}>$11.00</Text>
-                    </View>
-                    <CommonQuickGuess
-                      innerText={'Quick Guess'}
-                      onPress={() => {
-                        generateRandomNumbers();
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <CommonBall
-                        backgroundColor="#DE3C3F"
-                        innerText="A"
-                        borderColor={'#DE3C3F'}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={singleDigitA?.toString()}
-                        placeholderText={'-'}
-                        onChange={onChangeSingleDigitA}
-                        onBlur={onBlurOne}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                    </View>
-                    {singleDigitA !== '' && (
-                      <CountButtons
-                        count={singleACount}
-                        setCount={value => dispatch(setSingleACount(value))}
-                        onHide={() => dispatch(setSingleDigitA(''))}
-                        minValue={1}
-                        maxValue={10}
-                      />
-                    )}
-                    <CommonAddButton
-                      innerText="ADD"
-                      opacity={singleDigitA !== ''  ? 1 : 0.5}
-                      onPress={() =>
-                        handleAdd(
-                          'A',
-                          singleDigitA,
-                          singleACount,
-                          selectedOption,
-                          singleDigitPrice,
-                        )
-                      }
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(5),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <CommonBall
-                        backgroundColor="#EC8204"
-                        innerText="B"
-                        borderColor={'#EC8204'}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={singleDigitB?.toString()}
-                        placeholderText={'-'}
-                        onChange={onChangeSingleDigitB}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                    </View>
-                    {singleDigitB !== '' && (
-                      <CountButtons
-                        count={singleBCount}
-                        setCount={value => dispatch(setSingleBCount(value))}
-                        onHide={() => dispatch(setSingleDigitB(''))} // Hide only B
-                        minValue={1}
-                        maxValue={10}
-                      />
-                    )}
-                    <CommonAddButton
-                     innerText="ADD"
-                     opacity={singleDigitB !== ''  ? 1 : 0.5}
-                      onPress={() =>
-                        handleAdd(
-                          'B',
-                          singleDigitB,
-                          singleBCount,
-                          selectedOption,
-                          singleDigitPrice,
-                        )
-                      }
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(5),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <CommonBall
-                        backgroundColor="#066FEA"
-                        innerText="C"
-                        borderColor={'#066FEA'}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={singleDigitC?.toString()}
-                        placeholderText={'-'}
-                        onChange={onChangeSingleDigitC}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                    </View>
-                    {singleDigitC !== '' && (
-                      <CountButtons
-                        count={singleCCount}
-                        setCount={value => dispatch(setSingleCCount(value))}
-                        onHide={() => dispatch(setSingleDigitC(''))} // Hide only C
-                        minValue={1}
-                        maxValue={10}
-                      />
-                    )}
-                    <CommonAddButton
-                      innerText="ADD"
-                      opacity={singleDigitC !== ''  ? 1 : 0.5}
-                      onPress={() =>
-                        handleAdd(
-                          'C',
-                          singleDigitC,
-                          singleCCount,
-                          selectedOption,
-                          singleDigitPrice,
-                        )
-                      }
-                    />
-                  </View>
-                </View>
+            {renderContent()}
 
-                {/* Double digit start  */}
-
-                <View style={styles.card}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(20),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View>
-                      <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.DigitTitleText}>Double Digit</Text>
-                      <Text style={styles.DigitTitleText1}> Win $1,000.00</Text>
-                      </View>
-                      <Text style={[ styles.DigitTitleText,{marginVertical: Scale(5)}]}>$11.00</Text>
-                    </View>
-                    <CommonQuickGuess
-                      innerText={'Quick Guess'}
-                      onPress={() => {
-                        generateDoubleDigitRandomNumbers();
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(5),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <CommonBall
-                        backgroundColor="#DE3C3F"
-                        innerText="A"
-                        borderColor={'#DE3C3F'}
-                      />
-                      <CommonBall
-                        backgroundColor="#EC8204"
-                        innerText="B"
-                        borderColor={'#EC8204'}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={doubleDigitA1?.toString()}
-                        placeholderText={'-'}
-                        onChange={doubleDigitA1OnChange}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={doubleDigitB1?.toString()}
-                        placeholderText={'-'}
-                        onChange={doubleDigitB1OnChange}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                    </View>
-                    {doubleDigitA1 !== '' && doubleDigitB1 !== '' && (
-                      <View style ={{right: Scale(10)}}> 
-                      <CountButtons
-                        count={doubleABCount}
-                        setCount={value => dispatch(setDoubleABCount(value))}
-                        onHide={() => {
-                          dispatch(setDoubleDigitA1(''));
-                          dispatch(setDoubleDigitB1(''));
-                        }}
-                        minValue={1}
-                        maxValue={10}
-                      />
-                      </View>
-                    )}
-                    <CommonAddButton
-                      innerText="ADD"
-                      opacity={doubleDigitA1 !== '' && doubleDigitB1 !== '' ? 1 : 0.5}
-                      onPress={() =>
-                        handleAdd(
-                          'AB',
-                          doubleDigitA1.toString() + doubleDigitB1.toString(),
-                          doubleABCount,
-                          selectedOption,
-                          doubleDigitPrice,
-                        )
-                      }
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(5),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <CommonBall
-                        backgroundColor="#DE3C3F"
-                        innerText="A"
-                        borderColor={'#DE3C3F'}
-                      />
-                      <CommonBall
-                        backgroundColor="#066FEA"
-                        innerText="C"
-                        borderColor={'#066FEA'}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={doubleDigitA2?.toString()}
-                        placeholderText={'-'}
-                        onChange={doubleDigitA2OnChange}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={doubleDigitC1?.toString()}
-                        placeholderText={'-'}
-                        onChange={doubleDigitC1OnChange}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                    </View>
-                    {doubleDigitA2 !== '' && doubleDigitC1 !== '' && (
-                       <View style ={{right: Scale(10)}}> 
-                      <CountButtons
-                        count={doubleACCount}
-                        setCount={value => dispatch(setDoubleACCount(value))}
-                        onHide={() => {
-                          dispatch(setDoubleDigitA2(''));
-                          dispatch(setDoubleDigitC1(''));
-                        }}
-                        minValue={1}
-                        maxValue={10}
-                      />
-                      </View>
-                    )}
-                    <CommonAddButton
-                      innerText="ADD"
-                      opacity={doubleDigitA2 !== '' && doubleDigitC1 !== '' ? 1 : 0.5}
-                      onPress={() =>
-                        handleAdd(
-                          'AC',
-                          doubleDigitA2.toString() + doubleDigitC1.toString(),
-                          doubleACCount,
-                          selectedOption,
-                          doubleDigitPrice,
-                        )
-                      }
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(5),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <CommonBall
-                        backgroundColor="#EC8204"
-                        innerText="B"
-                        borderColor={'#EC8204'}
-                      />
-                      <CommonBall
-                        backgroundColor="#066FEA"
-                        innerText="C"
-                        borderColor={'#066FEA'}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={doubleDigitB2?.toString()}
-                        placeholderText={'-'}
-                        onChange={doubleDigitB2OnChange}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={doubleDigitC2?.toString()}
-                        placeholderText={'-'}
-                        onChange={doubleDigitC2OnChange}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                    </View>
-                    {doubleDigitB2 !== '' && doubleDigitC2 !== '' && (
-                       <View style ={{right: Scale(10)}}> 
-                      <CountButtons
-                        count={doubleBCCount}
-                        setCount={value => dispatch(setDoubleBCCount(value))}
-                        onHide={() => {
-                          dispatch(setDoubleDigitB2(''));
-                          dispatch(setDoubleDigitC2(''));
-                        }}
-                        minValue={1}
-                        maxValue={10}
-                      />
-                      </View>
-                    )}
-                    <CommonAddButton
-                      innerText="ADD"
-                      opacity={doubleDigitB2 !== '' && doubleDigitC2 !== '' ? 1 : 0.5}
-                      onPress={() =>
-                        handleAdd(
-                          'BC',
-                          doubleDigitB2.toString() + doubleDigitC2.toString(),
-                          doubleBCCount,
-                          selectedOption,
-                          doubleDigitPrice,
-                        )
-                      }
-                    />
-                  </View>
-                </View>
-
-                {/* Three Digit start  */}
-                <View style={styles.card}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(20),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View>
-                      <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.DigitTitleText}>Triple Digit</Text>
-                      <Text style={styles.DigitTitleText1}> Win $25,000.00</Text>
-                      </View>
-                      <Text style={[styles.DigitTitleText,{marginVertical: Scale(5)}]}>
-                        ${threeDigitPrice}
-                      </Text>
-                    </View>
-                    <CommonQuickGuess
-                      innerText={'Quick Guess'}
-                      onPress={() => generateThreeDigitRandomNumbers()}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      marginVertical: Scale(5),
-                      marginHorizontal: Scale(10),
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <CommonBall
-                        backgroundColor="#DE3C3F"
-                        innerText="A"
-                        borderColor={'#DE3C3F'}
-                      />
-                      <CommonBall
-                        backgroundColor="#EC8204"
-                        innerText="B"
-                        borderColor={'#EC8204'}
-                      />
-                      <CommonBall
-                        backgroundColor="#066FEA"
-                        innerText="C"
-                        borderColor={'#066FEA'}
-                      />
-                    </View>
-                    <View style={{flexDirection: 'row'}}>
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={threeDigitA?.toString()}
-                        placeholderText={'-'}
-                        onChange={onChangeThreeDigitA}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={threeDigitB?.toString()}
-                        placeholderText={'-'}
-                        onChange={onChangeThreeDigitB}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                      <SingleIntegerTextInput
-                        isDisabled={false}
-                        value={threeDigitC?.toString()}
-                        placeholderText={'-'}
-                        onChange={onChangeThreeDigitC}
-                        onBlur={undefined}
-                        keyboardType={'numeric'}
-                        maxChar={1}
-                      />
-                    </View>
-                  </View>
-
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginVertical: Scale(20),
-                      justifyContent: 'space-between',
-                      flex: 1,
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        flex: 1,
-                      }}>
-                      {threeDigitA !== '' &&
-                        threeDigitB !== '' &&
-                        threeDigitC !== '' && (
-                          <CountButtons
-                            count={threeDigitCount}
-                            setCount={value =>
-                              dispatch(setThreeDigitCount(value))
-                            }
-                            onHide={() => {
-                              dispatch(setThreeDigitA(''));
-                              dispatch(setThreeDigitB(''));
-                              dispatch(setThreeDigitC(''));
-                            }}
-                            minValue={1}
-                            maxValue={10}
-                          />
-                        )}
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
-                        flex: 0.7,
-                      }}>
-                      <CommonAddButton
-                        innerText={'BOX'}
-                        opacity={threeDigitA !== '' &&
-                        threeDigitB !== '' &&
-                        threeDigitC !== ''  ? 1 : 0.5}
-                        onPress={() => handleGenerate()}
-                      />
-                      <CommonAddButton
-                        innerText="ADD"
-                        opacity={threeDigitA !== '' &&
-                        threeDigitB !== '' &&
-                        threeDigitC !== ''  ? 1 : 0.5}
-                        onPress={() =>
-                          handleAdd(
-                            'ABC',
-                            threeDigitA.toString() +
-                              threeDigitB.toString() +
-                              threeDigitC.toString(),
-                            threeDigitCount,
-                            selectedOption,
-                            threeDigitPrice,
-                          )
-                        }
-                      />
-                    </View>
-                  </View>
-                </View>
-                <View>
-                  <ResultTable tableData={tableData} />
-                </View>
-              </View>
-            ) : (
-              <Text style={{fontSize: 18, color: 'black'}}>
-                You selected 5 Mins
-              </Text>
-            )}
           </View>
           <View>
             <HowToPlayModal />
@@ -1070,7 +515,7 @@ const ThreeDigitMain = ({navigation}: any) => {
             marginVertical: Scale(10),
           },
         }}>
-        <View style={{flex: 1, marginHorizontal: 10, marginVertical: 20}}>
+        <View style={{ flex: 1, marginHorizontal: 10, marginVertical: 20 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -1091,7 +536,7 @@ const ThreeDigitMain = ({navigation}: any) => {
                 name={'delete'}
                 size={Scale(18)}
                 color={'black'}
-                style={{marginRight: Scale(10)}}
+                style={{ marginRight: Scale(10) }}
               />
             </TouchableOpacity>
           </View>
@@ -1101,7 +546,7 @@ const ThreeDigitMain = ({navigation}: any) => {
               <Text>Empty</Text>
             </View>
           ) : (
-            <View style={{marginHorizontal: Scale(10), marginTop: Scale(20)}}>
+            <View style={{ marginHorizontal: Scale(10), marginTop: Scale(20) }}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -1166,7 +611,7 @@ const ThreeDigitMain = ({navigation}: any) => {
                       }}>
                       <Image
                         source={cancel}
-                        style={{width: Scale(10), height: Scale(10)}}
+                        style={{ width: Scale(10), height: Scale(10) }}
                         tintColor={'black'}
                       />
                     </TouchableOpacity>
@@ -1178,9 +623,9 @@ const ThreeDigitMain = ({navigation}: any) => {
         </View>
       </RBSheet>
       <SafeAreaView
-        style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
+        style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
         <View
-          style={{backgroundColor: 'white', height: Scale(80), elevation: 10}}>
+          style={{ backgroundColor: 'white', height: Scale(80), elevation: 10 }}>
           <GameFooter
             openSheet={() => refRBSheet.current.open()}
             totalAmount={sum}
@@ -1200,8 +645,7 @@ const styles = StyleSheet.create({
   },
   subContainer: {
     flex: 1,
-    marginHorizontal: 5,
-    marginTop: 20,
+    marginHorizontal: 20
   },
   container: {
     flex: 1,
@@ -1212,7 +656,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 3,
@@ -1226,8 +670,8 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // borderRadius: 10,
     // width: '100%',
-    marginHorizontal: 10,
     justifyContent: 'space-between',
+    flex: 1,
   },
   renderDataView: {
     padding: 10,
@@ -1298,5 +742,14 @@ const styles = StyleSheet.create({
     fontSize: Scale(14),
     top: 1,
   },
+  headerBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 10,
+    justifyContent: 'center',
+  },
+  headerImg: { width: 30, height: 30 }
 });
 export default ThreeDigitMain;
