@@ -8,6 +8,7 @@ import {Text, View,} from 'react-native';
 import Scale from '../Components/Scale';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Profile from '../Screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -79,7 +80,7 @@ export default function BottomNavigation() {
           ),
           tabBarShowLabel: false,
         }}
-        component={Settings}
+        component={Profile}
       />
     </Tab.Navigator>
   );

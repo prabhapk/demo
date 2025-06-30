@@ -5,6 +5,9 @@ import SplashScreen from '../Screens/splashScreen';
 import Login from '../Screens/Login';
 import BottomNavigation from './BottomNavigation';
 import ThreeDigitMain from '../Screens/ThreeDigitMain';
+import Profile from '../Screens/Profile';
+import SignUpScreen from '../Screens/SignUpScreen';
+import SignInScreen from '../Screens/SignInScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +31,18 @@ function MainNavigation() {
         <Stack.Screen
           name="ThreeDigitMain"
           component={ThreeDigitMain}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+        />
+        <Stack.Screen
+          name="SignInScreen"
+          component={SignInScreen}
+        />
+        <Stack.Screen
+          name="SignUpScreen"
+          component={SignUpScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
