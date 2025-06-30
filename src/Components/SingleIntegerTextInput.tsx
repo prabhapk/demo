@@ -13,7 +13,7 @@ import {
     value: any;
     placeholderText: string;
     onChange: (value: any) => void;
-    onBlur: () => void;
+    onBlur?: () => void;
     keyboardType: any;
     maxChar?: number;
   }

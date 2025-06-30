@@ -33,7 +33,11 @@ import {
   KeralaLotteryImage,
   KubberLotteryImage,
   ActiveTabBg,
-  ActiveTabInitialImg
+  ActiveTabInitialImg,
+  quick3min,
+  bhutan,
+  skywin,
+  chennaiLottery
 
 } from '../../assets/assets';
 import CustomHeader from '../Components/CustomHeader';
@@ -116,22 +120,22 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
       price: '11.00',
       title: 'Quick 3D 3min',
       ends_On: new Date(now.getTime() + 3 * 60 * 1000).toISOString(),
-      bgImage:Quick3DImage
+      bgImage:quick3min
     },
     {
       win_price: '30,000',
       price: '11.00',
       title: 'Bhutan Jackpot',
       ends_On: bhutanEndsOn,
-      bgImage:Quick3DImage
+      bgImage:bhutan
     },
-    {win_price: '25,000', price: '11.00', title: 'Skywin', ends_On: targetDate,  bgImage:Quick3DImage},
+    {win_price: '25,000', price: '11.00', title: 'Skywin', ends_On: targetDate,  bgImage:skywin},
     {
       win_price: '30,000',
       price: '11.00',
       title: 'Chennai lottery',
       ends_On: targetDate,
-      bgImage:Quick3DImage
+      bgImage:chennaiLottery
     },
     {
       win_price: '10,000',
@@ -449,16 +453,13 @@ const styles = StyleSheet.create({
   headerItem: {
     padding: 10,
     marginHorizontal: 5,
-    // backgroundColor: 'red',
-    borderRadius: 5,
     paddingHorizontal: 20,
     // borderWidth: 1,
 
   },
   activeHeaderText: {
-    backgroundColor: '#7C00EC',
-    
-
+    borderBottomWidth:5,
+    borderBottomColor: '#7C00EC',
   },
   headerText: {fontSize: 16, color: 'black', fontWeight: 'bold'},
   section: {padding: 15, borderBottomWidth: 1, borderBottomColor: '#ccc'},
