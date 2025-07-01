@@ -1,12 +1,12 @@
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, GestureResponderEvent} from 'react-native';
 import Scale from './Scale';
 import React from 'react';
 
 interface customHeaderProps {
-  leftIconPress: () => void;
-  rightIconPress: () => void;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
+  leftIconPress: (event: GestureResponderEvent) => void;
+  rightIconPress:(event: GestureResponderEvent) => void;
+  leftIcon?: Image;
+  rightIcon?: Image;
   centerText?: string;
 }
 
@@ -21,7 +21,7 @@ const CustomHeaderRegister: React.FC<customHeaderProps> = ({
     <View style={styles.container}>
       <TouchableOpacity
         style={{marginHorizontal: Scale(10)}}
-        onPress={() => leftIconPress}>
+        onPress={leftIconPress}>
         <Image
           source={leftIcon}
           style={{width: 30, height: 50, resizeMode: 'contain'}}

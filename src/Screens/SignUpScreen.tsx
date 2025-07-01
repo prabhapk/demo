@@ -18,6 +18,7 @@ const SignUpScreen = ({ navigation }: any) => {
     console.log('GET OTP clicked');
   };
 
+
   return (
     <View style={{ flex: 1, 
     backgroundColor: '#fff' }}>
@@ -26,7 +27,7 @@ const SignUpScreen = ({ navigation }: any) => {
       style={{flex: 1}}
       >
       <CustomHeaderRegister
-      leftIconPress={()=>navigation.navigate('HomeScreen')}
+     leftIconPress={() => navigation.goBack()}
       rightIconPress={()=>navigation.navigate('SignUpScreen')}
       leftIcon={leftArrowHeader}
       rightIcon={customerServiceTopIcon}

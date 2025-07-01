@@ -23,7 +23,7 @@ const Profile = ({navigation}: {navigation: any}) => {
         <Text style={styles.optionText}>{label}</Text>
       </View>
       <TouchableOpacity style={{padding: Scale(5)}}>
-        <Entypo name="chevron-right" size={Scale(22)} color="white" />
+        <Entypo name="chevron-right" size={Scale(22)} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -37,7 +37,9 @@ const Profile = ({navigation}: {navigation: any}) => {
      >
       {/* Profile Header */}
       <View style={styles.profileContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+        onPress={()=>navigation.navigate('UserDetails')}
+        >
           <EvilIcons
             name="user"
             size={Scale(80)}
@@ -74,14 +76,14 @@ const Profile = ({navigation}: {navigation: any}) => {
         <View style={styles.walletHeader}>
           <View>
             <View style={styles.walletRow}>
-              <Entypo name="wallet" size={Scale(20)} color="white" />
+              <Entypo name="wallet" size={Scale(20)} color="black" />
               <Text style={styles.walletLabel}>My Wallet</Text>
             </View>
             <Text style={styles.walletAmount}>********</Text>
           </View>
 
           <TouchableOpacity style={{marginLeft: Scale(10)}}>
-            <EvilIcons name="refresh" size={Scale(28)} color="white" />
+            <EvilIcons name="refresh" size={Scale(28)} color="black" />
           </TouchableOpacity>
         </View>
 
@@ -92,10 +94,10 @@ const Profile = ({navigation}: {navigation: any}) => {
         <View style={styles.walletRow}>
           <View style={{flex: 1, marginRight: Scale(10)}}>
             <View style={styles.walletRow}>
-              <Entypo name="wallet" size={Scale(20)} color="white" />
+              <Entypo name="wallet" size={Scale(20)} color="black" />
               <Text style={styles.walletLabel}>Cash Balance</Text>
               <TouchableOpacity>
-                <EvilIcons name="exclamation" size={Scale(20)} color="white" />
+                <EvilIcons name="exclamation" size={Scale(20)} color="black" />
               </TouchableOpacity>
             </View>
             <Text style={styles.walletAmount}>********</Text>
@@ -103,10 +105,10 @@ const Profile = ({navigation}: {navigation: any}) => {
 
           <View style={{flex: 1}}>
             <View style={styles.walletRow}>
-              <Entypo name="wallet" size={Scale(20)} color="white" />
+              <Entypo name="wallet" size={Scale(20)} color="black" />
               <Text style={styles.walletLabel}>Withdrawable</Text>
               <TouchableOpacity>
-                <EvilIcons name="exclamation" size={Scale(20)} color="white" />
+                <EvilIcons name="exclamation" size={Scale(20)} color="black" />
               </TouchableOpacity>
             </View>
             <Text style={styles.walletAmount}>********</Text>
@@ -116,7 +118,7 @@ const Profile = ({navigation}: {navigation: any}) => {
 
       {/* Recharge and Withdraw Blocks */}
       <View style={styles.transactionRow}>
-        <View style={[styles.transactionBox, {backgroundColor: '#e3958f', marginRight: Scale(5)}]}>
+        <View style={[styles.transactionBox, {backgroundColor: '#e3f5dc', marginRight: Scale(5)}]}>
           <Image source={wallet} style={styles.transactionImage} resizeMode="contain" />
           <View>
             <Text style={styles.transactionText}>RECHARGE</Text>
@@ -124,7 +126,7 @@ const Profile = ({navigation}: {navigation: any}) => {
           </View>
         </View>
 
-        <View style={[styles.transactionBox, {backgroundColor: '#e3958f', marginLeft: Scale(5)}]}>
+        <View style={[styles.transactionBox, {backgroundColor: '#e3f5dc', marginLeft: Scale(5)}]}>
           <Image source={wallet} style={styles.transactionImage} resizeMode="contain" />
           <View>
             <Text style={styles.transactionText}>WITHDRAW</Text>
@@ -192,7 +194,7 @@ const styles = StyleSheet.create({
   walletContainer: {
     marginTop: Scale(20),
     marginHorizontal: Scale(10),
-    backgroundColor: '#e3958f',
+    backgroundColor: '#e3f5dc',
     borderRadius: Scale(10),
     padding: Scale(15),
   },
@@ -207,18 +209,18 @@ const styles = StyleSheet.create({
   },
   walletLabel: {
     marginLeft: Scale(10),
-    color: 'white',
+    color: 'black',
     fontSize: Scale(16),
   },
   walletAmount: {
     fontSize: Scale(25),
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
     marginTop: Scale(5),
   },
   divider: {
     borderWidth: Scale(0.2),
-    borderColor: 'white',
+    borderColor: 'black',
     marginVertical: Scale(10),
   },
   transactionRow: {
@@ -248,14 +250,14 @@ const styles = StyleSheet.create({
   optionsContainer: {
     marginTop: Scale(20),
     marginHorizontal: Scale(10),
-    backgroundColor: '#e3958f',
+    backgroundColor: '#e3f5dc',
     borderRadius: Scale(10),
     padding: Scale(15),
   },
   optionsContainer1: {
     marginTop: Scale(20),
     marginHorizontal: Scale(10),
-    backgroundColor: '#e3958f',
+    backgroundColor: '#e3f5dc',
     borderRadius: Scale(10),
     padding: Scale(15),
     marginBottom: Scale(10),
@@ -276,7 +278,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: Scale(14),
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
     marginLeft: Scale(10),
   },

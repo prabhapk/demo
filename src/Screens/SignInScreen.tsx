@@ -39,7 +39,7 @@ const SignInScreen = ({navigation}: any) => {
       style={{flex: 1}}
       > 
       <CustomHeaderRegister
-      leftIconPress={()=>navigation.navigate('HomeScreen')}
+     leftIconPress={() => navigation.goBack()}
       rightIconPress={()=>navigation.navigate('SignUpScreen')}
       leftIcon={leftArrowHeader}
       rightIcon={customerServiceTopIcon}
