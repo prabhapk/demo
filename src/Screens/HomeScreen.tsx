@@ -118,54 +118,82 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     {
       win_price: '10,000',
       price: '11.00',
+      title: 'Quick 3D 1min',
+      ends_On: "2025-07-03T18:42:27.123Z",
+      bgImage:quick3min,
+      gameTye:"Custom",
+      id:"1minGame"
+    },
+       {
+      win_price: '10,000',
+      price: '11.00',
       title: 'Quick 3D 3min',
-      ends_On: new Date(now.getTime() + 3 * 60 * 1000).toISOString(),
-      bgImage:quick3min
+      ends_On: "2025-07-03T18:42:27.123Z",
+      bgImage:quick3min,
+       gameTye:"Custom",
+      id:"3minGame"
+    },
+       {
+      win_price: '10,000',
+      price: '11.00',
+      title: 'Quick 3D 5min',
+      ends_On: "2025-07-03T18:42:27.123Z",
+      bgImage:quick3min,
+       gameTye:"Custom",
+      id:"5minGame"
     },
     {
       win_price: '30,000',
       price: '11.00',
       title: 'Bhutan Jackpot',
       ends_On: bhutanEndsOn,
-      bgImage:bhutan
+      bgImage:bhutan,
+       gameTye:"RealGame",
+      id:"real"
     },
-    {win_price: '25,000', price: '11.00', title: 'Skywin', ends_On: targetDate,  bgImage:skywin},
-    {
-      win_price: '30,000',
-      price: '11.00',
-      title: 'Chennai lottery',
-      ends_On: targetDate,
-      bgImage:chennaiLottery
-    },
-    {
-      win_price: '10,000',
-      price: '11.00',
-      title: 'Quick 3D 5min',
-      ends_On: targetDate,
-      bgImage:Quick3DImage
-    },
-    {win_price: '15,000', price: '11.00', title: 'Lucwin', ends_On: targetDate,  bgImage:LucwinImage},
-    {
-      win_price: '50,000',
-      price: '11.00',
-      title: 'Kubeer lottery',
-      ends_On: targetDate,
-      bgImage:KubberLotteryImage
-    },
-    {
-      win_price: '15,000',
-      price: '11.00',
-      title: 'Dear lottery',
-      ends_On: targetDate,
-      bgImage:DearLotteryImage
-    },
-    {
-      win_price: '15,000',
-      price: '11.00',
-      title: 'Kerala lottery',
-      ends_On: targetDate,
-      bgImage:KeralaLotteryImage
-    },
+    // {win_price: '25,000', price: '11.00', title: 'Skywin', ends_On: targetDate,  bgImage:skywin,
+    //    gameTye:"RealGame",
+    //   id:"real"},
+    // {
+    //   win_price: '30,000',
+    //   price: '11.00',
+    //   title: 'Chennai lottery',
+    //   ends_On: targetDate,
+    //   bgImage:chennaiLottery,
+    //    gameTye:"RealGame",
+    //   id:"real"
+    // },
+    // {
+    //   win_price: '10,000',
+    //   price: '11.00',
+    //   title: 'Quick 3D 5min',
+    //   ends_On: targetDate,
+    //   bgImage:Quick3DImage,
+    //    gameTye:"RealGame",
+    //   id:"real"
+    // },
+    // {win_price: '15,000', price: '11.00', title: 'Lucwin', ends_On: targetDate,  bgImage:LucwinImage},
+    // {
+    //   win_price: '50,000',
+    //   price: '11.00',
+    //   title: 'Kubeer lottery',
+    //   ends_On: targetDate,
+    //   bgImage:KubberLotteryImage
+    // },
+    // {
+    //   win_price: '15,000',
+    //   price: '11.00',
+    //   title: 'Dear lottery',
+    //   ends_On: targetDate,
+    //   bgImage:DearLotteryImage
+    // },
+    // {
+    //   win_price: '15,000',
+    //   price: '11.00',
+    //   title: 'Kerala lottery',
+    //   ends_On: targetDate,
+    //   bgImage:KeralaLotteryImage
+    // },
   ];
   const banners = [
     {id: 1, name: banner1},
@@ -305,7 +333,15 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
 
       case '3Digits':
         return <CommonDigits data={item} 
-        onPress3Digits={ ()=> navigation.navigate('ThreeDigitMain')}
+        onPress3Digits={ ()=> {
+          console.log("cheeeeeeeeeeeeeeeeeeeeeeeeeeeee",item);
+          if(item.gameTye==="Custom"){
+            navigation.navigate('ThreeDigitMain',{gameData:item});
+          }
+          else if(item.gameTye==="RealGame"){
+          // navigation.navigate('ThreeDigitMain',{gameDat:item});
+        }}
+        }
         />;
 
       default:

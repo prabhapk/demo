@@ -57,7 +57,7 @@ import AnimatedText from '../Components/AnimatedText';
 import { tableData } from '../Utils/Constants';
 import DigitComponent from '../Components/DigitComponent';
 
-const ThreeDigitMain = ({ navigation }: any) => {
+const ThreeDigitMain = ({ navigation, route }: any) => {
   const {
     threeDigitA,
     threeDigitB,
@@ -74,90 +74,117 @@ const ThreeDigitMain = ({ navigation }: any) => {
   const [isOnFocus, setIsOnFocus] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [islast30sec, setLast30sec] = useState(false);
-    const [numbers, setNumbers] = useState([]);
-    const [cartValues, setCartValues] = useState([]);
+  const [numbers, setNumbers] = useState([]);
+  const [cartValues, setCartValues] = useState([]);
   const singleDigitPrice = 10.0;
   const doubleDigitPrice = 11.0;
   const threeDigitPrice = 21.0;
+
+     const [min1TargetDate, setMin1TargetDate] = useState("2025-07-03T19:35:27.123Z");
+     const [min3TargetDate, setMin3TargetDate] = useState("2025-07-03T19:37:27.123Z");
+     const [min5TargetDate, setMin5TargetDate] = useState("2025-07-03T19:40:27.123Z");
 
   const singleDigitWinningPrice = 110.0;
   const doubleDigitWinningPrice = 220.0;
   const threeDigitWinningPrice = 330.0;
 
-  const handleChildStateChange = (updatedValue:any) => {
+  const [targetDateProp, setTargetDateProp] = useState(
+    new Date(new Date().getTime() + 1 * 60 * 1000).toISOString(),
+  );
+
+  const handleChildStateChange = (updatedValue: any) => {
     console.log('Received from DigitComponent:', updatedValue);
     setCartValues(updatedValue);
   };
 
+  const ganeData = route.params.gameData;
+  console.log("ganeData", ganeData);
+  useEffect(() => {
+    if (ganeData.id === "1minGame") {
+      setSelectedOption("1 Mins");
+    }
+    else if (ganeData.id === "3minGame") {
+      setSelectedOption("3 Mins");
+    }
+    else if (ganeData.id === "5minGame") {
+      setSelectedOption("5 Mins");
+    }
+  }, [ganeData])
   const renderContent = () => {
     switch (selectedOption) {
       case '1 Mins':
         return (
-        <>
-          <DigitComponent
-            lastGameWiiningId="123456788"
-            nextGameId="678976567"
-            latGameWinningA='1'
-            lastGameWinningB='2'
-            lastGameWinningC='3'
-            singleDigitPrice={singleDigitPrice}
-            singleDigitWinningPrice={singleDigitWinningPrice}
-            handleAdd={handleAdd}
-            selectedOption={selectedOption}
-            doubleDigitPrice={doubleDigitPrice}
-            doubleDigitWinningPrice={doubleDigitWinningPrice}
-            tableData={tableData}
-            handleGenerate={handleGenerate}
-            threeDigitWinningPrice={threeDigitWinningPrice}
-            threeDigitPrice={threeDigitPrice}
-           onStateChange={handleChildStateChange}
-             />
-        </>)
+          <>
+            <DigitComponent
+              lastGameWiiningId="123456788"
+              nextGameId="678976567"
+              latGameWinningA='1'
+              lastGameWinningB='2'
+              lastGameWinningC='3'
+              singleDigitPrice={singleDigitPrice}
+              singleDigitWinningPrice={singleDigitWinningPrice}
+              handleAdd={handleAdd}
+              selectedOption={selectedOption}
+              doubleDigitPrice={doubleDigitPrice}
+              doubleDigitWinningPrice={doubleDigitWinningPrice}
+              tableData={tableData}
+              handleGenerate={handleGenerate}
+              threeDigitWinningPrice={threeDigitWinningPrice}
+              threeDigitPrice={threeDigitPrice}
+              onStateChange={handleChildStateChange}
+              targetDateProp={min1TargetDate}
+               onTimerComplete={handleTimerComplete}
+            />
+          </>)
       case '3 Mins':
         return (
-        <>
-        <DigitComponent
-            lastGameWiiningId="222222222"
-            nextGameId="12312122"
-            latGameWinningA='3'
-            lastGameWinningB='2'
-            lastGameWinningC='3'
-            singleDigitPrice={singleDigitPrice}
-            singleDigitWinningPrice={singleDigitWinningPrice}
-            handleAdd={handleAdd}
-            selectedOption={selectedOption}
-            doubleDigitPrice={doubleDigitPrice}
-            doubleDigitWinningPrice={doubleDigitWinningPrice}
-            tableData={tableData}
-            handleGenerate={handleGenerate}
-            threeDigitWinningPrice={threeDigitWinningPrice}
-            threeDigitPrice={threeDigitPrice}
-            onStateChange={handleChildStateChange}
-             />
-        </>
+          <>
+            <DigitComponent
+              lastGameWiiningId="222222222"
+              nextGameId="12312122"
+              latGameWinningA='3'
+              lastGameWinningB='2'
+              lastGameWinningC='3'
+              singleDigitPrice={singleDigitPrice}
+              singleDigitWinningPrice={singleDigitWinningPrice}
+              handleAdd={handleAdd}
+              selectedOption={selectedOption}
+              doubleDigitPrice={doubleDigitPrice}
+              doubleDigitWinningPrice={doubleDigitWinningPrice}
+              tableData={tableData}
+              handleGenerate={handleGenerate}
+              threeDigitWinningPrice={threeDigitWinningPrice}
+              threeDigitPrice={threeDigitPrice}
+              onStateChange={handleChildStateChange}
+              targetDateProp={min3TargetDate}
+               onTimerComplete={handleTimerComplete}
+            />
+          </>
         )
       case '5 Mins':
         return (
-        <>
-         <DigitComponent
-            lastGameWiiningId="111111111"
-            nextGameId="12312122"
-            latGameWinningA='3'
-            lastGameWinningB='2'
-            lastGameWinningC='3'
-            singleDigitPrice={singleDigitPrice}
-            singleDigitWinningPrice={singleDigitWinningPrice}
-            handleAdd={handleAdd}
-            selectedOption={selectedOption}
-            doubleDigitPrice={doubleDigitPrice}
-            doubleDigitWinningPrice={doubleDigitWinningPrice}
-            tableData={tableData}
-            handleGenerate={handleGenerate}
-            threeDigitWinningPrice={threeDigitWinningPrice}
-            threeDigitPrice={threeDigitPrice}
-            onStateChange={handleChildStateChange}
-             />
-        </>
+          <>
+            <DigitComponent
+              lastGameWiiningId="111111111"
+              nextGameId="12312122"
+              latGameWinningA='3'
+              lastGameWinningB='2'
+              lastGameWinningC='3'
+              singleDigitPrice={singleDigitPrice}
+              singleDigitWinningPrice={singleDigitWinningPrice}
+              handleAdd={handleAdd}
+              selectedOption={selectedOption}
+              doubleDigitPrice={doubleDigitPrice}
+              doubleDigitWinningPrice={doubleDigitWinningPrice}
+              tableData={tableData}
+              handleGenerate={handleGenerate}
+              threeDigitWinningPrice={threeDigitWinningPrice}
+              threeDigitPrice={threeDigitPrice}
+              onStateChange={handleChildStateChange}
+              targetDateProp={min5TargetDate}
+              onTimerComplete={handleTimerComplete}
+            />
+          </>
         )
       default:
         return <Text style={{ color: 'red' }}>Invalid Option</Text>;
@@ -172,14 +199,25 @@ const ThreeDigitMain = ({ navigation }: any) => {
     }, 2000);
   };
 
-  const handleTimerComplete = () => {
-    console.log('Timer Complete, Restarting...');
-    setTargetDate(
-      new Date(new Date().getTime() + 3 * 60 * 1000).toISOString(),
-    );
-    console.log('Target Date==>', targetDate);
-    setLast30sec(false);
-  };
+
+const handleTimerComplete = () => {
+ const originalTime = "2025-07-03T19:35:27.123Z";
+ let updatedTime=""
+ if(selectedOption==="1 Mins"){
+  updatedTime = new Date(new Date(min1TargetDate).getTime() + 1 * 60 * 1000).toISOString();
+  setMin1TargetDate(updatedTime);
+ }
+ else if(selectedOption==="3 Mins"){
+  updatedTime = new Date(new Date(min3TargetDate).getTime() + 3 * 60 * 1000).toISOString();
+  setMin3TargetDate(updatedTime);
+ }
+ else if(selectedOption==="5 Mins"){
+ updatedTime = new Date(new Date(min5TargetDate).getTime() + 5 * 60 * 1000).toISOString();
+ setMin5TargetDate(updatedTime);
+ }
+console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123Z
+
+};
 
   const filterNumericInput = (value: string) => {
     return value.replace(/[^0-9]/g, '');
@@ -269,10 +307,10 @@ const ThreeDigitMain = ({ navigation }: any) => {
     console.log('Label==>', label);
 
     // Clear input after adding data
-  clearInputs(label);
+    clearInputs(label);
   };
 
-  const clearInputs = (label:string) => {  
+  const clearInputs = (label: string) => {
     if (label === 'A') {
       onChangeSingleDigitA(''), dispatch(setSingleACount(3));
     } else if (label === 'B') {
@@ -410,23 +448,23 @@ const ThreeDigitMain = ({ navigation }: any) => {
 
     console.log('Label==>', label);
 
-   
+
   };
 
   // Handle button press
   const handleGenerate = () => {
     if (threeDigitA !== '' && threeDigitB !== '' && threeDigitC !== '') {
       const values = [threeDigitA, threeDigitB, threeDigitC];
-        handleAddPermutations(
-          'ABC',
-          values,
-          threeDigitCount,
-          selectedOption,
-          threeDigitPrice,
-        )
-        clearInputs('ABC');
+      handleAddPermutations(
+        'ABC',
+        values,
+        threeDigitCount,
+        selectedOption,
+        threeDigitPrice,
+      )
+      clearInputs('ABC');
+    }
   }
-}
   const OPTIONS = [{ id: 1, name: '1 Mins', isSelected: true },
   { id: 2, name: '3 Mins', isSelected: false },
   { id: 3, name: '5 Mins', isSelected: false }];

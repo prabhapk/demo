@@ -32,6 +32,7 @@ import {
     setThreeDigitCount,
 } from '../Redux/Slice/threeDigitSlice';
 import { handleShowAlert, showHowToPlay } from '../Redux/Slice/commonSlice';
+import Show30SecondsModal from './Show30SecondsModal';
 
 
 export interface IDigitProps {
@@ -61,6 +62,8 @@ export interface IDigitProps {
     threeDigitWinningPrice: number
     handleGenerate: () => void
     onStateChange: any
+    targetDateProp?: any
+    onTimerComplete?: any
 }
 
 const DigitComponent: React.FC<IDigitProps> = ({
@@ -82,12 +85,15 @@ const DigitComponent: React.FC<IDigitProps> = ({
     threeDigitPrice,
     handleGenerate,
     threeDigitWinningPrice,
-    onStateChange
+    onStateChange,
+    targetDateProp,
+    onTimerComplete
 }) => {
 
-    const [targetDate, setTargetDate] = useState(
-        new Date(new Date().getTime() + 1 * 60 * 1000).toISOString(),
-    );
+   const [targetDate, setTargetDate] = useState("2025-07-03T18:35:27.123Z");
+
+
+    const [showAlert, setShowAlert] = useState(false);
     const [numbers, setNumbers] = useState([]);
     const [isVisible, setIsVisible] = useState(true);
     const {
@@ -202,519 +208,538 @@ const DigitComponent: React.FC<IDigitProps> = ({
         dispatch(setThreeDigitC(filteredValue));
     };
 
+    useEffect(() => {
+
+        setTimeout(() => {
+            setShowAlert(false);
+        }, 2000);
+
+    }, [showAlert])
+
+    useEffect(() => {
+        console.log("Target Date Prop", targetDateProp);
+        if (targetDateProp) {
+            console.log("targetDatePropasas", targetDateProp);
+            setTargetDate(targetDateProp);
+        }
+    }, [targetDateProp]);
 
 
 
     return (
-        <View style={styles.container}>
-            <View style={styles.gameDetailView}>
-                <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
-                    <Text style={styles.gameNameText}>Quick3D</Text>
-                    <View style={{ flexDirection: 'row' }}>
-
-                        <Text style={styles.gameNameText}>{lastGameWiiningId}</Text>
-                        <TouchableOpacity
-                            onPress={() => { dispatch(showHowToPlay()) }}
-                            style={styles.howtoplayBtn}>
-                            <Text style={styles.howtoPlayTxt}>How to Play</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.ballsView}>
-                        <CommonBall backgroundColor="#DE3C3F" innerText={latGameWinningA} borderColor="#DE3C3F" />
-                        <CommonBall backgroundColor="#EC8204" innerText={lastGameWinningB} borderColor="#EC8204" />
-                        <CommonBall backgroundColor="#066FEA" innerText={lastGameWinningC} borderColor="#066FEA" />
-                    </View>
-                </View>
-
-                <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
-                    <Text style={styles.gameNameText}>Time Remaining</Text>
-                    <CountdownTimer
-                        targetDate={targetDate}
-                        onThirtySecondsLeft={() => Alert.alert('Thirty Seconds')}
-                        onComplete={() => console.log("Timer complete")}
-                    />
-                    <Text style={styles.gameNameText}>{nextGameId}</Text>
-                </View>
-            </View>
-
-            {/* SINGLE DIGIT BLOCK */}
-            <View style={styles.card}>
-                <View
-                    style={styles.gameHeader}>
-                    <View>
+        <>
+            <View style={styles.container}>
+                <View style={styles.gameDetailView}>
+                    <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
+                        <Text style={styles.gameNameText}>Quick3D</Text>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.DigitTitleText}>Single Digit</Text>
-                            <Text style={styles.DigitTitleText1}> Win ${singleDigitWinningPrice.toFixed(2)}</Text>
-                        </View>
-                        <Text style={[styles.DigitTitleText, { marginVertical: Scale(5) }]}>${singleDigitPrice.toFixed(2)}</Text>
-                    </View>
-                    <CommonQuickGuess
-                        innerText={'Quick Guess'}
-                        onPress={() => {
-                            generateRandomNumbers();
-                        }}
-                    />
-                </View>
-                <View
-                    style={styles.inputContainer}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <CommonBall
-                            backgroundColor="#DE3C3F"
-                            innerText="A"
-                            borderColor={'#DE3C3F'}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={singleDigitA?.toString()}
-                            placeholderText={'-'}
-                            onChange={onChangeSingleDigitA}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                    </View>
-                    {singleDigitA !== '' && (
-                        <CountButtons
-                            count={singleACount}
-                            setCount={value => dispatch(setSingleACount(value))}
-                            onHide={() => dispatch(setSingleDigitA(''))}
-                            minValue={1}
-                            maxValue={10}
-                        />
-                    )}
-                    <CommonAddButton
-                        innerText="ADD"
-                        opacity={singleDigitA !== '' ? 1 : 0.5}
-                        onPress={() =>
-                            handleAdd(
-                                'A',
-                                singleDigitA,
-                                singleACount,
-                                selectedOption,
-                                singleDigitPrice,
-                            )
-                        }
-                    />
-                </View>
-                <View
-                    style={[styles.inputContainer]}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <CommonBall
-                            backgroundColor="#EC8204"
-                            innerText="B"
-                            borderColor={'#EC8204'}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={singleDigitB?.toString()}
-                            placeholderText={'-'}
-                            onChange={onChangeSingleDigitB}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                    </View>
-                    {singleDigitB !== '' && (
-                        <CountButtons
-                            count={singleBCount}
-                            setCount={value => dispatch(setSingleBCount(value))}
-                            onHide={() => dispatch(setSingleDigitB(''))} // Hide only B
-                            minValue={1}
-                            maxValue={10}
-                        />
-                    )}
-                    <CommonAddButton
-                        innerText="ADD"
-                        opacity={singleDigitB !== '' ? 1 : 0.5}
-                        onPress={() =>
-                            handleAdd(
-                                'B',
-                                singleDigitB,
-                                singleBCount,
-                                selectedOption,
-                                singleDigitPrice,
-                            )
-                        }
-                    />
-                </View>
-                <View
-                    style={[styles.inputContainer]}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <CommonBall
-                            backgroundColor="#066FEA"
-                            innerText="C"
-                            borderColor={'#066FEA'}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={singleDigitC?.toString()}
-                            placeholderText={'-'}
-                            onChange={onChangeSingleDigitC}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                    </View>
-                    {singleDigitC !== '' && (
-                        <CountButtons
-                            count={singleCCount}
-                            setCount={value => dispatch(setSingleCCount(value))}
-                            onHide={() => dispatch(setSingleDigitC(''))} // Hide only C
-                            minValue={1}
-                            maxValue={10}
-                        />
-                    )}
-                    <CommonAddButton
-                        innerText="ADD"
-                        opacity={singleDigitC !== '' ? 1 : 0.5}
-                        onPress={() =>
-                            handleAdd(
-                                'C',
-                                singleDigitC,
-                                singleCCount,
-                                selectedOption,
-                                singleDigitPrice,
-                            )
-                        }
-                    />
-                </View>
-            </View>
 
-            {/* Double Digit Start */}
-            <View style={styles.card}>
-                <View
-                    style={styles.gameHeader}>
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.DigitTitleText}>Double Digit</Text>
-                            <Text style={styles.DigitTitleText1}> Win ${doubleDigitWinningPrice.toFixed(2)}</Text>
+                            <Text style={styles.gameNameText}>{lastGameWiiningId}</Text>
+                            <TouchableOpacity
+                                onPress={() => { dispatch(showHowToPlay()) }}
+                                style={styles.howtoplayBtn}>
+                                <Text style={styles.howtoPlayTxt}>How to Play</Text>
+                            </TouchableOpacity>
                         </View>
-                        <Text style={[styles.DigitTitleText, { marginVertical: Scale(5) }]}>${doubleDigitPrice.toFixed(2)}</Text>
-                    </View>
-                    <CommonQuickGuess
-                        innerText={'Quick Guess'}
-                        onPress={() => {
-                            generateDoubleDigitRandomNumbers();
-                        }}
-                    />
-                </View>
-                <View
-                    style={styles.inputContainer}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <CommonBall
-                            backgroundColor="#DE3C3F"
-                            innerText="A"
-                            borderColor={'#DE3C3F'}
-                        />
-                        <CommonBall
-                            backgroundColor="#EC8204"
-                            innerText="B"
-                            borderColor={'#EC8204'}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={doubleDigitA1?.toString()}
-                            placeholderText={'-'}
-                            onChange={doubleDigitA1OnChange}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={doubleDigitB1?.toString()}
-                            placeholderText={'-'}
-                            onChange={doubleDigitB1OnChange}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                    </View>
-                    {doubleDigitA1 !== '' && doubleDigitB1 !== '' && (
-                        <View style={{ right: Scale(10) }}>
-                            <CountButtons
-                                count={doubleABCount}
-                                setCount={value => dispatch(setDoubleABCount(value))}
-                                onHide={() => {
-                                    dispatch(setDoubleDigitA1(''));
-                                    dispatch(setDoubleDigitB1(''));
-                                }}
-                                minValue={1}
-                                maxValue={10}
-                            />
+                        <View style={styles.ballsView}>
+                            <CommonBall backgroundColor="#DE3C3F" innerText={latGameWinningA} borderColor="#DE3C3F" />
+                            <CommonBall backgroundColor="#EC8204" innerText={lastGameWinningB} borderColor="#EC8204" />
+                            <CommonBall backgroundColor="#066FEA" innerText={lastGameWinningC} borderColor="#066FEA" />
                         </View>
-                    )}
-                    <CommonAddButton
-                        innerText="ADD"
-                        opacity={doubleDigitA1 !== '' && doubleDigitB1 !== '' ? 1 : 0.5}
-                        onPress={() =>
-                            handleAdd(
-                                'AB',
-                                doubleDigitA1.toString() + doubleDigitB1.toString(),
-                                doubleABCount,
-                                selectedOption,
-                                doubleDigitPrice,
-                            )
-                        }
-                    />
-                </View>
-                <View
-                    style={styles.inputContainer}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <CommonBall
-                            backgroundColor="#DE3C3F"
-                            innerText="A"
-                            borderColor={'#DE3C3F'}
-                        />
-                        <CommonBall
-                            backgroundColor="#066FEA"
-                            innerText="C"
-                            borderColor={'#066FEA'}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={doubleDigitA2?.toString()}
-                            placeholderText={'-'}
-                            onChange={doubleDigitA2OnChange}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={doubleDigitC1?.toString()}
-                            placeholderText={'-'}
-                            onChange={doubleDigitC1OnChange}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
                     </View>
-                    {doubleDigitA2 !== '' && doubleDigitC1 !== '' && (
-                        <View style={{ right: Scale(10) }}>
-                            <CountButtons
-                                count={doubleACCount}
-                                setCount={value => dispatch(setDoubleACCount(value))}
-                                onHide={() => {
-                                    dispatch(setDoubleDigitA2(''));
-                                    dispatch(setDoubleDigitC1(''));
-                                }}
-                                minValue={1}
-                                maxValue={10}
-                            />
-                        </View>
-                    )}
-                    <CommonAddButton
-                        innerText="ADD"
-                        opacity={doubleDigitA2 !== '' && doubleDigitC1 !== '' ? 1 : 0.5}
-                        onPress={() =>
-                            handleAdd(
-                                'AC',
-                                doubleDigitA2.toString() + doubleDigitC1.toString(),
-                                doubleACCount,
-                                selectedOption,
-                                doubleDigitPrice,
-                            )
-                        }
-                    />
-                </View>
-                <View
-                    style={styles.inputContainer}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <CommonBall
-                            backgroundColor="#EC8204"
-                            innerText="B"
-                            borderColor={'#EC8204'}
-                        />
-                        <CommonBall
-                            backgroundColor="#066FEA"
-                            innerText="C"
-                            borderColor={'#066FEA'}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={doubleDigitB2?.toString()}
-                            placeholderText={'-'}
-                            onChange={doubleDigitB2OnChange}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={doubleDigitC2?.toString()}
-                            placeholderText={'-'}
-                            onChange={doubleDigitC2OnChange}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                    </View>
-                    {doubleDigitB2 !== '' && doubleDigitC2 !== '' && (
-                        <View style={{ right: Scale(10) }}>
-                            <CountButtons
-                                count={doubleBCCount}
-                                setCount={value => dispatch(setDoubleBCCount(value))}
-                                onHide={() => {
-                                    dispatch(setDoubleDigitB2(''));
-                                    dispatch(setDoubleDigitC2(''));
-                                }}
-                                minValue={1}
-                                maxValue={10}
-                            />
-                        </View>
-                    )}
-                    <CommonAddButton
-                        innerText="ADD"
-                        opacity={doubleDigitB2 !== '' && doubleDigitC2 !== '' ? 1 : 0.5}
-                        onPress={() =>
-                            handleAdd(
-                                'BC',
-                                doubleDigitB2.toString() + doubleDigitC2.toString(),
-                                doubleBCCount,
-                                selectedOption,
-                                doubleDigitPrice,
-                            )
-                        }
-                    />
-                </View>
-            </View>
 
-            {/* Three Digit Start */}
-
-            <View style={styles.card}>
-                <View
-                    style={styles.gameHeader}>
-                    <View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.DigitTitleText}>Triple Digit</Text>
-                            <Text style={styles.DigitTitleText1}> Win $${threeDigitWinningPrice.toFixed(2)}</Text>
-                        </View>
-                        <Text style={[styles.DigitTitleText, { marginVertical: Scale(5) }]}>
-                            ${threeDigitPrice}
-                        </Text>
-                    </View>
-                    <CommonQuickGuess
-                        innerText={'Quick Guess'}
-                        onPress={() => generateThreeDigitRandomNumbers()}
-                    />
-                </View>
-                <View
-                    style={styles.inputContainer}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <CommonBall
-                            backgroundColor="#DE3C3F"
-                            innerText="A"
-                            borderColor={'#DE3C3F'}
+                    <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
+                        <Text style={styles.gameNameText}>Time Remaining</Text>
+                        <CountdownTimer
+                            targetDate={targetDate}
+                            onThirtySecondsLeft={() => { setShowAlert(true) }}
+                             onComplete={onTimerComplete}
                         />
-                        <CommonBall
-                            backgroundColor="#EC8204"
-                            innerText="B"
-                            borderColor={'#EC8204'}
-                        />
-                        <CommonBall
-                            backgroundColor="#066FEA"
-                            innerText="C"
-                            borderColor={'#066FEA'}
-                        />
-                    </View>
-                    <View style={{ flexDirection: 'row' }}>
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={threeDigitA?.toString()}
-                            placeholderText={'-'}
-                            onChange={onChangeThreeDigitA}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={threeDigitB?.toString()}
-                            placeholderText={'-'}
-                            onChange={onChangeThreeDigitB}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
-                        <SingleIntegerTextInput
-                            isDisabled={false}
-                            value={threeDigitC?.toString()}
-                            placeholderText={'-'}
-                            onChange={onChangeThreeDigitC}
-                            onBlur={undefined}
-                            keyboardType={'numeric'}
-                            maxChar={1}
-                        />
+                        <Text style={styles.gameNameText}>{nextGameId}</Text>
                     </View>
                 </View>
 
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        marginVertical: Scale(20),
-                        justifyContent: 'space-between',
-                        flex: 1,
-                    }}>
+                {/* SINGLE DIGIT BLOCK */}
+                <View style={styles.card}>
                     <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            flex: 1,
-                        }}>
-                        {threeDigitA !== '' &&
-                            threeDigitB !== '' &&
-                            threeDigitC !== '' && (
-                                <CountButtons
-                                    count={threeDigitCount}
-                                    setCount={value =>
-                                        dispatch(setThreeDigitCount(value))
-                                    }
-                                    onHide={() => {
-                                        dispatch(setThreeDigitA(''));
-                                        dispatch(setThreeDigitB(''));
-                                        dispatch(setThreeDigitC(''));
-                                    }}
-                                    minValue={1}
-                                    maxValue={10}
-                                />
-                            )}
+                        style={styles.gameHeader}>
+                        <View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.DigitTitleText}>Single Digit</Text>
+                                <Text style={styles.DigitTitleText1}> Win ${singleDigitWinningPrice.toFixed(2)}</Text>
+                            </View>
+                            <Text style={[styles.DigitTitleText, { marginVertical: Scale(5) }]}>${singleDigitPrice.toFixed(2)}</Text>
+                        </View>
+                        <CommonQuickGuess
+                            innerText={'Quick Guess'}
+                            onPress={() => {
+                                generateRandomNumbers();
+                            }}
+                        />
                     </View>
                     <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            flex: 0.7,
-                        }}>
-                        <CommonAddButton
-                            innerText={'BOX'}
-                            opacity={threeDigitA !== '' &&
-                                threeDigitB !== '' &&
-                                threeDigitC !== '' ? 1 : 0.5}
-                            onPress={handleGenerate}
-                        />
+                        style={styles.inputContainer}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CommonBall
+                                backgroundColor="#DE3C3F"
+                                innerText="A"
+                                borderColor={'#DE3C3F'}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={singleDigitA?.toString()}
+                                placeholderText={'-'}
+                                onChange={onChangeSingleDigitA}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                        </View>
+                        {singleDigitA !== '' && (
+                            <CountButtons
+                                count={singleACount}
+                                setCount={value => dispatch(setSingleACount(value))}
+                                onHide={() => dispatch(setSingleDigitA(''))}
+                                minValue={1}
+                                maxValue={10}
+                            />
+                        )}
                         <CommonAddButton
                             innerText="ADD"
-                            opacity={threeDigitA !== '' &&
-                                threeDigitB !== '' &&
-                                threeDigitC !== '' ? 1 : 0.5}
+                            opacity={singleDigitA !== '' ? 1 : 0.5}
                             onPress={() =>
                                 handleAdd(
-                                    'ABC',
-                                    threeDigitA.toString() +
-                                    threeDigitB.toString() +
-                                    threeDigitC.toString(),
-                                    threeDigitCount,
+                                    'A',
+                                    singleDigitA,
+                                    singleACount,
                                     selectedOption,
-                                    threeDigitPrice,
+                                    singleDigitPrice,
+                                )
+                            }
+                        />
+                    </View>
+                    <View
+                        style={[styles.inputContainer]}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CommonBall
+                                backgroundColor="#EC8204"
+                                innerText="B"
+                                borderColor={'#EC8204'}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={singleDigitB?.toString()}
+                                placeholderText={'-'}
+                                onChange={onChangeSingleDigitB}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                        </View>
+                        {singleDigitB !== '' && (
+                            <CountButtons
+                                count={singleBCount}
+                                setCount={value => dispatch(setSingleBCount(value))}
+                                onHide={() => dispatch(setSingleDigitB(''))} // Hide only B
+                                minValue={1}
+                                maxValue={10}
+                            />
+                        )}
+                        <CommonAddButton
+                            innerText="ADD"
+                            opacity={singleDigitB !== '' ? 1 : 0.5}
+                            onPress={() =>
+                                handleAdd(
+                                    'B',
+                                    singleDigitB,
+                                    singleBCount,
+                                    selectedOption,
+                                    singleDigitPrice,
+                                )
+                            }
+                        />
+                    </View>
+                    <View
+                        style={[styles.inputContainer]}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CommonBall
+                                backgroundColor="#066FEA"
+                                innerText="C"
+                                borderColor={'#066FEA'}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={singleDigitC?.toString()}
+                                placeholderText={'-'}
+                                onChange={onChangeSingleDigitC}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                        </View>
+                        {singleDigitC !== '' && (
+                            <CountButtons
+                                count={singleCCount}
+                                setCount={value => dispatch(setSingleCCount(value))}
+                                onHide={() => dispatch(setSingleDigitC(''))} // Hide only C
+                                minValue={1}
+                                maxValue={10}
+                            />
+                        )}
+                        <CommonAddButton
+                            innerText="ADD"
+                            opacity={singleDigitC !== '' ? 1 : 0.5}
+                            onPress={() =>
+                                handleAdd(
+                                    'C',
+                                    singleDigitC,
+                                    singleCCount,
+                                    selectedOption,
+                                    singleDigitPrice,
                                 )
                             }
                         />
                     </View>
                 </View>
-            </View>
 
-            <ResultTable tableData={tableData} />
-        </View>
+                {/* Double Digit Start */}
+                <View style={styles.card}>
+                    <View
+                        style={styles.gameHeader}>
+                        <View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.DigitTitleText}>Double Digit</Text>
+                                <Text style={styles.DigitTitleText1}> Win ${doubleDigitWinningPrice.toFixed(2)}</Text>
+                            </View>
+                            <Text style={[styles.DigitTitleText, { marginVertical: Scale(5) }]}>${doubleDigitPrice.toFixed(2)}</Text>
+                        </View>
+                        <CommonQuickGuess
+                            innerText={'Quick Guess'}
+                            onPress={() => {
+                                generateDoubleDigitRandomNumbers();
+                            }}
+                        />
+                    </View>
+                    <View
+                        style={styles.inputContainer}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CommonBall
+                                backgroundColor="#DE3C3F"
+                                innerText="A"
+                                borderColor={'#DE3C3F'}
+                            />
+                            <CommonBall
+                                backgroundColor="#EC8204"
+                                innerText="B"
+                                borderColor={'#EC8204'}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={doubleDigitA1?.toString()}
+                                placeholderText={'-'}
+                                onChange={doubleDigitA1OnChange}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={doubleDigitB1?.toString()}
+                                placeholderText={'-'}
+                                onChange={doubleDigitB1OnChange}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                        </View>
+                        {doubleDigitA1 !== '' && doubleDigitB1 !== '' && (
+                            <View style={{ right: Scale(10) }}>
+                                <CountButtons
+                                    count={doubleABCount}
+                                    setCount={value => dispatch(setDoubleABCount(value))}
+                                    onHide={() => {
+                                        dispatch(setDoubleDigitA1(''));
+                                        dispatch(setDoubleDigitB1(''));
+                                    }}
+                                    minValue={1}
+                                    maxValue={10}
+                                />
+                            </View>
+                        )}
+                        <CommonAddButton
+                            innerText="ADD"
+                            opacity={doubleDigitA1 !== '' && doubleDigitB1 !== '' ? 1 : 0.5}
+                            onPress={() =>
+                                handleAdd(
+                                    'AB',
+                                    doubleDigitA1.toString() + doubleDigitB1.toString(),
+                                    doubleABCount,
+                                    selectedOption,
+                                    doubleDigitPrice,
+                                )
+                            }
+                        />
+                    </View>
+                    <View
+                        style={styles.inputContainer}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CommonBall
+                                backgroundColor="#DE3C3F"
+                                innerText="A"
+                                borderColor={'#DE3C3F'}
+                            />
+                            <CommonBall
+                                backgroundColor="#066FEA"
+                                innerText="C"
+                                borderColor={'#066FEA'}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={doubleDigitA2?.toString()}
+                                placeholderText={'-'}
+                                onChange={doubleDigitA2OnChange}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={doubleDigitC1?.toString()}
+                                placeholderText={'-'}
+                                onChange={doubleDigitC1OnChange}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                        </View>
+                        {doubleDigitA2 !== '' && doubleDigitC1 !== '' && (
+                            <View style={{ right: Scale(10) }}>
+                                <CountButtons
+                                    count={doubleACCount}
+                                    setCount={value => dispatch(setDoubleACCount(value))}
+                                    onHide={() => {
+                                        dispatch(setDoubleDigitA2(''));
+                                        dispatch(setDoubleDigitC1(''));
+                                    }}
+                                    minValue={1}
+                                    maxValue={10}
+                                />
+                            </View>
+                        )}
+                        <CommonAddButton
+                            innerText="ADD"
+                            opacity={doubleDigitA2 !== '' && doubleDigitC1 !== '' ? 1 : 0.5}
+                            onPress={() =>
+                                handleAdd(
+                                    'AC',
+                                    doubleDigitA2.toString() + doubleDigitC1.toString(),
+                                    doubleACCount,
+                                    selectedOption,
+                                    doubleDigitPrice,
+                                )
+                            }
+                        />
+                    </View>
+                    <View
+                        style={styles.inputContainer}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CommonBall
+                                backgroundColor="#EC8204"
+                                innerText="B"
+                                borderColor={'#EC8204'}
+                            />
+                            <CommonBall
+                                backgroundColor="#066FEA"
+                                innerText="C"
+                                borderColor={'#066FEA'}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={doubleDigitB2?.toString()}
+                                placeholderText={'-'}
+                                onChange={doubleDigitB2OnChange}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={doubleDigitC2?.toString()}
+                                placeholderText={'-'}
+                                onChange={doubleDigitC2OnChange}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                        </View>
+                        {doubleDigitB2 !== '' && doubleDigitC2 !== '' && (
+                            <View style={{ right: Scale(10) }}>
+                                <CountButtons
+                                    count={doubleBCCount}
+                                    setCount={value => dispatch(setDoubleBCCount(value))}
+                                    onHide={() => {
+                                        dispatch(setDoubleDigitB2(''));
+                                        dispatch(setDoubleDigitC2(''));
+                                    }}
+                                    minValue={1}
+                                    maxValue={10}
+                                />
+                            </View>
+                        )}
+                        <CommonAddButton
+                            innerText="ADD"
+                            opacity={doubleDigitB2 !== '' && doubleDigitC2 !== '' ? 1 : 0.5}
+                            onPress={() =>
+                                handleAdd(
+                                    'BC',
+                                    doubleDigitB2.toString() + doubleDigitC2.toString(),
+                                    doubleBCCount,
+                                    selectedOption,
+                                    doubleDigitPrice,
+                                )
+                            }
+                        />
+                    </View>
+                </View>
+
+                {/* Three Digit Start */}
+
+                <View style={styles.card}>
+                    <View
+                        style={styles.gameHeader}>
+                        <View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={styles.DigitTitleText}>Triple Digit</Text>
+                                <Text style={styles.DigitTitleText1}> Win $${threeDigitWinningPrice.toFixed(2)}</Text>
+                            </View>
+                            <Text style={[styles.DigitTitleText, { marginVertical: Scale(5) }]}>
+                                ${threeDigitPrice}
+                            </Text>
+                        </View>
+                        <CommonQuickGuess
+                            innerText={'Quick Guess'}
+                            onPress={() => generateThreeDigitRandomNumbers()}
+                        />
+                    </View>
+                    <View
+                        style={styles.inputContainer}>
+                        <View style={{ flexDirection: 'row' }}>
+                            <CommonBall
+                                backgroundColor="#DE3C3F"
+                                innerText="A"
+                                borderColor={'#DE3C3F'}
+                            />
+                            <CommonBall
+                                backgroundColor="#EC8204"
+                                innerText="B"
+                                borderColor={'#EC8204'}
+                            />
+                            <CommonBall
+                                backgroundColor="#066FEA"
+                                innerText="C"
+                                borderColor={'#066FEA'}
+                            />
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={threeDigitA?.toString()}
+                                placeholderText={'-'}
+                                onChange={onChangeThreeDigitA}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={threeDigitB?.toString()}
+                                placeholderText={'-'}
+                                onChange={onChangeThreeDigitB}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                            <SingleIntegerTextInput
+                                isDisabled={false}
+                                value={threeDigitC?.toString()}
+                                placeholderText={'-'}
+                                onChange={onChangeThreeDigitC}
+                                onBlur={undefined}
+                                keyboardType={'numeric'}
+                                maxChar={1}
+                            />
+                        </View>
+                    </View>
+
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            marginVertical: Scale(20),
+                            justifyContent: 'space-between',
+                            flex: 1,
+                        }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                flex: 1,
+                            }}>
+                            {threeDigitA !== '' &&
+                                threeDigitB !== '' &&
+                                threeDigitC !== '' && (
+                                    <CountButtons
+                                        count={threeDigitCount}
+                                        setCount={value =>
+                                            dispatch(setThreeDigitCount(value))
+                                        }
+                                        onHide={() => {
+                                            dispatch(setThreeDigitA(''));
+                                            dispatch(setThreeDigitB(''));
+                                            dispatch(setThreeDigitC(''));
+                                        }}
+                                        minValue={1}
+                                        maxValue={10}
+                                    />
+                                )}
+                        </View>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                flex: 0.7,
+                            }}>
+                            <CommonAddButton
+                                innerText={'BOX'}
+                                opacity={threeDigitA !== '' &&
+                                    threeDigitB !== '' &&
+                                    threeDigitC !== '' ? 1 : 0.5}
+                                onPress={handleGenerate}
+                            />
+                            <CommonAddButton
+                                innerText="ADD"
+                                opacity={threeDigitA !== '' &&
+                                    threeDigitB !== '' &&
+                                    threeDigitC !== '' ? 1 : 0.5}
+                                onPress={() =>
+                                    handleAdd(
+                                        'ABC',
+                                        threeDigitA.toString() +
+                                        threeDigitB.toString() +
+                                        threeDigitC.toString(),
+                                        threeDigitCount,
+                                        selectedOption,
+                                        threeDigitPrice,
+                                    )
+                                }
+                            />
+                        </View>
+                    </View>
+                </View>
+
+                <ResultTable tableData={tableData} />
+
+            </View>
+            {showAlert && <Show30SecondsModal />}
+        </>
     );
 };
 
