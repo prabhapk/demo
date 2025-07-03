@@ -24,6 +24,9 @@ const initialvalues: threeDigitState = {
   threeDigitB: "",
   threeDigitC: "",
   threeDigitCount: 3,
+  min1TargetDate: '2025-07-03T19:35:27.123Z',
+  min3TargetDate: '2025-07-03T19:37:27.123Z',
+  min5TargetDate: '2025-07-03T19:40:27.123Z',
 }
 export const threeDigitSlice = createSlice({
   name: 'threeDigit',
@@ -98,10 +101,25 @@ export const threeDigitSlice = createSlice({
     setThreeDigitCount: (state, action: PayloadAction<number>) => {
       state.threeDigitCount = action.payload === 0 ? 3 : action.payload;
     },
+    setMin1TargetDate: (state, action: PayloadAction<any>) => {
+      state.min1TargetDate = action.payload;
+    },
+    setMin3TargetDate: (state, action: PayloadAction<any>) => {
+      state.min3TargetDate = action.payload;
+    },
+    setMin5TargetDate: (state, action: PayloadAction<any>) => {
+      state.min5TargetDate = action.payload;
+    },
 },
 
 })
 
-export const {  setSingleDigitA,setSingleDigitB,setSingleDigitC, setSingleACount, setSingleBCount, setSingleCCount, setDoubleDigitA1, setDoubleDigitA2, setDoubleDigitB1, setDoubleDigitB2, setDoubleDigitC1, setDoubleDigitC2, setDoubleABCount, setDoubleACCount, setDoubleBCCount, setThreeDigitA, setThreeDigitB, setThreeDigitC, setThreeDigitCount } = threeDigitSlice.actions
+export const {  setSingleDigitA,setSingleDigitB,
+  setSingleDigitC, setSingleACount, 
+  setSingleBCount, setSingleCCount, setDoubleDigitA1, 
+  setDoubleDigitA2, setDoubleDigitB1, setDoubleDigitB2, 
+  setDoubleDigitC1, setDoubleDigitC2, setDoubleABCount, 
+  setDoubleACCount, setDoubleBCCount, setThreeDigitA,
+   setThreeDigitB, setThreeDigitC, setThreeDigitCount, setMin1TargetDate, setMin3TargetDate, setMin5TargetDate } = threeDigitSlice.actions
 
 export default threeDigitSlice.reducer

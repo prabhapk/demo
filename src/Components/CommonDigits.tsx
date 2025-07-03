@@ -1,6 +1,9 @@
 import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import CountdownTimer from './CountdownTimer';
+import { setMin1TargetDate, setMin3TargetDate, setMin5TargetDate } from '../Redux/Slice/threeDigitSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../Redux/store';
 
 interface Props {
   data: any;
@@ -8,6 +11,25 @@ interface Props {
 }
 
 const CommonDigits: React.FC<Props> = ({data, onPress3Digits}) => {
+  const {min1TargetDate, min3TargetDate, min5TargetDate} = useSelector((state: RootState) => state.threeDigit);
+  const dispatch = useDispatch();
+  const handleTimerComplete = () => {
+    let updatedTime=""
+    if(data.id==="1minGame"){
+     updatedTime = new Date(new Date(min1TargetDate).getTime() + 1 * 60 * 1000).toISOString();
+     dispatch(setMin1TargetDate(updatedTime));
+    }
+    else if(data.id==="3minGame"){
+     updatedTime = new Date(new Date(min3TargetDate).getTime() + 3 * 60 * 1000).toISOString();
+     dispatch(setMin3TargetDate(updatedTime));
+    }
+    else if(data.id==="5minGame"){
+    updatedTime = new Date(new Date(min5TargetDate).getTime() + 5 * 60 * 1000).toISOString();
+    dispatch(setMin5TargetDate(updatedTime));
+    }
+   console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123Z
+   
+   };
   return (
     <TouchableOpacity
     onPress={onPress3Digits}
@@ -23,7 +45,7 @@ const CommonDigits: React.FC<Props> = ({data, onPress3Digits}) => {
           <Text style={styles.digitTitle}>{'Time for Next booking'}</Text>
           <CountdownTimer
             targetDate={data.ends_On}
-            onComplete={() => {}}
+            onComplete={() => handleTimerComplete()}
           />
         </View>
       <View style={{position:"absolute",bottom:0}} >

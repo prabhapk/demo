@@ -10,6 +10,7 @@ import SignUpScreen from '../Screens/SignUpScreen';
 import SignInScreen from '../Screens/SignInScreen';
 import UserDetails from '../Screens/UserDetails';
 import PasswordChange from '../Screens/PasswordChange';
+import DummyScreen from '../Screens/DummyScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,10 @@ function MainNavigation() {
         <Stack.Screen
           name="PasswordChange"
           component={PasswordChange}
+        />
+        <Stack.Screen
+          name="DummyScreen"
+          component={DummyScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

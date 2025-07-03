@@ -23,4 +23,7 @@ export interface CommonSliceState {
     threeDigitB: any;
     threeDigitC: any;
     threeDigitCount: number;
+    min1TargetDate: any;
+    min3TargetDate: any;
+    min5TargetDate: any;
   }

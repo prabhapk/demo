@@ -49,6 +49,9 @@ import {
   setThreeDigitB,
   setThreeDigitC,
   setThreeDigitCount,
+  setMin1TargetDate,
+  setMin3TargetDate,
+  setMin5TargetDate,
 } from '../Redux/Slice/threeDigitSlice';
 import { handleShowAlert } from '../Redux/Slice/commonSlice';
 import CountButtons from '../Components/CountButtons';
@@ -63,6 +66,9 @@ const ThreeDigitMain = ({ navigation, route }: any) => {
     threeDigitB,
     threeDigitC,
     threeDigitCount,
+    min1TargetDate,
+    min3TargetDate,
+    min5TargetDate,
   } = useSelector((state: RootState) => state.threeDigit);
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState('1 Mins');
@@ -79,10 +85,6 @@ const ThreeDigitMain = ({ navigation, route }: any) => {
   const singleDigitPrice = 10.0;
   const doubleDigitPrice = 11.0;
   const threeDigitPrice = 21.0;
-
-     const [min1TargetDate, setMin1TargetDate] = useState("2025-07-03T19:35:27.123Z");
-     const [min3TargetDate, setMin3TargetDate] = useState("2025-07-03T19:37:27.123Z");
-     const [min5TargetDate, setMin5TargetDate] = useState("2025-07-03T19:40:27.123Z");
 
   const singleDigitWinningPrice = 110.0;
   const doubleDigitWinningPrice = 220.0;
@@ -201,19 +203,18 @@ const ThreeDigitMain = ({ navigation, route }: any) => {
 
 
 const handleTimerComplete = () => {
- const originalTime = "2025-07-03T19:35:27.123Z";
  let updatedTime=""
  if(selectedOption==="1 Mins"){
   updatedTime = new Date(new Date(min1TargetDate).getTime() + 1 * 60 * 1000).toISOString();
-  setMin1TargetDate(updatedTime);
+  dispatch(setMin1TargetDate(updatedTime));
  }
  else if(selectedOption==="3 Mins"){
   updatedTime = new Date(new Date(min3TargetDate).getTime() + 3 * 60 * 1000).toISOString();
-  setMin3TargetDate(updatedTime);
+  dispatch(setMin3TargetDate(updatedTime));
  }
  else if(selectedOption==="5 Mins"){
  updatedTime = new Date(new Date(min5TargetDate).getTime() + 5 * 60 * 1000).toISOString();
- setMin5TargetDate(updatedTime);
+ dispatch(setMin5TargetDate(updatedTime));
  }
 console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123Z
 

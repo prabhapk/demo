@@ -44,7 +44,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         onThirtySecondsLeft?.(); // Trigger the 30-second modal
       }
 
-      if (newTimeLeft.minutes === 0 && newTimeLeft.seconds === 0) {
+      if (newTimeLeft.minutes <= 0 && newTimeLeft.seconds <= 0) {
         clearInterval(timer);
         onComplete?.(); // Optional complete callback
       }

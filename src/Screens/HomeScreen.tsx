@@ -46,6 +46,8 @@ import CommonDigits from '../Components/CommonDigits';
 import CommonBanner from '../Components/CommonBanner';
 import FastImage from 'react-native-fast-image';
 import Scale from '../Components/Scale';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../Redux/store';
 
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
@@ -112,14 +114,17 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
   const now = new Date();
   const targetDate = new Date(now.getTime() + 0.70 * 60 * 1000).toISOString();
   const [bhutanEndsOn, setBhutanEndsOn] = useState(getNextInterval());
-  
-  
+  const {
+    min1TargetDate,
+    min3TargetDate,
+    min5TargetDate,
+  } = useSelector((state: RootState) => state.threeDigit);
   const ThreeDigits = [
     {
       win_price: '10,000',
       price: '11.00',
       title: 'Quick 3D 1min',
-      ends_On: "2025-07-03T18:42:27.123Z",
+      ends_On:min1TargetDate ,
       bgImage:quick3min,
       gameTye:"Custom",
       id:"1minGame"
@@ -128,7 +133,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
       win_price: '10,000',
       price: '11.00',
       title: 'Quick 3D 3min',
-      ends_On: "2025-07-03T18:42:27.123Z",
+      ends_On: min3TargetDate,
       bgImage:quick3min,
        gameTye:"Custom",
       id:"3minGame"
@@ -137,7 +142,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
       win_price: '10,000',
       price: '11.00',
       title: 'Quick 3D 5min',
-      ends_On: "2025-07-03T18:42:27.123Z",
+      ends_On: min5TargetDate,
       bgImage:quick3min,
        gameTye:"Custom",
       id:"5minGame"
@@ -339,7 +344,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
             navigation.navigate('ThreeDigitMain',{gameData:item});
           }
           else if(item.gameTye==="RealGame"){
-          // navigation.navigate('ThreeDigitMain',{gameDat:item});
+          navigation.navigate('DummyScreen',{gameDat:item});
         }}
         }
         />;

@@ -45,3 +45,4 @@ export const customerServiceTopIcon = require('./ProfileScreen/customerService.p
 export const leftArrowHeader = require('./ProfileScreen/leftArrowHeader.png');
 export const backGround = require('./ProfileScreen/testBG.jpg');
 export const backGround1 = require('./ProfileScreen/testBG1.jpeg');
+export const addIcon = require('./ProfileScreen/plus_add_green.webp');
