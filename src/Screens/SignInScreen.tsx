@@ -4,6 +4,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
   ScrollView,
   GestureResponderEvent,
   ImageBackground,
@@ -14,7 +15,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CommonCheckBox from '../Components/CommonCheckBox';
 import CustomHeaderRegister from '../Components/CustomHeaderRegister';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { backGround1, customerServiceTopIcon, leftArrowHeader } from '../../assets/assets';
+import { backGround1, customerServiceTopIcon, leftArrowHeader, loginImageBackground } from '../../assets/assets';
+import LinearGradient from 'react-native-linear-gradient';
 
 const SignInScreen = ({navigation}: any) => {
   const [selectedTab, setSelectedTab] = useState<'password' | 'otp'>('password');
@@ -33,24 +35,22 @@ const SignInScreen = ({navigation}: any) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <ImageBackground
-      source={backGround1}
-      style={{flex: 1}}
-      > 
-      <CustomHeaderRegister
+    <View style={{flex: 1, backgroundColor: '#360400',}}>
+      {/* <CustomHeaderRegister
      leftIconPress={() => navigation.goBack()}
       rightIconPress={()=>navigation.navigate('SignUpScreen')}
       leftIcon={leftArrowHeader}
       rightIcon={customerServiceTopIcon}
-      />
+      /> */}
+      <ScrollView> 
+      <View style ={{marginHorizontal: Scale(5)}}>
+      <Image
+      source={loginImageBackground} 
+      style={{width:'100%', height:Scale(300), resizeMode:'contain'}}/>
+      </View>
+      <View>
       <View style={{ marginTop: Scale(60), marginHorizontal: Scale(20) }}>
-        <Text style={styles.headerText}>Sign in</Text>
-        <Text style={styles.subText}>Member account</Text>
-        <Text style={styles.subText}>
-          If you forgot your password, please contact
-        </Text>
-        <Text style={styles.subText}>customer service</Text>
+        <Text style={styles.headerText}>Log in</Text>
       </View>
 
       {/* Tab Switch */}
@@ -91,7 +91,7 @@ const SignInScreen = ({navigation}: any) => {
       </View>
 
       {/* Input Fields */}
-      <View style={{ marginHorizontal: Scale(20), marginTop: Scale(20) }}>
+      <View style={{ marginHorizontal: Scale(20), marginTop: Scale(40) }}>
         <CommonTextInput
           placeholderText="Please enter phone number"
           value={mobileNumber}
@@ -117,14 +117,6 @@ const SignInScreen = ({navigation}: any) => {
               <Ionicons name="lock-closed-outline" size={Scale(18)} color="#999" />
             }
           />
-          <View style ={{marginTop: Scale(30)}}>
-          <CommonCheckBox
-           checkvalue={undefined} 
-           onPress={function (event: GestureResponderEvent): void {
-                              throw new Error('Function not implemented.');
-                          } }
-                           title={'Remembered password'}/>
-          </View>
            </View>
           
         ) : (
@@ -148,11 +140,23 @@ const SignInScreen = ({navigation}: any) => {
           </View>
         )}
       </View>
-
-      {/* Sign In Button */}
-      <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
-        <Text style={styles.signInButtonText}>Sign in</Text>
-      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={()=> navigation.navigate('SignInScreen') }
+          style={{
+            marginHorizontal: Scale(10),
+            marginBottom: 16,
+            marginTop: Scale(30),
+          }}>
+         <LinearGradient
+            colors={['#FF4140', '#FFAD45']}
+            start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+            style={[
+              styles.signInButton,
+            ]}>
+            <Text style={styles.signInButtonText}>LOGIN</Text>
+          </LinearGradient>
+        </TouchableOpacity>
 
       {/* Google Sign-In */}
       <TouchableOpacity style={styles.googleButton}>
@@ -165,8 +169,8 @@ const SignInScreen = ({navigation}: any) => {
       >
         <Text style={styles.registerText}>Register</Text>
       </TouchableOpacity>
-      </ImageBackground>
-    {/* </ScrollView> */}
+      </View>
+    </ScrollView>
     </View>
   );
 };
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: Scale(40),
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
     marginBottom: Scale(10),
   },
   subText: {
@@ -188,20 +192,28 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#cce6ff',
-    borderRadius: Scale(30),
+    // backgroundColor: '#cce6ff',
+    borderColor: '#ff5f5f',
+    backgroundColor: '#2e0b0b',
+    borderRadius: 999,
     marginHorizontal: Scale(20),
     marginTop: Scale(30),
     padding: Scale(4),
+    borderWidth:1
   },
   tab: {
     flex: 1,
     paddingVertical: Scale(12),
     borderRadius: Scale(25),
     alignItems: 'center',
+    backgroundColor: '#2e0b0b',
   },
   activeTab: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
+    // backgroundColor: '#ff5f5f',
+    // borderColor: '#ff5f5f',
+    borderColor: '#ff5f5f',
+    borderWidth: 1
   },
   inactiveTab: {
     backgroundColor: 'transparent',
@@ -211,10 +223,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   activeText: {
-    color: '#000',
+    color: '#ff5f5f',
   },
   inactiveText: {
-    color: '#000',
+    color: '#ff5f5f',
     opacity: 0.6,
   },
   signInButton: {
@@ -229,6 +241,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: Scale(16),
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   googleButton: {
     marginTop: Scale(20),

@@ -10,10 +10,7 @@ export const sameClock = require('./clockNew.webp');
 export const lefArrow = require('./leftArrow.png');
 export const headerWallet = require('./wallet.png');
 export const splashScreen = require('./AvisLogo.png');
-export const lottery = require('./lottery.png');
 export const refer = require('./refer.jpg');
-export const promotion = require('./Promotion.png');
-export const agent = require('./agent.png');
 export const banner1 = require('./Banner/banner1.jpg');
 export const banner2 = require('./Banner/banner2.jpg');
 export const banner3 = require('./Banner/banner3.jpg');
@@ -46,3 +43,13 @@ export const leftArrowHeader = require('./ProfileScreen/leftArrowHeader.png');
 export const backGround = require('./ProfileScreen/testBG.jpg');
 export const backGround1 = require('./ProfileScreen/testBG1.jpeg');
 export const addIcon = require('./ProfileScreen/plus_add_green.webp');
+export const cardImageBG = require('./ProfileScreen/try.jpg');
+export const profileLotteriesImage = require('./ProfileScreen/lotteriesNew.webp');
+export const profileCommissionImage = require('./ProfileScreen/Commission.webp');
+export const profileTransactionImage = require('./ProfileScreen/Transactions.webp');
+export const profileCustomerServiceImage = require('./ProfileScreen/Service.webp');
+export const profileTwentyFourImage = require('./ProfileScreen/24-7-PNG-Image.png');
+export const profileTwentyFourImage1 = require('./ProfileScreen/twentyFourSeven.png');
+export const loginImageBackground = require('./ProfileScreen/LoginImageBackground.webp'); 
+
+

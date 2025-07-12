@@ -24,7 +24,7 @@ const CustomHeaderRegister: React.FC<customHeaderProps> = ({
         onPress={leftIconPress}>
         <Image
           source={leftIcon}
-          style={{width: 30, height: 50, resizeMode: 'contain'}}
+          style={{width: 30, height: 50, resizeMode: 'contain', }}
         />
       </TouchableOpacity>
       <View>
