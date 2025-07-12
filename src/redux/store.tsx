@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import threeDigitSlice from './Slice/threeDigitSlice';
 import commonSlice from './Slice/commonSlice';
+import  LoaderSlice  from './Slice/loaderSlice';
 
 export const store = configureStore({
   reducer: {
     threeDigit: threeDigitSlice,
-    commonSlice:commonSlice
+    commonSlice:commonSlice,
+    LoaderSlice:LoaderSlice
   },
 })
 

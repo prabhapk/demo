@@ -37,7 +37,8 @@ import {
   quick3min,
   bhutan,
   skywin,
-  chennaiLottery
+  chennaiLottery,
+  gameTypeAct
 
 } from '../../assets/assets';
 import CustomHeader from '../Components/CustomHeader';
@@ -46,6 +47,10 @@ import CommonDigits from '../Components/CommonDigits';
 import CommonBanner from '../Components/CommonBanner';
 import FastImage from 'react-native-fast-image';
 import Scale from '../Components/Scale';
+import { HomeScreenFlatlist } from '../Constants/CommonFlatlist';
+import HomeScreenGameHeaders from '../Components/HomeScreenGameHeaders';
+import CasinoScreen from './CasinoScreen';
+import LotteryScreen from './Lottery/LotteryScreen';
 
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
@@ -67,6 +72,8 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     },
   ];
 
+  const [gameList, setGameList]=useState(HomeScreenFlatlist);
+  const [selectedGameId, setSelectedGameId] = useState(1);
   const [activeHeader, setActiveHeader] = useState(data[0].id);
   const verticalListRef = useRef<FlatList>(null);
   const horizontalListRef = useRef<FlatList>(null);
@@ -222,6 +229,10 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     return () => clearInterval(interval);
   }, []);
 
+    useEffect(() => {
+
+  }, []);
+
   const handleHeaderPress = (id: string, index: number) => {
     setActiveHeader(id);
 
@@ -299,58 +310,62 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
   };
 
   // Function to render different UI based on game type
-  const renderGameItem = (title: any, item: any) => {
-    switch (title) {
-      case 'Dice':
-        return <CommonDice data={item} 
-        onPressDice={()=> Alert.alert('will implement soon')}
-        />;
 
-      case 'Color':
-        return (
-      
-          <ImageBackground
-            source={item.image}
-            resizeMode="stretch"
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              borderRadius: 10,
-              overflow: 'hidden',
-              flexDirection: 'row',
-                height: 180,
-              width:"100%"
-            }}>
-                  <TouchableOpacity
-                  
-          onPress={()=> Alert.alert('will implement soon')}
-          > 
-           
-            </TouchableOpacity>
-          </ImageBackground>
-          
-        );
 
-      case '3Digits':
-        return <CommonDigits data={item} 
-        onPress3Digits={ ()=> {
-          console.log("cheeeeeeeeeeeeeeeeeeeeeeeeeeeee",item);
-          if(item.gameTye==="Custom"){
-            navigation.navigate('ThreeDigitMain',{gameData:item});
-          }
-          else if(item.gameTye==="RealGame"){
-          // navigation.navigate('ThreeDigitMain',{gameDat:item});
-        }}
-        }
-        />;
+  const handleSelectGameHeader = (id: number) => {
+    console.log('idasasasasa', id);
+  const updatedList = gameList.map((item) => ({
+    ...item,
+    isSelected: item.id === id,
+  }));
+  setGameList(updatedList);
+  setSelectedGameId(id);
+};
 
-      default:
-        return null;
-    }
-  };
+const renderGameContent = () => {
+switch (selectedGameId) {
+  case 1:
+    return (
+      <View style={{marginTop:Scale(10)}}>
+      <CasinoScreen />
+      </View>
+    )
+    break;
+  case 2:
+    return (
+      <>
+      <LotteryScreen />
+      </>
+    )
+    break;
+  case 3:
+    return (
+      <>
+      <Text>scratch</Text>
+      </>
+    )
+    break;
+  case 4:
+    return (
+      <>
+      <Text>rummy</Text>
+      </>
+    )
+    break;
+  case 5:
+    return (
+      <>
+      <Text>sports</Text>
+      </>
+    )
+    break;
+  default:
+    return null;
+}
+}
 
   return (
-    <View style={{flex: 1, backgroundColor: '#EEF1F6'}}>
+    <View style={{flex: 1, backgroundColor: '#560303'}}>
       <CustomHeader
         onMenuPress={openDrawerdd}
         onLoginPress={() => {
@@ -360,117 +375,24 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
       <ScrollView
         ref={scrollViewRef}
         style={styles.container}
-        stickyHeaderIndices={[2]}
         onScroll={handleScroll}
         scrollEventThrottle={16}>
         <CommonBanner banners={banners} />
-        <View style={styles.referalView}>
-          <TouchableOpacity style={styles.refButton}>
-            <FastImage
-              source={gifAgent}
-              style={styles.refImage}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-            <Text style={styles.refText}>Agent</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.refButton}>
-            <FastImage
-              source={gifRefer}
-              style={styles.refImage}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-            <Text style={styles.refText}>Refer Friend</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.refButton}>
-            <FastImage
-              source={gifLottery}
-              style={styles.refImage}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-            <Text style={styles.refText}>Free Lottery</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.refButton}>
-            <FastImage
-              source={gifPromotion}
-              style={styles.refImage}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-            <Text style={styles.refText}>Promotions</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.stickyHeader}>
-          <ImageBackground
-            source={ActiveTabBg}
-            style={{
-              flex: 1,
-              // justifyContent: 'center',
-              borderRadius: 10,
-              overflow: 'hidden',
-              flexDirection: 'row',
-              // height: 180,
-              width:"100%"
-            }}>
-           <Image source={ActiveTabInitialImg}
-           style={{
-            height: 30,
-            width:30,
-            marginHorizontal: Scale(10),
-            marginTop: Scale(20),
-           }}
-           resizeMode='contain'
-           />
-          <FlatList
-            ref={horizontalListRef}
-            data={gamesArray}
-            horizontal
-            keyExtractor={item => item.id}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.horizontalList}
-            renderItem={({item, index}) => (
-             
-            <View style ={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <TouchableOpacity
-                style={[
-                  styles.headerItem,
-                  activeHeader === item.id && styles.activeHeaderText,
-                ]}
-                onPress={() => handleHeaderPress(item.id, index)}>
-                <Text style={styles.headerText}>{item.title}</Text>
-              </TouchableOpacity>
-              </View>
-            )}
-          />
-          </ImageBackground>
-        </View>
 
-        <FlatList
-          data={gamesArray.filter(game => gameDataMap[game.title]?.length > 0)}
-          ref={verticalListRef}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View
-              style={styles.section}>
-              <Text
-                style={[
-                  activeHeader === item.id && styles.verticalActiveHeader,
-                  styles.verticalHeader,
-                ]}>
-                {item.title}
-              </Text>
-              <FlatList
-                onViewableItemsChanged={onViewableItemsChanged}
-                viewabilityConfig={viewabilityConfig}
-                showsVerticalScrollIndicator={false}
-                data={gameDataMap[item.title] || []}
-                keyExtractor={(subItem, index) => index.toString()}
-                numColumns={2}
-                renderItem={({item: subItem}) =>
-                  renderGameItem(item.title, subItem)
-                }
-              />
-            </View>
-          )}
-        />
+      
+        
+        
+          <HomeScreenGameHeaders
+  headerList={gameList}
+  selectedId={selectedGameId}
+  onPress={() => {}}
+  onSelect={handleSelectGameHeader}
+/>
+{renderGameContent()}
+
+      
+
+       
       </ScrollView>
     </View>
   );

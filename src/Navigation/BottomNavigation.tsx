@@ -9,6 +9,7 @@ import Scale from '../Components/Scale';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Profile from '../Screens/Profile';
+import React from 'react';
 
 const Tab = createBottomTabNavigator();
 

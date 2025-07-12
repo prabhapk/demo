@@ -55,11 +55,11 @@ const styles = StyleSheet.create({
   showCountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E6E9F4',
     borderRadius: 30,
     paddingHorizontal: 2,
     height: 40,
     marginLeft: 20,
+    backgroundColor:"rgba(0,0,0,0.2)",
   },
   button: {
     backgroundColor: '#E9EDF8',
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   input: {
-    width: 40,
+    width: 30,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#fff',
     textAlign: 'center',
   },
 });
