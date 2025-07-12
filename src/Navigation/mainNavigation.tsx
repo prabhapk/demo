@@ -11,6 +11,7 @@ import SignInScreen from '../Screens/SignInScreen';
 import UserDetails from '../Screens/UserDetails';
 import PasswordChange from '../Screens/PasswordChange';
 import DummyScreen from '../Screens/DummyScreen';
+import LotteryScreen from '../Screens/Lottery/LotteryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,10 @@ function MainNavigation() {
         <Stack.Screen
           name="DummyScreen"
           component={DummyScreen}
+        />
+        <Stack.Screen
+          name="LotteryScreen"
+          component={LotteryScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

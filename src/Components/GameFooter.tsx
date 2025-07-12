@@ -14,7 +14,7 @@ interface Props {
 
 const GameFooter: React.FC<Props> = ({ openSheet, totalAmount, totalCount, isDisabled}) =>{
   return (
-    <View style={{flex: 1,marginVertical: Scale(5),flexDirection: 'row', justifyContent: 'space-between',backgroundColor: 'white', paddingVertical: Scale(20)}}>
+    <View style={{flex: 1,marginVertical: Scale(5),flexDirection: 'row', justifyContent: 'space-between',backgroundColor: '#3e0d0d', paddingVertical: Scale(20)}}>
      <TouchableOpacity onPress={openSheet} 
     style ={{flexDirection: 'row', marginHorizontal: Scale(10),}}>
       <Image source={FooterWallet} style={{width: 30, height: 30, resizeMode: 'contain'}}/>

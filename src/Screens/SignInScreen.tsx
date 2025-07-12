@@ -43,7 +43,7 @@ const SignInScreen = ({navigation}: any) => {
       rightIcon={customerServiceTopIcon}
       /> */}
       <ScrollView> 
-      <View style ={{marginHorizontal: Scale(5)}}>
+      <View>
       <Image
       source={loginImageBackground} 
       style={{width:'100%', height:Scale(300), resizeMode:'contain'}}/>

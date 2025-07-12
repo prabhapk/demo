@@ -33,6 +33,8 @@ import {
 } from '../Redux/Slice/threeDigitSlice';
 import { handleShowAlert, showHowToPlay } from '../Redux/Slice/commonSlice';
 import Show30SecondsModal from './Show30SecondsModal';
+import { COLORS } from '../Constants/Theme';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 export interface IDigitProps {
@@ -90,7 +92,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
     onTimerComplete
 }) => {
 
-   const [targetDate, setTargetDate] = useState("2025-07-03T18:35:27.123Z");
+    const [targetDate, setTargetDate] = useState("2025-07-03T18:35:27.123Z");
 
 
     const [showAlert, setShowAlert] = useState(false);
@@ -230,7 +232,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
         <>
             <View style={styles.container}>
                 <View style={styles.gameDetailView}>
-                    <View style={{ paddingHorizontal: 10, paddingVertical: 20 }}>
+                    <View style={{ paddingHorizontal: 10, paddingVertical: 20, flexDirection: "column", flex: 1, justifyContent: "center", alignItems: "flex-start" }}>
                         <Text style={styles.gameNameText}>Quick3D</Text>
                         <View style={{ flexDirection: 'row' }}>
 
@@ -253,10 +255,11 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <CountdownTimer
                             targetDate={targetDate}
                             onThirtySecondsLeft={() => { setShowAlert(true) }}
-                             onComplete={onTimerComplete}
+                            onComplete={onTimerComplete}
                         />
                         <Text style={styles.gameNameText}>{nextGameId}</Text>
                     </View>
+
                 </View>
 
                 {/* SINGLE DIGIT BLOCK */}
@@ -266,10 +269,21 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <View>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={styles.DigitTitleText}>Single Digit</Text>
-                                <Text style={styles.DigitTitleText1}> Win ${singleDigitWinningPrice.toFixed(2)}</Text>
+
                             </View>
+
                             <Text style={[styles.DigitTitleText, { marginVertical: Scale(5) }]}>${singleDigitPrice.toFixed(2)}</Text>
                         </View>
+
+                        <LinearGradient
+                            colors={[
+                                '#FF4242', '#f6c976ff'
+                            ]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            style={{ borderBottomLeftRadius: 10, padding: 3, height: 30, bottom: 10, alignItems: "center", justifyContent: "center" }}>
+                            <Text style={styles.DigitTitleText1}> Win <Text style={{ fontSize: Scale(16) }}>₹{singleDigitWinningPrice.toFixed(2)}</Text></Text>
+                        </LinearGradient>
                         <CommonQuickGuess
                             innerText={'Quick Guess'}
                             onPress={() => {
@@ -306,6 +320,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <CommonAddButton
                             innerText="ADD"
                             opacity={singleDigitA !== '' ? 1 : 0.5}
+                            isDisabled={singleDigitA !== '' ? false : true}
                             onPress={() =>
                                 handleAdd(
                                     'A',
@@ -347,6 +362,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <CommonAddButton
                             innerText="ADD"
                             opacity={singleDigitB !== '' ? 1 : 0.5}
+                            isDisabled={singleDigitB !== '' ? false : true}
                             onPress={() =>
                                 handleAdd(
                                     'B',
@@ -388,6 +404,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <CommonAddButton
                             innerText="ADD"
                             opacity={singleDigitC !== '' ? 1 : 0.5}
+                            isDisabled={singleDigitC !== '' ? false : true}
                             onPress={() =>
                                 handleAdd(
                                     'C',
@@ -468,6 +485,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <CommonAddButton
                             innerText="ADD"
                             opacity={doubleDigitA1 !== '' && doubleDigitB1 !== '' ? 1 : 0.5}
+                            isDisabled={doubleDigitA1 !== '' && doubleDigitB1 !== '' ? false : true}
                             onPress={() =>
                                 handleAdd(
                                     'AB',
@@ -528,6 +546,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <CommonAddButton
                             innerText="ADD"
                             opacity={doubleDigitA2 !== '' && doubleDigitC1 !== '' ? 1 : 0.5}
+                            isDisabled={doubleDigitA2 !== '' && doubleDigitC1 !== '' ? false : true}
                             onPress={() =>
                                 handleAdd(
                                     'AC',
@@ -588,6 +607,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
                         <CommonAddButton
                             innerText="ADD"
                             opacity={doubleDigitB2 !== '' && doubleDigitC2 !== '' ? 1 : 0.5}
+                            isDisabled={doubleDigitB2 !== '' && doubleDigitC2 !== '' ? false : true}
                             onPress={() =>
                                 handleAdd(
                                     'BC',
@@ -712,6 +732,9 @@ const DigitComponent: React.FC<IDigitProps> = ({
                                 opacity={threeDigitA !== '' &&
                                     threeDigitB !== '' &&
                                     threeDigitC !== '' ? 1 : 0.5}
+                                isDisabled={threeDigitA !== '' &&
+                                    threeDigitB !== '' &&
+                                    threeDigitC !== '' ? false : true}
                                 onPress={handleGenerate}
                             />
                             <CommonAddButton
@@ -719,6 +742,9 @@ const DigitComponent: React.FC<IDigitProps> = ({
                                 opacity={threeDigitA !== '' &&
                                     threeDigitB !== '' &&
                                     threeDigitC !== '' ? 1 : 0.5}
+                                isDisabled={threeDigitA !== '' &&
+                                    threeDigitB !== '' &&
+                                    threeDigitC !== '' ? false : true}
                                 onPress={() =>
                                     handleAdd(
                                         'ABC',
@@ -760,7 +786,7 @@ const styles = StyleSheet.create({
     },
     card: {
         marginTop: Scale(20),
-        backgroundColor: 'white',
+        backgroundColor: '#362020',
         width: '100%',
         borderRadius: 10,
         shadowColor: '#000',
@@ -790,9 +816,8 @@ const styles = StyleSheet.create({
     gameDetailView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 10,
         marginTop: 10,
-        backgroundColor: '#DBCEFB',
+        backgroundColor: '#5A1C1C',
         overflow: 'hidden',
     },
     showCountContainer: {
@@ -840,18 +865,18 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     DigitTitleText: {
-        color: '#000',
+        color: '#fff',
         fontWeight: 'bold',
-        fontSize: Scale(16),
+        fontSize: Scale(18),
     },
     DigitTitleText1: {
-        color: '#000',
+        color: '#fff',
         fontWeight: 'bold',
-        fontSize: Scale(14),
+        fontSize: Scale(12),
         top: 1,
     },
     howtoplayBtn: {
-        backgroundColor: '#EAE2FF',
+        backgroundColor: COLORS.primary,
         marginHorizontal: 10,
         borderRadius: 5,
         bottom: 10,
@@ -861,18 +886,16 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         paddingHorizontal: 5,
         paddingVertical: 5,
-        color: '#000',
+        color: '#fff',
     },
-    gameNameText: { fontSize: 14, fontWeight: 'bold' },
+    gameNameText: { fontSize: 14, fontWeight: 'bold', color: "white" },
     ballsView: {
         flexDirection: 'row',
-        backgroundColor: '#B098D8',
-        paddingLeft: 20,
+        backgroundColor: COLORS.primary,
         paddingVertical: 5,
         borderRadius: 10,
-        width: '90%',
         marginTop: 5,
-        paddingRight: 30,
+        padding: 5
     },
     gameHeader: {
         flexDirection: 'row',
@@ -883,7 +906,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal: Scale(10),
+        marginHorizontal: Scale(5),
         marginVertical: Scale(5),
     }
 
