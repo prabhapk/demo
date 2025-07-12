@@ -13,7 +13,7 @@ import {
   Dimensions,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { cancel, lefArrow, sameClock } from '../../assets/assets';
+import { cancel, lefArrow, quick3min, sameClock } from '../../assets/assets';
 import CountdownTimer from '../Components/CountdownTimer';
 import { useDispatch, useSelector } from 'react-redux';
 import { showHowToPlay } from '../Redux/Slice/commonSlice';
@@ -59,6 +59,8 @@ import Show30SecondsModal from '../Components/Show30SecondsModal';
 import AnimatedText from '../Components/AnimatedText';
 import { tableData } from '../Utils/Constants';
 import DigitComponent from '../Components/DigitComponent';
+import LinearGradient from 'react-native-linear-gradient';
+import { COLORS } from '../Constants/Theme';
 
 const ThreeDigitMain = ({ navigation, route }: any) => {
   const {
@@ -85,6 +87,10 @@ const ThreeDigitMain = ({ navigation, route }: any) => {
   const singleDigitPrice = 10.0;
   const doubleDigitPrice = 11.0;
   const threeDigitPrice = 21.0;
+
+  const [min1TargetDate, setMin1TargetDate] = useState("2025-07-03T19:35:27.123Z");
+  const [min3TargetDate, setMin3TargetDate] = useState("2025-07-03T19:37:27.123Z");
+  const [min5TargetDate, setMin5TargetDate] = useState("2025-07-03T19:40:27.123Z");
 
   const singleDigitWinningPrice = 110.0;
   const doubleDigitWinningPrice = 220.0;
@@ -135,7 +141,7 @@ const ThreeDigitMain = ({ navigation, route }: any) => {
               threeDigitPrice={threeDigitPrice}
               onStateChange={handleChildStateChange}
               targetDateProp={min1TargetDate}
-               onTimerComplete={handleTimerComplete}
+              onTimerComplete={handleTimerComplete}
             />
           </>)
       case '3 Mins':
@@ -159,7 +165,7 @@ const ThreeDigitMain = ({ navigation, route }: any) => {
               threeDigitPrice={threeDigitPrice}
               onStateChange={handleChildStateChange}
               targetDateProp={min3TargetDate}
-               onTimerComplete={handleTimerComplete}
+              onTimerComplete={handleTimerComplete}
             />
           </>
         )
@@ -218,7 +224,7 @@ const handleTimerComplete = () => {
  }
 console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123Z
 
-};
+  };
 
   const filterNumericInput = (value: string) => {
     return value.replace(/[^0-9]/g, '');
@@ -472,33 +478,43 @@ console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123
 
   const renderHeader = ({ item }: any) => {
     return (
-      <TouchableOpacity
-        onPress={() => handleHeader(item)}
-        style={[styles.headerBtn, { backgroundColor: selectedOption === item.name ? 'pink' : 'white', }]}>
-        <Image
-          source={sameClock}
-          resizeMode="contain"
-          style={styles.headerImg}
-        />
-        <Text
-          style={{
-            color: selectedOption === item.name ? 'white' : 'black',
-            marginLeft: 5,
-          }}>
-          {item.name}
-        </Text>
-      </TouchableOpacity>
+     
+        <LinearGradient
+          colors={[
+            selectedOption === item.name ? '#FF4242' : COLORS.secondary, // fallback color
+            selectedOption === item.name ? '#f6c976ff' : COLORS.secondary,
+          ]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={[styles.headerBtn, { backgroundColor: selectedOption === item.name ? 'pink' : 'white', }]}>
+              <TouchableOpacity
+      style={{justifyContent:"center", alignItems:"center"}}
+              onPress={() => handleHeader(item)}>
+
+          <Image
+            source={sameClock}
+            resizeMode="contain"
+            style={styles.headerImg}
+          />
+          <Text
+            style={{
+              color: 'white' ,
+              marginLeft: 5,
+              fontSize: Scale(14),
+              fontWeight: 'bold',
+              marginTop: Scale(5),
+            }}>
+            {item.name}
+          </Text>
+            </TouchableOpacity>
+        </LinearGradient>
+    
     )
   }
 
   return (
     <View style={styles.mainContainer}>
-      <GameHeader
-        HeaderText={'Avis Game'}
-        leftonPress={goBack}
-        leftImage={lefArrow}
-        rightImage={lefArrow}
-      />
+
       {islast30sec && <Show30SecondsModal />}
       <ScrollView
         scrollEnabled
@@ -506,10 +522,11 @@ console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123
         keyboardShouldPersistTaps="always"
         nestedScrollEnabled
         contentContainerStyle={{ paddingBottom: Scale(100) }}>
-        <AnimatedText
-          runningText={
-            'Tickets will not be available for 3 mins before the draw'
-          }
+        <GameHeader
+          HeaderText={'3 Digit Game'}
+          leftonPress={goBack}
+          leftImage={lefArrow}
+          rightImage={lefArrow}
         />
         <View style={styles.subContainer}>
           <FlatList
@@ -544,7 +561,7 @@ console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123
             borderTopLeftRadius: Scale(20),
             borderTopRightRadius: Scale(20),
             paddingHorizontal: Scale(10),
-            marginBottom: Scale(110),
+            marginBottom: Scale(80),
           },
           draggableIcon: {
             width: Scale(75),
@@ -664,7 +681,7 @@ console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123
       <SafeAreaView
         style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
         <View
-          style={{ backgroundColor: 'white', height: Scale(80), elevation: 10 }}>
+          style={{ backgroundColor: '#3e0d0d', height: Scale(80), elevation: 10 }}>
           <GameFooter
             openSheet={() => refRBSheet.current.open()}
             totalAmount={sum}
@@ -678,20 +695,20 @@ console.log(updatedTime,"kokokokokok"); // 👉 Outputs: 2025-07-03T19:00:27.123
 };
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: '#f7fbff',
+    backgroundColor: '#3e0d0d',
     flex: 1,
     marginBottom: Scale(0),
   },
   subContainer: {
     flex: 1,
-    marginHorizontal: 20
+    marginHorizontal: 10
   },
   container: {
     flex: 1,
   },
   card: {
     marginTop: Scale(20),
-    backgroundColor: 'white',
+    backgroundColor: '#5A1C1C',
     width: '100%',
     borderRadius: 10,
     shadowColor: '#000',
@@ -709,12 +726,12 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // borderRadius: 10,
     // width: '100%',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flex: 1,
   },
   renderDataView: {
     padding: 10,
-    backgroundColor: '#f7fbff',
+    backgroundColor: '#3e0d0d',
     flex: 1,
     borderRadius: 10,
   },
@@ -782,12 +799,11 @@ const styles = StyleSheet.create({
     top: 1,
   },
   headerBtn: {
-    flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 5,
-    borderWidth: 1,
+    borderRadius: 10,
     padding: 10,
     justifyContent: 'center',
+    marginHorizontal: 5,
   },
   headerImg: { width: 30, height: 30 }
 });

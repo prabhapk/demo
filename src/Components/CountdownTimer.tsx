@@ -13,7 +13,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   onComplete,
   onThirtySecondsLeft,
 }) => {
-  const isFocused = useIsFocused(); // Hook to detect screen focus
+  const isFocused = useIsFocused();
 
   const calculateTimeLeft = () => {
     const now = new Date().getTime();
@@ -21,11 +21,12 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
     const difference = targetDateTime - now;
 
     if (difference > 0) {
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((difference / (1000 * 60)) % 60);
       const seconds = Math.floor((difference / 1000) % 60);
-      return { minutes, seconds };
+      return { hours, minutes, seconds };
     } else {
-      return { minutes: 0, seconds: 0 };
+      return { hours: 0, minutes: 0, seconds: 0 };
     }
   };
 
@@ -33,7 +34,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   const [alertTriggered, setAlertTriggered] = useState(false);
 
   useEffect(() => {
-    if (!isFocused) return; // Do nothing if the screen is not focused
+    if (!isFocused) return;
 
     const timer = setInterval(() => {
       const newTimeLeft = calculateTimeLeft();
@@ -41,42 +42,44 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
       if (!alertTriggered && newTimeLeft.minutes === 0 && newTimeLeft.seconds === 30) {
         setAlertTriggered(true);
-        onThirtySecondsLeft?.(); // Trigger the 30-second modal
+        onThirtySecondsLeft?.();
       }
 
-      if (newTimeLeft.minutes <= 0 && newTimeLeft.seconds <= 0) {
+      if (
+        newTimeLeft.hours === 0 &&
+        newTimeLeft.minutes === 0 &&
+        newTimeLeft.seconds === 0
+      ) {
         clearInterval(timer);
-        onComplete?.(); // Optional complete callback
+        onComplete?.();
       }
     }, 1000);
 
-    return () => {
-      clearInterval(timer); // Clear timer when screen blurs or unmounts
-    };
+    return () => clearInterval(timer);
   }, [targetDate, isFocused]);
 
   useEffect(() => {
-    setAlertTriggered(false); // Reset the 30s modal trigger when time resets
+    setAlertTriggered(false);
   }, [targetDate]);
 
+  const hourString = String(timeLeft.hours).padStart(2, "0");
   const minuteString = String(timeLeft.minutes).padStart(2, "0");
   const secondString = String(timeLeft.seconds).padStart(2, "0");
 
   return (
     <View style={styles.container}>
       <View style={styles.timerBlock}>
-        <Text style={styles.timerText}>{minuteString[0]}</Text>
+        <Text style={styles.timerText}>{hourString[0]}</Text>
+        <Text style={styles.timerText}>{hourString[1]}</Text>
       </View>
+      <Text style={styles.separator}>:</Text>
       <View style={styles.timerBlock}>
+        <Text style={styles.timerText}>{minuteString[0]}</Text>
         <Text style={styles.timerText}>{minuteString[1]}</Text>
       </View>
-      <View style={styles.timerBlock}>
-        <Text style={styles.separator}>:</Text>
-      </View>
+      <Text style={styles.separator}>:</Text>
       <View style={styles.timerBlock}>
         <Text style={styles.timerText}>{secondString[0]}</Text>
-      </View>
-      <View style={styles.timerBlock}>
         <Text style={styles.timerText}>{secondString[1]}</Text>
       </View>
     </View>
@@ -98,6 +101,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 2,
+    flexDirection: "row",
   },
   timerText: {
     color: "#FFF",

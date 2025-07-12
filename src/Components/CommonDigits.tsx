@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   container: {
 
     margin: 5,
-    width: '48%',
+    width: '47%',
     borderRadius: 10,
     marginTop: 5,
     height: 180,
