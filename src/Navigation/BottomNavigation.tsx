@@ -1,6 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/react-in-jsx-scope */
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screens/HomeScreen';
 import Settings from '../Screens/Settings';
@@ -16,7 +13,7 @@ const Tab = createBottomTabNavigator();
 export default function BottomNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={{headerShown: false, tabBarHideOnKeyboard: true, 
+      screenOptions={{headerShown: false, tabBarHideOnKeyboard: true,
         tabBarStyle: {
           backgroundColor: 'white',
           height: Scale(50),

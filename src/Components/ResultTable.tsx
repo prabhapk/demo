@@ -35,10 +35,10 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
         flexDirection: 'row',
         alignItems: 'center',
         paddingVertical: Scale(5),
-        backgroundColor: index % 2 === 0 ? 'white' : '#f0f1f2',
+        backgroundColor: index % 2 === 0 ? '#540000' : '#5C1818',
         marginHorizontal: Scale(10),
         borderBottomWidth: 1,
-        borderColor: '#f0f1f2',
+        borderColor: '#5C1818',
       }}>
       <View style={{ flex: 1, paddingLeft: Scale(10) }}>
         <Text style={{ color: 'black' }}>{item.name}</Text>
@@ -61,7 +61,7 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            backgroundColor: 'white',
+            backgroundColor: '#360400',
           }}>
           {['ResultHistory', 'MyOrders'].map(tab => (
             <TouchableOpacity
@@ -69,14 +69,14 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
               onPress={() => setOnTableSelect(tab)}
               style={{
                 padding: Scale(10),
-                backgroundColor: 'white',
-                borderBottomWidth: onTableSelect === tab ? Scale(3) : 0,
-                borderBottomColor: onTableSelect === tab ? '#5c4280' : 'transparent',
+                backgroundColor: '#360400',
+                borderBottomWidth: onTableSelect === tab ? Scale(5) : 0,
+                borderBottomColor: onTableSelect === tab ? '#ff5f5f' : 'transparent',
               }}>
               <Text
                 style={{
                   fontSize: 16,
-                  color: 'black',
+                  color: 'white',
                   padding: Scale(10),
                   fontWeight: onTableSelect === tab ? 'bold' : '400',
                 }}>
@@ -93,7 +93,7 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
-                  backgroundColor: '#f0f1f2',
+                  backgroundColor: '#812B2B',
                   paddingVertical: Scale(5),
                   marginHorizontal: Scale(10),
                 }}>
@@ -123,7 +123,7 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                   flexDirection: 'row',
                   marginTop: Scale(10),
                   alignSelf: 'center',
-                  backgroundColor: 'white',
+                  backgroundColor: '#812B2B',
                   width: '100%',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -133,7 +133,7 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                   style={{
                     borderRadius: Scale(10),
                     padding: Scale(10),
-                    borderColor: 'white',
+                    borderColor: '#812B2B',
                     borderWidth: 1,
                     height: Scale(40),
                     textAlign: 'center',
@@ -148,10 +148,10 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                     key={index}
                     onPress={() => changePage(index + 1)}
                     style={{
-                      backgroundColor: currentPage === index + 1 ? '#dfe4e8' : 'white',
+                      backgroundColor: currentPage === index + 1 ? 'gold' : '#812B2B',
                       borderRadius: Scale(10),
                       padding: Scale(10),
-                      borderColor: 'white',
+                      borderColor: '#812B2B',
                       borderWidth: 1,
                       height: Scale(40),
                       width: Scale(40),
@@ -168,10 +168,10 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                   onPress={() => changePage(currentPage - 1)}
                   disabled={currentPage === 1}
                   style={{
-                    backgroundColor: currentPage === 1 ? '#ccc' : '#dfe4e8',
+                    backgroundColor: currentPage === 1 ? '#5F1616' : '#5F1616',
                     borderRadius: Scale(10),
                     padding: Scale(10),
-                    borderColor: 'white',
+                    borderColor: '#812B2B',
                     borderWidth: 1,
                     height: Scale(40),
                     width: Scale(40),
@@ -179,7 +179,11 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <FontAwesome5 name={'chevron-left'} size={15} color={'grey'} />
+                  <FontAwesome5 name={'chevron-left'} size={15} color={
+                    
+                    currentPage === 1 ? 'grey' : 'white'
+                    
+                    } />
                 </TouchableOpacity>
 
                 {/* Right Arrow */}
@@ -187,10 +191,10 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                   onPress={() => changePage(currentPage + 1)}
                   disabled={currentPage === totalPages}
                   style={{
-                    backgroundColor: currentPage === totalPages ? '#ccc' : '#dfe4e8',
+                    backgroundColor: currentPage === 1 ? '#5F1616' : '#5F1616',
                     borderRadius: Scale(10),
                     padding: Scale(10),
-                    borderColor: 'white',
+                    borderColor: '#5F1616',
                     borderWidth: 1,
                     height: Scale(40),
                     width: Scale(40),
@@ -198,7 +202,8 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}>
-                  <FontAwesome5 name={'chevron-right'} size={15} color={'grey'} />
+                  <FontAwesome5 name={'chevron-right'} size={15} 
+                  color={ currentPage === 1 ? 'white' : 'grey'} />
                 </TouchableOpacity>
               </View>
             </>

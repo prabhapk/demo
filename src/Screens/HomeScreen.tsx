@@ -38,7 +38,9 @@ import {
   bhutan,
   skywin,
   chennaiLottery,
-  gameTypeAct
+  gameTypeAct,
+  bannerLuna1,
+  bannerLuna2,
 
 } from '../../assets/assets';
 import CustomHeader from '../Components/CustomHeader';
@@ -208,10 +210,10 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     // },
   ];
   const banners = [
-    {id: 1, name: banner1},
-    {id: 2, name: banner2},
-    {id: 3, name: banner3},
-    {id: 4, name: banner4},
+    {id: 1, name: bannerLuna1},
+    {id: 2, name: bannerLuna2},
+    // {id: 3, name: banner3},
+    // {id: 4, name: banner4},
   ];
   
   const referalArray = [

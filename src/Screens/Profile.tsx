@@ -19,6 +19,7 @@ import {
   profileTransactionImage,
   profileTwentyFourImage,
   profileTwentyFourImage1,
+  tootTipImage,
   wallet,
 } from '../../assets/assets';
 
@@ -87,11 +88,9 @@ const ProfileScreen = ({navigation}: any) => {
                 <Text style={styles.walletSub}>Recharge Wallet</Text>
                 <TouchableOpacity
                   onPress={() => Alert.alert('Recharge Wallet')}>
-                  <EvilIcons
-                    name="exclamation"
-                    size={Scale(20)}
-                    color="white"
-                    style={{marginLeft: Scale(5), marginBottom: Scale(10)}}
+                   <Image
+                  source={tootTipImage}
+                  style ={{width: Scale(15), height: Scale(15),marginLeft: Scale(5)}}
                   />
                 </TouchableOpacity>
               </View>
@@ -102,12 +101,11 @@ const ProfileScreen = ({navigation}: any) => {
                 <Text style={styles.walletSub}>Withdraw Wallet</Text>
                 <TouchableOpacity
                   onPress={() => Alert.alert('Withdraw Wallet')}>
-                  <EvilIcons
-                    name="exclamation"
-                    size={Scale(20)}
-                    color="white"
-                    style={{marginLeft: Scale(5), marginBottom: Scale(10)}}
+                  <Image
+                  source={tootTipImage}
+                  style ={{width: Scale(15), height: Scale(15),marginLeft: Scale(5)}}
                   />
+
                 </TouchableOpacity>
               </View>
               <Text style={styles.walletSub}>₹ 0.00</Text>
