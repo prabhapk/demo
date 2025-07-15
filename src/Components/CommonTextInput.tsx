@@ -120,6 +120,7 @@ import {
       borderRadius: Scale(12),
       height: Scale(48),
       paddingHorizontal: Scale(10),
+      width: '95%',
     },
     focusedBorder: {
       borderColor: '#4DA1FF',

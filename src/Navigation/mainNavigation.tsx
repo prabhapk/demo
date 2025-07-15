@@ -14,6 +14,7 @@ import DummyScreen from '../Screens/DummyScreen';
 import LotteryScreen from '../Screens/Lottery/LotteryScreen';
 import ForgotPassword from '../Screens/ForgotPassword';
 import SignUpSetPassword from '../Screens/SignUpSetPassword';
+import WalletScreen from '../Screens/WalletScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,6 +74,10 @@ function MainNavigation() {
         <Stack.Screen
           name="SignUpSetPassword"
           component={SignUpSetPassword}
+        />
+        <Stack.Screen
+          name="WalletScreen"
+          component={WalletScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

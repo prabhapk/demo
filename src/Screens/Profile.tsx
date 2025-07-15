@@ -200,7 +200,7 @@ const ProfileScreen = ({navigation}: any) => {
               width: '100%', // Ensures it spans the row
             }}
             onPress={() => {
-              // handle press
+              navigation.navigate('WalletScreen');
             }}>
             <Text style={styles.inputLabel}>Password</Text>
             <Entypo name="chevron-right" size={Scale(20)} color="white" />

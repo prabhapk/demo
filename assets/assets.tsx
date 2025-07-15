@@ -79,3 +79,6 @@ export const referral = require('./ProfileScreen/referralCodeImage.webp')
 export const tootTipImage = require('./ProfileScreen/tooltipImage.webp')
 export const bannerLuna1 = require('./Home/sliderImageLunaNew.webp');
 export const bannerLuna2 = require('./Home/SliderImageLunaNew1.webp')
+export const walletMini = require('./walletMini.webp')
+export const refresh = require('./refershImage.webp')
+export const checkBox = require('./checkboxImg.webp')
