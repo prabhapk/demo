@@ -16,6 +16,7 @@ import ForgotPassword from '../Screens/ForgotPassword';
 import SignUpSetPassword from '../Screens/SignUpSetPassword';
 import DrawerNavigation from './DrawerNavigation';
 import WalletScreen from '../Screens/WalletScreen';
+import Withdraw from '../Screens/Withdraw';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,6 +84,10 @@ function MainNavigation() {
         <Stack.Screen
           name="WalletScreen"
           component={WalletScreen}
+        />
+        <Stack.Screen
+          name="Withdraw"
+          component={Withdraw}
         />
       </Stack.Navigator>
     </NavigationContainer>

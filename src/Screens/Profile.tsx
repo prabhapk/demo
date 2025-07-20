@@ -120,7 +120,11 @@ const ProfileScreen = ({navigation}: any) => {
             start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
             style={styles.actionButton}>
-            <TouchableOpacity>
+            <TouchableOpacity
+             onPress={() => {
+              navigation.navigate('WalletScreen');
+            }}
+            >
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.buttonText}>Recharge</Text>
                 <Image
@@ -141,7 +145,11 @@ const ProfileScreen = ({navigation}: any) => {
             start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
             style={styles.actionButton}>
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Withdraw');
+            }}
+            >
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.buttonText}>Withdraw</Text>
                 <Image
@@ -200,7 +208,8 @@ const ProfileScreen = ({navigation}: any) => {
               width: '100%', // Ensures it spans the row
             }}
             onPress={() => {
-              navigation.navigate('WalletScreen');
+              // navigation.navigate('WalletScreen');
+          
             }}>
             <Text style={styles.inputLabel}>Password</Text>
             <Entypo name="chevron-right" size={Scale(20)} color="white" />

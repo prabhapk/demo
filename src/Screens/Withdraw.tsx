@@ -11,12 +11,15 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Scale from '../Components/Scale';
 import { walletMini, refresh, lefArrow, checkBox } from '../../assets/assets';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Divider } from '@rneui/base';
 
-const WalletScreenUI = () => {
+
+const Withdraw = () => {
   const [walletAmount, setWalletAmount] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState('');
   const amounts = ['500', '1000', '2000', '5000', '10000', '20000', '50000', '300'];
-  const [selectedRechargeOption, setSelectedRechargeOption] = useState<'option1' | 'option2' | null>(null);
+  const actualAmount = walletAmount / 0.03;
   return (
     <View style={{flex: 1, backgroundColor: '#360400'}}>
     <ScrollView style={styles.container}>
@@ -53,25 +56,47 @@ const WalletScreenUI = () => {
      
         <View style ={{}}>
         <LinearGradient
-        colors={['#f5eceb', 'transparent']}
+        colors={['black', 'transparent']}
         style={{
           // backgroundColor: '#909191',
            borderRadius: 10, width: '100%', padding: Scale(10), marginTop: Scale(10)}}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}>
+            <View style ={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <View> 
         <Text style={styles.currentMethod}>
-          Current Method: Bank transfer 4
+         Transfer
         </Text>
         <Text style={styles.warningText}>
-          Please switch to another method if the current method failed.
+          Converting to no withdrawal can earn an
         </Text>
+        </View>
+        <View style ={{right: Scale(20)}}>
+            <Image source={lefArrow} style={styles.arrowIcon} resizeMode="contain" />
+        </View>
+        </View>
         </LinearGradient>
         </View>
       </LinearGradient>
 
       {/* Amount Box */}
       <View style={styles.amountBox}>
-      <View style={styles.inputContainer}>
+        <Text style ={{fontSize: Scale(20), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+            Transfer to bank account
+        </Text>
+        <TouchableOpacity style ={{ backgroundColor: '#360400', borderRadius: 10, padding: Scale(12), marginBottom: Scale(12), alignItems: 'center', alignSelf: 'center', width: '100%', }}>
+
+        <AntDesign name="plus" size={Scale(30)} color="#FF4242" />
+            <Text style ={{ textAlign: 'center', fontSize: Scale(16), color: '#FF4242', fontWeight: 'bold', marginVertical: Scale(10) }}>
+                Add Bank Account
+            </Text>
+        </TouchableOpacity>
+    </View>
+
+      {/* Self Service Recharge */}
+      <View style={styles.rechargeSection}>
+        <Text style={styles.sectionTitle}>Withdrawable Amount</Text>
+        <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
           placeholder="Please enter the amount"
@@ -85,122 +110,33 @@ const WalletScreenUI = () => {
           maxLength={10}
         />
       </View>
-
-      <View style={{ marginTop: Scale(20), marginHorizontal: Scale(10) }}>
-        <Text style={styles.rangeText}>Min ₹300 {'    '} Max ₹50,000</Text>
-
-        <View style={styles.amountChipsRow}>
-          {amounts.map((amt, i) => {
-            const isSelected = selectedAmount === amt;
-
-            const chipContent = (
-              <Text
-                style={[
-                  styles.chipText,
-                  isSelected && styles.activeChipText,
-                ]}>
-                {amt}
-              </Text>
-            );
-
-            return (
-              <TouchableOpacity
-                key={i}
-                onPress={() => {
-                  setWalletAmount(amt);
-                  setSelectedAmount(amt);
-                }}
-                style={{ borderRadius: Scale(8), overflow: 'hidden' }}>
-                {isSelected ? (
-                  <LinearGradient
-                    colors={['#FF4242', '#f6c976']}
-                    // start={{ x: 0, y: 0 }}
-                    // end={{ x: 1, y: 0 }}
-                    style={styles.amountChip}>
-                    {chipContent}
-                  </LinearGradient>
-                ) : (
-                  <View style={styles.amountChip}>{chipContent}</View>
-                )}
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </View>
-    </View>
-
-      {/* Self Service Recharge */}
-      <View style={styles.rechargeSection}>
-        <Text style={styles.sectionTitle}>Self Service Recharge</Text>
-        <TouchableOpacity
-    onPress={() => setSelectedRechargeOption('option1')}
-    style={[
-      styles.bankOptionView,
-      {
-        borderColor: selectedRechargeOption === 'option1' ? '#FF4242' : 'grey',
-      },
-    ]}>
-    <View style={styles.optionContent}>
-      <Image
-        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Paytm_Logo.png' }}
-        style={styles.paytmLogo}
-        resizeMode="contain"
-      />
-      <Text style={styles.bankText}>Bank transfer 4</Text>
-    </View>
-
-    {selectedRechargeOption === 'option1' && (
-      <Image
-        source={checkBox}
-        style={styles.checkIcon}
-        resizeMode="contain"
-      />
-    )}
-  </TouchableOpacity>
-
-  <TouchableOpacity
-    onPress={() => setSelectedRechargeOption('option2')}
-    style={[
-      styles.bankOptionView,
-      {
-        borderColor: selectedRechargeOption === 'option2' ? '#FF4242' : 'grey',
-      },
-    ]}>
-    <View style={styles.optionContent}>
-      <Image
-        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Paytm_Logo.png' }}
-        style={styles.paytmLogo}
-        resizeMode="contain"
-      />
-      <Text style={styles.bankText}>Bank transfer 1</Text>
-    </View>
-
-    {selectedRechargeOption === 'option2' && (
-      <Image
-        source={checkBox}
-        style={styles.checkIcon}
-        resizeMode="contain"
-      />
-    )}
-  </TouchableOpacity>
-      </View>
-
-      {/* Attention Box */}
-      <View style={styles.attentionBox}>
-        <Text style={styles.attentionTitle}>Attention:</Text>
-        <Text style={styles.attentionText}>
-          Users are requested to download Paytm UPI App for faster recharge.
-        </Text>
-      </View>
-
-      {/* Final Red Warning Box */}
-      <View style={styles.redWarningBox}>
-        <Text style={styles.redWarningText}>
-          Due to the normal risk alerts caused by bank control, please feel free to recharge.{'\n'}
-          <Text style={styles.redWarningText}>
-            If the funds are not received in time, please contact the online customer service for assistance.
-          </Text>
-        </Text>
+      <Text style={[styles.sectionTitle, {marginVertical: Scale(20)}]}>Actual amount received:$ {actualAmount} </Text>
+      <Divider style={{marginVertical: Scale(10)}} />
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+          Withdrawal will be charged with 3% of withdraw fee will be charged.
+      </Text>
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+          Each user could withdraw (3) times per day.
+      </Text>
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+          Note: Withdrawal may be delayed due to bank issues. In this case, the withdrawn amount will be returned to your wallet.
+          Thank you for your patience.
+      </Text>
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+         Our platforms withdrawal delay compensation polices.
+      </Text>
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+         1. Within 24 hours to 72 hours - 5% of withdrawal amount.
+      </Text>
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+         2. Within 72 hours to 168 hours - 30% of withdrawal amount.
+      </Text>
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+        Over 168 hours - 100% compensation of withdrawal amount.
+      </Text>
+      <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
+       Note: No Compensation of payment within 24 hours. Compensation will be added to user's wallet after his bank account's credited. To claim the compensation, user have to contact customer service.
+      </Text>
       </View>
 
     </ScrollView>
@@ -212,7 +148,7 @@ const WalletScreenUI = () => {
               end={{ x: 1, y: 0 }}
               style={styles.signInButton}
             >
-              <Text style={styles.signInButtonText}>Recharge</Text>
+              <Text style={styles.signInButtonText}>Withdraw</Text>
             </LinearGradient>
           </TouchableOpacity>
           </View>
@@ -452,4 +388,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WalletScreenUI;
+export default Withdraw;
