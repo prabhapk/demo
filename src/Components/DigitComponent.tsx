@@ -761,7 +761,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
                     </View>
                 </View>
 
-                <ResultTable tableData={tableData} />
+                <ResultTable tableData={tableData} showHeader={true} />
 
             </View>
             {showAlert && <Show30SecondsModal />}

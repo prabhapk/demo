@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import Scale from './Scale';
 import TableCommonBall from './TableCommonBall';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { COLORS } from '../Constants/Theme';
 
 interface ResultTableProps {
   tableData: any[];
+  showHeader?: boolean;
 }
 
-const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
+const ResultTable: React.FC<ResultTableProps> = ({ tableData,showHeader }) => {
   const [onTableSelect, setOnTableSelect] = useState('ResultHistory');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -36,15 +38,14 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
         alignItems: 'center',
         paddingVertical: Scale(5),
         backgroundColor: index % 2 === 0 ? '#540000' : '#5C1818',
-        marginHorizontal: Scale(10),
         borderBottomWidth: 1,
         borderColor: '#5C1818',
       }}>
       <View style={{ flex: 1, paddingLeft: Scale(10) }}>
-        <Text style={{ color: 'black' }}>{item.name}</Text>
+        <Text style={{ color: COLORS.white }}>{item.name}</Text>
       </View>
       <View style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={{ color: 'black' }}>{item.time}</Text>
+        <Text style={{ color: COLORS.white }}>{item.time}</Text>
       </View>
       <View style={{ flex: 1.5, flexDirection: 'row', justifyContent: 'center' }}>
         <TableCommonBall backgroundColor="#DE3C3F" innerText={item.balls[0]} borderColor={'#DE3C3F'} />
@@ -56,7 +57,8 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
 
   return (
     <View>
-      <View style={{ marginTop: Scale(20), marginHorizontal: Scale(10) }}>
+      <View style={{ marginTop: Scale(10), marginHorizontal: Scale(10) }}>
+        {showHeader && (
         <View
           style={{
             flexDirection: 'row',
@@ -85,7 +87,7 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
             </TouchableOpacity>
           ))}
         </View>
-
+        )}
         <View style={{ marginVertical: Scale(20) }}>
           {onTableSelect === 'ResultHistory' ? (
             <>
@@ -95,13 +97,12 @@ const ResultTable: React.FC<ResultTableProps> = ({ tableData }) => {
                   alignItems: 'center',
                   backgroundColor: '#812B2B',
                   paddingVertical: Scale(5),
-                  marginHorizontal: Scale(10),
                 }}>
                 <View style={{ flex: 1, paddingLeft: Scale(10) }}>
-                  <Text style={{ color: 'black', fontWeight: 'bold' }}>Issue</Text>
+                  <Text style={{ color: COLORS.white, fontWeight: 'bold' }}>Name</Text>
                 </View>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={{ color: 'black', fontWeight: 'bold' }}>Time</Text>
+                  <Text style={{ color:COLORS.white, fontWeight: 'bold' }}>Time</Text>
                 </View>
                 <View style={{ flex: 1.5, flexDirection: 'row', justifyContent: 'center' }}>
                   <TableCommonBall backgroundColor="#DE3C3F" innerText="A" borderColor={'#DE3C3F'} />

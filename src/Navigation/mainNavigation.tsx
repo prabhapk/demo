@@ -14,6 +14,7 @@ import DummyScreen from '../Screens/DummyScreen';
 import LotteryScreen from '../Screens/Lottery/LotteryScreen';
 import ForgotPassword from '../Screens/ForgotPassword';
 import SignUpSetPassword from '../Screens/SignUpSetPassword';
+import DrawerNavigation from './DrawerNavigation';
 import WalletScreen from '../Screens/WalletScreen';
 
 const Stack = createNativeStackNavigator();
@@ -22,7 +23,7 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'BottomNavigation'} screenOptions={{headerShown: false}}>
+        initialRouteName={'DrawerNavigation'} screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -75,6 +76,10 @@ function MainNavigation() {
           name="SignUpSetPassword"
           component={SignUpSetPassword}
         />
+        <Stack.Screen
+        name="DrawerNavigation"
+        component={DrawerNavigation}
+      />
         <Stack.Screen
           name="WalletScreen"
           component={WalletScreen}

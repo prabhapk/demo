@@ -3,13 +3,16 @@ import React from 'react'
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import BottomNavigation from './BottomNavigation';
+import CustomSidebarMenu from './CustomSidebarMenu';
 
 const Drawer = createDrawerNavigator();
 const DrawerNavigation = () => {
     return (
-        <Drawer.Navigator>
-          <Drawer.Screen name="BottomNavigation" component={BottomNavigation} />
-        </Drawer.Navigator>
+
+         <Drawer.Navigator screenOptions={{headerShown: false}}
+        drawerContent={(props) => <CustomSidebarMenu {...props} />}>
+         <Drawer.Screen name="BottomNavigation" component={BottomNavigation} />
+      </Drawer.Navigator>
       );
 }
 

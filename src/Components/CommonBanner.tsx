@@ -18,7 +18,7 @@ const CommonBanner: React.FC<Props> = ({ banners }) => {
         containerStyle={styles.swiperContainer1}>
         {banners.map((banner) => (
           <View key={banner.id} style={styles.slide}>
-            <Image source={banner.name} style={styles.bannerImage} resizeMode="cover" />
+            <Image source={banner.name} style={styles.bannerImage} resizeMode="stretch" />
           </View>
         ))}
       </Swiper>

@@ -1,4 +1,9 @@
-import { bhutan, casino, color, dice, digit, dragonvsTiger, hot, jdb, Jili, lottery1, pg, quick3min, rummy, scratch, sevenUpAndDown, sports, teenPatti, threePatti } from "../../assets/assets";
+import { bhutan, casinMenu, casino, casinoActiveTab, casinoTab, color, dice, digit, digitMenu, dragonvsTiger, homeActiveTab, homeTab, hot, inviteActiveTab, inviteTab, jdb, Jili, lottery1, meActiveTab, meTab, pg, quick3dMenu, quick3min, resultActiveTab, resultTab, rummy, scratch, scratchMenu, sevenUpAndDown, sportMenu, sports, teenPatti, threePatti } from "../../assets/assets";
+import CasinoScreen from "../Screens/CasinoScreen";
+import HomeScreen from "../Screens/HomeScreen";
+import InviteScreen from "../Screens/InviteScreen";
+import Profile from "../Screens/Profile";
+import ResultScreen from "../Screens/ResultScreen";
 
 export const HomeScreenFlatlist = [
     {id: 1, isSelected:true, image:casino},
@@ -109,3 +114,68 @@ export const lotteryGamesList = [
     //   bgImage:KeralaLotteryImage
     // },
   ];
+
+  export const MenuBarList = [
+    {id: 1, name:"Quick 3D", image:quick3dMenu},
+    {id: 2, name:"Official 3 Digits", image:digitMenu},
+    {id:3, name:"Casino", image:casinMenu},
+    {id:4, name:"Scratch", image:scratchMenu},
+    {id:5, name:"Sport", image:sportMenu}
+  ]
+
+  export const tabScreens = [
+  {
+    name: 'Home',
+    component: HomeScreen,
+    label: 'Home',
+    focusedIcon: homeActiveTab,
+    unfocusedIcon: homeTab,
+  },
+  {
+    name: 'Casino',
+    component: CasinoScreen,
+    label: 'Casino',
+    focusedIcon:casinoActiveTab,
+    unfocusedIcon: casinoTab,
+  },
+   {
+    name: 'Result',
+    component: ResultScreen,
+    label: 'Result',
+    focusedIcon: resultActiveTab,
+    unfocusedIcon: resultTab,
+  },
+  {
+    name: 'Invite',
+    component: InviteScreen,
+    label: 'Invite',
+    focusedIcon: inviteActiveTab,
+    unfocusedIcon: inviteTab,
+  },
+   {
+    name: 'Me',
+    component: Profile,
+    label: 'Me',
+    focusedIcon: meActiveTab,
+    unfocusedIcon: meTab,
+  },
+];
+
+export const resultHeaderList = [
+  {id: 1, name: '3Digits'},
+  {id: 2, name: 'State Lottery'},
+  {id: 3, name: 'Kerala'},
+  {id: 4, name: 'Matka'},
+  {id: 5, name: 'Quick 3 Digits'},
+  {id: 6, name: 'Color'},
+  {id: 7, name: 'Dice'},
+]
+export const resultFilterList = [
+  {id: 1, name: 'All'},
+  {id: 2, name: 'Dear Lottery'},
+  {id: 3, name: 'Kerala Lottery'},
+  {id: 4, name: 'LuckyDraw'},
+  {id: 5, name: 'Quick 3 Digits'},
+  {id: 6, name: 'Golden Treasure'},
+  {id: 7, name: 'Dice'},
+]
