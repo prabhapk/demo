@@ -17,6 +17,8 @@ import SignUpSetPassword from '../Screens/SignUpSetPassword';
 import DrawerNavigation from './DrawerNavigation';
 import WalletScreen from '../Screens/WalletScreen';
 import Withdraw from '../Screens/Withdraw';
+import VipLevelDetailsScreen from '../Screens/VipLevelDetailsScreen';
+import Transactions from '../Screens/Transactions';
 
 const Stack = createNativeStackNavigator();
 
@@ -88,6 +90,14 @@ function MainNavigation() {
         <Stack.Screen
           name="Withdraw"
           component={Withdraw}
+        />
+        <Stack.Screen
+          name="VipLevelDetailsScreen"
+          component={VipLevelDetailsScreen}
+        />
+        <Stack.Screen
+          name="Transactions"
+          component={Transactions}
         />
       </Stack.Navigator>
     </NavigationContainer>

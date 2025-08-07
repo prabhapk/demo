@@ -24,9 +24,9 @@ const initialvalues: threeDigitState = {
   threeDigitB: "",
   threeDigitC: "",
   threeDigitCount: 3,
-  min1TargetDate: '2025-07-12T12:15:27.123Z',
-  min3TargetDate: '2025-07-12T12:17:27.123Z',
-  min5TargetDate: '2025-07-12T12:19:27.123Z',
+  min1TargetDate: "2025-07-22T15:46:27.123Z",
+  min3TargetDate: '2025-07-22T15:49:27.123Z',
+  min5TargetDate: '2025-07-22T15:52:27.123Z',
 }
 export const threeDigitSlice = createSlice({
   name: 'threeDigit',

@@ -226,7 +226,7 @@ const DigitComponent: React.FC<IDigitProps> = ({
         }
     }, [targetDateProp]);
 
-
+console.log("targetDate",targetDate)
 
     return (
         <>

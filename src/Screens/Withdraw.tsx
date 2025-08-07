@@ -7,19 +7,24 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  KeyboardAvoidingView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Scale from '../Components/Scale';
 import { walletMini, refresh, lefArrow, checkBox } from '../../assets/assets';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Divider } from '@rneui/base';
+import Modal from 'react-native-modal';
+import CommonTextInput from '../Components/CommonTextInput';
 
 
-const Withdraw = () => {
+const Withdraw = ({navigation}: any) => {
   const [walletAmount, setWalletAmount] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState('');
-  const amounts = ['500', '1000', '2000', '5000', '10000', '20000', '50000', '300'];
+  const amounts = ['₹100', '₹200', '₹500', '₹1000'];
   const actualAmount = walletAmount / 0.03;
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [withdrawableAmount, setWithdrawableAmount] = useState('');
   return (
     <View style={{flex: 1, backgroundColor: '#360400'}}>
     <ScrollView style={styles.container}>
@@ -40,7 +45,9 @@ const Withdraw = () => {
           <Image source={refresh} style={styles.iconMedium} />
         </View>
         </View>
-        <TouchableOpacity style={styles.rechargeRecords}>
+        <TouchableOpacity
+        onPress={()=> navigation.navigate('Transactions')}
+        style={styles.rechargeRecords}>
             <Text style={styles.rechargeText}>Recharge{'\n'}records</Text>
             <Image
               source={lefArrow}
@@ -72,7 +79,13 @@ const Withdraw = () => {
         </Text>
         </View>
         <View style ={{right: Scale(20)}}>
+          <TouchableOpacity
+          onPress = {() => {
+            setIsModalVisible(true);
+          }}
+          >
             <Image source={lefArrow} style={styles.arrowIcon} resizeMode="contain" />
+            </TouchableOpacity>
         </View>
         </View>
         </LinearGradient>
@@ -137,6 +150,150 @@ const Withdraw = () => {
       <Text style ={{fontSize: Scale(16), fontWeight: 'bold', color: '#fff', marginVertical: Scale(10)}}>
        Note: No Compensation of payment within 24 hours. Compensation will be added to user's wallet after his bank account's credited. To claim the compensation, user have to contact customer service.
       </Text>
+      </View>
+      {/* Modal  */}
+      <View>
+<Modal
+  isVisible={isModalVisible}
+  animationIn="flipInY"
+  animationOut="flipOutY"
+  animationInTiming={500}
+  animationOutTiming={500}
+  style={{
+    justifyContent: 'flex-end',
+    margin: 0,
+  }}
+>
+  <KeyboardAvoidingView
+    style={{ flex: 1, justifyContent: 'flex-end' }}
+  >
+    <View
+      style={{
+        backgroundColor: '#360400',
+        borderRadius: 10,
+        padding: 20,
+        // marginBottom: 16,
+      }}
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: Scale(20),
+        }}
+      >
+        <Text
+          style={{
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: Scale(16),
+          }}
+        >
+          Transfer
+        </Text>
+        <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+          <AntDesign
+            name={'delete'}
+            size={Scale(18)}
+            color={'white'}
+            style={{ marginRight: Scale(10) }}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/* TextInput wrapper */}
+      <View
+        style={{
+          borderWidth: 1,
+          borderColor: '#FF4242',
+          borderRadius: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 4,
+          marginTop: 10,
+        }}
+      >
+        <TextInput
+          style={{
+            fontSize: Scale(16),
+            color: 'white',
+            fontWeight: 'bold',
+          }}
+          placeholder="Enter Withdrawable amount"
+          placeholderTextColor="#999"
+          value={withdrawableAmount}
+          onChangeText={text => setWithdrawableAmount(text)}
+          keyboardType="numeric"
+          maxLength={10}
+        />
+      </View>
+      <View style={{ marginTop: Scale(20), marginHorizontal: Scale(2) }}>
+        <View style={styles.amountChipsRow}>
+          {amounts.map((amt, i) => {
+            const isSelected = selectedAmount === amt;
+
+            const chipContent = (
+              <Text
+                style={[
+                  styles.chipText,
+                  isSelected && styles.activeChipText,
+                ]}>
+                {amt}
+              </Text>
+            );
+
+            return (
+              <TouchableOpacity
+                key={i}
+                onPress={() => {
+                  setWithdrawableAmount(amt);
+                  setSelectedAmount(amt);
+                }}
+                style={{ borderRadius: Scale(8), overflow: 'hidden' }}>
+                {isSelected ? (
+                  <LinearGradient
+                    colors={['#FF4242', '#f6c976']}
+                    // start={{ x: 0, y: 0 }}
+                    // end={{ x: 1, y: 0 }}
+                    style={styles.amountChip}>
+                    {chipContent}
+                  </LinearGradient>
+                ) : (
+                  <View style={styles.amountChip}>{chipContent}</View>
+                )}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </View>
+      <Text style={{ marginTop: Scale(10), marginHorizontal: Scale(10), color: 'white', fontSize: Scale(12), fontWeight: '500' }}>
+        After clicking Confirm, your withdrawable balance will be converted into Recharge wallet and you will the corresponding bonus. 
+      </Text>
+      <Divider style={{ marginVertical: Scale(20), marginHorizontal: Scale(10) }} />
+      <View style ={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+      <Text style={{ color: 'white', fontSize: Scale(12), fontWeight: '500'}}>
+        Will get:
+      </Text>
+      <Text style={{ color: 'white', fontSize: Scale(16), fontWeight: 'bold', marginLeft: Scale(5)}}>
+        ₹103.00
+      </Text>
+      </View>
+      <View style={{marginTop: Scale(10), marginHorizontal: Scale(10)}}>
+      <TouchableOpacity style={styles.buttonWrapper}>
+            <LinearGradient
+              colors={['#FF4140', '#FFAD45']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.signInButton}
+            >
+              <Text style={styles.signInButtonText}>Withdraw</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          </View>
+    </View>
+  </KeyboardAvoidingView>
+</Modal>
+
       </View>
 
     </ScrollView>
@@ -247,8 +404,8 @@ const styles = StyleSheet.create({
   },
   amountChipsRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: Scale(8),
+    // flexWrap: 'wrap',
+    gap: Scale(5),
   },
   amountChip: {
     backgroundColor: '#4B3737',

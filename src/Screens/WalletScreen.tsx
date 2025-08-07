@@ -12,7 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Scale from '../Components/Scale';
 import { walletMini, refresh, lefArrow, checkBox } from '../../assets/assets';
 
-const WalletScreenUI = () => {
+const WalletScreenUI = ({navigation}: any) => {
   const [walletAmount, setWalletAmount] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState('');
   const amounts = ['500', '1000', '2000', '5000', '10000', '20000', '50000', '300'];
@@ -37,7 +37,9 @@ const WalletScreenUI = () => {
           <Image source={refresh} style={styles.iconMedium} />
         </View>
         </View>
-        <TouchableOpacity style={styles.rechargeRecords}>
+        <TouchableOpacity
+         onPress={()=> navigation.navigate('Transactions')}
+        style={styles.rechargeRecords}>
             <Text style={styles.rechargeText}>Recharge{'\n'}records</Text>
             <Image
               source={lefArrow}

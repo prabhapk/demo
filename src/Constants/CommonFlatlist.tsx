@@ -38,7 +38,7 @@ export const lotteryGamesList = [
       win_price: '10,000',
       price: '11.00',
       title: 'Quick 3D 1min',
-      ends_On: "2025-07-03T18:42:27.123Z",
+      ends_On: "2025-07-22T15:58:27.123Z",
       bgImage:quick3min,
       gameTye:"Custom",
       id:"1minGame"
@@ -47,7 +47,7 @@ export const lotteryGamesList = [
       win_price: '10,000',
       price: '11.00',
       title: 'Quick 3D 3min',
-      ends_On: "2025-07-03T18:42:27.123Z",
+      ends_On: "2025-07-22T23:52:27.123Z",
       bgImage:quick3min,
        gameTye:"Custom",
       id:"3minGame"
@@ -56,7 +56,7 @@ export const lotteryGamesList = [
       win_price: '10,000',
       price: '11.00',
       title: 'Quick 3D 5min',
-      ends_On: "2025-07-03T18:42:27.123Z",
+      ends_On: "2025-07-22T23:58:27.123Z",
       bgImage:quick3min,
        gameTye:"Custom",
       id:"5minGame"

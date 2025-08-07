@@ -13,6 +13,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Scale from '../Components/Scale';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {
+  close,
   profileCommissionImage,
   profileCustomerServiceImage,
   profileLotteriesImage,
@@ -20,8 +21,13 @@ import {
   profileTwentyFourImage,
   profileTwentyFourImage1,
   tootTipImage,
+  vipBadgeZero,
+  vipBorder,
   wallet,
 } from '../../assets/assets';
+import Modal from 'react-native-modal';
+import { Wallet } from 'lucide-react-native';
+import WalletInfoModal from '../Components/Modal/WalletInfoModal';
 
 const ProfileScreen = ({navigation}: any) => {
   const [showLogoutButton, setShowLogoutButton] = useState(true);
@@ -38,6 +44,15 @@ const ProfileScreen = ({navigation}: any) => {
       image: profileCustomerServiceImage,
     },
   ];
+  const [isRechargeModalVisible, setRechargeModalVisible] = useState(false);
+  const [isWithdrawModalVisible, setWithdrawModalVisible] = useState(false);
+  const toggleModalRecharge = () => {
+    setRechargeModalVisible(!isRechargeModalVisible);
+  };
+  const toggleModalWithdraw = () => {
+    setWithdrawModalVisible(!isWithdrawModalVisible);
+  };
+
   return (
     <View style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
@@ -87,7 +102,7 @@ const ProfileScreen = ({navigation}: any) => {
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.walletSub}>Recharge Wallet</Text>
                 <TouchableOpacity
-                  onPress={() => Alert.alert('Recharge Wallet')}>
+                  onPress={() => setRechargeModalVisible(true)}>
                    <Image
                   source={tootTipImage}
                   style ={{width: Scale(15), height: Scale(15),marginLeft: Scale(5)}}
@@ -100,7 +115,7 @@ const ProfileScreen = ({navigation}: any) => {
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={styles.walletSub}>Withdraw Wallet</Text>
                 <TouchableOpacity
-                  onPress={() => Alert.alert('Withdraw Wallet')}>
+                  onPress={() => setWithdrawModalVisible(true)}>
                   <Image
                   source={tootTipImage}
                   style ={{width: Scale(15), height: Scale(15),marginLeft: Scale(5)}}
@@ -166,6 +181,40 @@ const ProfileScreen = ({navigation}: any) => {
             </TouchableOpacity>
           </LinearGradient>
         </View>
+        {/* Vip  Badge View */}
+        <TouchableOpacity
+          onPress={()=> 
+            navigation.navigate('VipLevelDetailsScreen')
+          }
+        style={{
+          borderColor: '#FF4242',
+          borderWidth: Scale(2),
+          borderRadius: Scale(10),
+          padding: Scale(10),
+          marginVertical: Scale(20),
+        }}>
+        <View style ={{flexDirection: 'row', alignItems: 'center', padding: Scale(10)}}>
+          <Image source={vipBadgeZero}
+          resizeMode='contain'
+          style={{
+            width: Scale(50),
+            height: Scale(50),
+          }}
+          />
+          <View> 
+          <Text style={{color: 'white', fontSize: Scale(22), marginHorizontal: Scale(30)}}>
+            VIP 0
+          </Text>
+          <Text style={{color: 'white', fontSize: Scale(22), marginHorizontal: Scale(30)}}>
+            future text
+          </Text>
+          </View>
+        </View>
+
+
+        </TouchableOpacity>
+
+        {/* ======== */}
         <View style={styles.bottomTabs}>
           {tabItems.map(item => (
             <TouchableOpacity
@@ -205,7 +254,7 @@ const ProfileScreen = ({navigation}: any) => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              width: '100%', // Ensures it spans the row
+              width: '100%',
             }}
             onPress={() => {
               // navigation.navigate('WalletScreen');
@@ -243,6 +292,17 @@ const ProfileScreen = ({navigation}: any) => {
         ): (
           <View style={{marginTop: Scale(20)}}></View>
         )}
+      <WalletInfoModal
+       isVisible={isRechargeModalVisible} 
+       toggleModal={toggleModalRecharge} 
+       headerText="Recharge Wallet"
+        bodyText="This is wallet balance that can just be used to buy lottery tickets and cant withdraw. This wallet includes recharge amount, betting bonus for free and activity!" />
+      <WalletInfoModal
+       isVisible={isWithdrawModalVisible} 
+       toggleModal={toggleModalWithdraw} 
+       headerText="Withdraw Wallet"
+        bodyText="This is wallet balance that can just be used to withdraw and betting, including winning prize, reference bonus and commission!" />
+
       </ScrollView>
     </View>
   );
