@@ -5,8 +5,10 @@ import {AllData, BetsData, HeaderButton, RechargeData, transactionData} from '..
 import Scale from '../Components/Scale';
 import BetsCard from '../Components/BetsCard';
 import RechargeCard from '../Components/RechargeCard';
+import { leftArrowHeader } from '../../assets/assets';
+import NewAppHeader from '../Components/NewAppHeader';
 
-const Transactions = () => {
+const Transactions = ({navigation}: any) => {
   const [allData, setAllData] = useState<AllData[]>([]);
   const [winData, setWinData] = useState<BetsData[]>([]);
   const [rechargeData, setRechargeData] = useState<RechargeData[]>([]);
@@ -281,6 +283,12 @@ const Transactions = () => {
   };
   return (
     <View style={{flex: 1, backgroundColor: '#3E0E0D'}}>
+      <NewAppHeader
+          leftIconPress={() => navigation.goBack()}
+          rightIconPress={() => navigation.navigate('SignUpScreen')}
+          leftIcon={leftArrowHeader}
+          centerText={'Transactions'}
+        />
     <HeaderButtonList
       buttonList={buttons}
       onButtonPressed={handleButtonPress}

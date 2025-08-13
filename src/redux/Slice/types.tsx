@@ -27,3 +27,29 @@ export interface CommonSliceState {
     min3TargetDate: any;
     min5TargetDate: any;
   }
+  export interface signInSliceState {
+    email: string;
+    password: string;
+    isLoading: boolean;
+    error: string;
+    otp?: string;
+    newPassword?: string;
+    mobileNumber?: string;
+    token?: string;
+    refreshAccessToken?: string;
+  }
+  export interface signUpSliceState {
+    mobileNumber?: string;
+    otp?: string;
+    password?: string;
+    confirmPassword: string;
+    referralCode?: string;
+    isLoading?: boolean;
+    error?: string;
+    isEighteenPlus?: boolean;
+    isNotify?: boolean;
+    ipAddress?: string;
+    navigation?: any;
+    deviceInfo?: string;
+    registrationType?: string;
+  }

@@ -11,6 +11,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Scale from '../Components/Scale';
 import { walletMini, refresh, lefArrow, checkBox } from '../../assets/assets';
+import NewAppHeader from '../Components/NewAppHeader';
 
 const WalletScreenUI = ({navigation}: any) => {
   const [walletAmount, setWalletAmount] = useState(0);
@@ -19,6 +20,10 @@ const WalletScreenUI = ({navigation}: any) => {
   const [selectedRechargeOption, setSelectedRechargeOption] = useState<'option1' | 'option2' | null>(null);
   return (
     <View style={{flex: 1, backgroundColor: '#360400'}}>
+      <NewAppHeader
+          leftIconPress={() => navigation.goBack()}
+          centerText={'Deposit'}
+        />
     <ScrollView style={styles.container}>
       {/* Wallet Header */}
       <LinearGradient

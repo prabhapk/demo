@@ -25,6 +25,7 @@ import {
     showEyeIcon?: boolean;
     leftIcon?: React.ReactNode;
     rightButton?: React.ReactNode;
+    leftText?: boolean
   }
   
   const CommonTextInput: React.FC<Props> = ({
@@ -40,6 +41,7 @@ import {
     showEyeIcon = false,
     leftIcon,
     rightButton,
+    leftText,
   }) => {
     const [isOnFocus, setIsOnFocus] = useState(false);
     const [isTextSecure, setIsTextSecure] = useState(secureTextEntry);
@@ -62,7 +64,9 @@ import {
             ]}>
             {/* Left Icon */}
             {leftIcon && <View style={styles.leftIcon}>{leftIcon}</View>}
-  
+            {
+              leftText && <Text style ={{color: 'grey', fontWeight:'bold'}}>+91 | </Text>
+            }
             {/* Text Input */}
             <TextInput
               style={[

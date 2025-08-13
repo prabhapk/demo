@@ -19,6 +19,7 @@ import WalletScreen from '../Screens/WalletScreen';
 import Withdraw from '../Screens/Withdraw';
 import VipLevelDetailsScreen from '../Screens/VipLevelDetailsScreen';
 import Transactions from '../Screens/Transactions';
+import InviteScreen from '../Screens/InviteScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +27,7 @@ function MainNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={'DrawerNavigation'} screenOptions={{headerShown: false}}>
+        initialRouteName={'SplashScreen'} screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="SplashScreen"
           component={SplashScreen}
@@ -87,7 +88,7 @@ function MainNavigation() {
           name="WalletScreen"
           component={WalletScreen}
         />
-        <Stack.Screen
+        <Stack.Screen 
           name="Withdraw"
           component={Withdraw}
         />
@@ -98,6 +99,10 @@ function MainNavigation() {
         <Stack.Screen
           name="Transactions"
           component={Transactions}
+        />
+        <Stack.Screen
+          name="InviteScreen"
+          component={InviteScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

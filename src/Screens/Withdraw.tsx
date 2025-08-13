@@ -16,6 +16,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Divider } from '@rneui/base';
 import Modal from 'react-native-modal';
 import CommonTextInput from '../Components/CommonTextInput';
+import NewAppHeader from '../Components/NewAppHeader';
 
 
 const Withdraw = ({navigation}: any) => {
@@ -27,6 +28,10 @@ const Withdraw = ({navigation}: any) => {
   const [withdrawableAmount, setWithdrawableAmount] = useState('');
   return (
     <View style={{flex: 1, backgroundColor: '#360400'}}>
+      <NewAppHeader
+          leftIconPress={() => navigation.goBack()}
+          centerText={'Withdraw'}
+        />
     <ScrollView style={styles.container}>
       {/* Wallet Header */}
       <LinearGradient

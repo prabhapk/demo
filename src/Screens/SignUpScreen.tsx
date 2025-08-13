@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
 import Scale from '../Components/Scale';
 import CommonTextInput from '../Components/CommonTextInput';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   lefArrow,
@@ -20,36 +21,109 @@ import {
   signInCustomerLogo,
   signInLogo,
 } from '../../assets/assets';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../Redux/store';
+import { setMobileNumber, setOtp, setReferralCode, setIsEighteenPlus, setIsNotify, GetOtp, VerifyOtp } from '../Redux/Slice/signUpSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
+import Toast from 'react-native-toast-message';
 const SignUpScreen = ({navigation}: any) => {
-  const [mobileNumber, setMobileNumber] = useState('');
-  // const [password, setPassword] = useState('');
-  const [otp, setOtp] = useState('');
-  const [referralCode, setReferralCode] = useState('');
 
-  const handleGetOtp = () => {
-    console.log('GET OTP triggered');
+  const dispatch = useDispatch();
+  const {mobileNumber,otp,referralCode,isEighteenPlus,isNotify} = useSelector(
+    (state: RootState) => state.signUpSlice,
+  );
+  const [countdown, setCountdown] = useState(0);
+
+  const mobileRegex = /^\d{10}$/;
+const otpRegex = /^\d{6}$/;
+
+const isFormValid =
+  mobileRegex.test(mobileNumber) &&
+  otpRegex.test(otp) &&
+  isEighteenPlus &&
+  isNotify;
+  const mobileNumberValid = mobileRegex.test(mobileNumber);
+
+  const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is some something 👋'
+    });
+  }
+
+  const handleGetOtp = async () => {
+    if (mobileNumberValid) {
+      const resultAction = await dispatch(GetOtp({ mobileNumber }));
+      setCountdown(60);
+      unwrapResult(resultAction);
+      Toast.show({
+        type: 'success',
+        text1: 'OTP sent successfully',
+        position: 'top',
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter a valid mobile number',
+        position: 'top',
+      });
+    }
+  };
+  
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (countdown > 0) {
+      timer = setTimeout(() => setCountdown(prev => prev - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  const handleMobileNumber = (value: string) => {
+    dispatch(setMobileNumber(value));
+  };
+  const handleOtp = (value: string) => {
+    dispatch(setOtp(value));
   };
 
-  const handleSignIn = () => {
-    console.log('Sign In clicked');
+  const handleReferralCode = (value: string) => {
+    dispatch(setReferralCode(value));
   };
-  const [isEighteenPlus, setIsEighteenPlus] = useState(false);
-  const [isNotify, setIsNotify] = useState(false);
+  const handleOtpVerify = async () => {
+    try {
+      const resultAction = await dispatch(
+        VerifyOtp({
+          mobileNumber,
+          otp,
+          referralCode,
+          navigation: navigation,
+        }),
+      );
+      console.log('request', resultAction);
 
+      unwrapResult(resultAction);
+      // Toast.show({
+      //   type: 'success',
+      //   text1: 'Password Created Successfully!',
+      //   position: 'top',
+      // });
+    } catch (error: any) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={{paddingBottom: Scale(30)}}>
-        {/* <Image source={loginImageBackground} style={styles.topImage} /> */}
-
         <ImageBackground source={loginImageBackground} style={styles.topImage}>
-              <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              >
-                <Image source={lefArrow} style={styles.leftArrow} resizeMode="contain" />
-              </TouchableOpacity>
-            </ImageBackground>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Image
+              source={lefArrow}
+              style={styles.leftArrow}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        </ImageBackground>
 
         <View style={styles.bottomContainer}>
           <View style={styles.logoHeader}>
@@ -63,85 +137,124 @@ const SignUpScreen = ({navigation}: any) => {
 
           {/* Inputs */}
           <View style={styles.inputWrapper}>
+            {/* Mobile number */}
             <CommonTextInput
               placeholderText="Enter Mobile number"
               value={mobileNumber}
               keyboardType="phone-pad"
-              onChange={setMobileNumber}
+              onChange={handleMobileNumber}
               isDisabled={false}
               secureTextEntry={false}
+              maxChar={10}
               leftIcon={
                 <Ionicons name="call-outline" size={Scale(18)} color="#999" />
               }
+              leftText={true}
             />
+            {mobileNumber && !mobileRegex.test(mobileNumber) && (
+  <Text style={{ color: 'red', fontSize: Scale(12), marginLeft: Scale(10),marginBottom:Scale(10),}}>
+    Mobile number must be exactly 10 digits
+  </Text>
+            )}
 
+          {/* otp  */}
             <View style={styles.inputSpacing}>
               <CommonTextInput
                 placeholderText="Enter OTP"
                 value={otp}
-                onChange={setOtp}
+                onChange={handleOtp}
                 isDisabled={false}
                 secureTextEntry={false}
                 keyboardType="numeric"
+                maxChar={6}
                 leftIcon={
-                  <Ionicons
-                    name="keypad-outline"
+                  <MaterialIcons
+                    name="verified-user"
                     size={Scale(18)}
                     color="#999"
                   />
                 }
+
                 rightButton={
-                  <TouchableOpacity onPress={handleGetOtp}>
-                    <Text style={styles.getOtpText}>GET OTP</Text>
-                  </TouchableOpacity>
+                  countdown > 0 ? (
+                    <Text style={styles.getOtpText}>
+                      {countdown}s
+                    </Text>
+                  ) : (
+                    <TouchableOpacity onPress={handleGetOtp}>
+                    {/* // <TouchableOpacity onPress={showToast}> */}
+                      <Text style={styles.getOtpText}>GET OTP</Text>
+                    </TouchableOpacity>
+                  )
                 }
               />
+              {otp && !otpRegex.test(otp) && (
+  <Text style={{ color: 'red', fontSize: Scale(12), marginLeft: Scale(10),
+    marginBottom:Scale(10),
+   }}>
+    OTP must be exactly 6 digits
+  </Text>
+)}
             </View>
+            {/* Referral Code */}
             <View style={styles.inputSpacing}>
               <CommonTextInput
                 placeholderText="Referral Code"
                 value={referralCode}
-                onChange={setReferralCode}
+                onChange={handleReferralCode}
                 isDisabled={false}
-                secureTextEntry ={false}
+                secureTextEntry={false}
                 leftIcon={
-                  <Image source={referral} 
-                  style={{width: Scale(18),
-                     height: Scale(18)}} 
-                     resizeMode='contain' 
-                     tintColor={'#999'}
-                     />
+                  <Image
+                    source={referral}
+                    style={{width: Scale(18), height: Scale(18)}}
+                    resizeMode="contain"
+                    tintColor={'#999'}
+                  />
                 }
               />
             </View>
           </View>
-          <View style={{ marginHorizontal: Scale(10)}}>
-          <TouchableOpacity
-      style={styles.container}
-      onPress={() => setIsEighteenPlus(prev => !prev)}>
-      <View style={[styles.circle, isEighteenPlus && styles.checkedCircle]}>
-        {isEighteenPlus && (
-          <Ionicons name="checkmark" size={14} color="#fff" />
-        )}
-      </View>
-      <Text style={styles.label}>I confirm I am 18+</Text>
-    </TouchableOpacity>
-          <TouchableOpacity
-      style={styles.container}
-      onPress={() => setIsNotify(prev => !prev)}>
-      <View style={[styles.circle, isNotify && styles.checkedCircle]}>
-        {isNotify && (
-          <Ionicons name="checkmark" size={14} color="#fff" />
-        )}
-      </View>
-      <Text style={styles.label}>Allow us to notify you important winning information through this mobile number</Text>
-    </TouchableOpacity>
+          <View style={{marginHorizontal: Scale(10)}}>
+            <View style ={{flexDirection: 'row', alignItems: 'center', marginHorizontal: Scale(10), marginTop: Scale(10)}}>
+            <TouchableOpacity
+              style={styles.container}
+              onPress={() => dispatch(setIsEighteenPlus(!isEighteenPlus))}>
+              <View
+                style={[styles.circle, isEighteenPlus && styles.checkedCircle]}>
+                {isEighteenPlus && (
+                  <Ionicons name="checkmark" size={14} color="#fff" />
+                )}
+              </View>
+            </TouchableOpacity>
+            <Text style={styles.label}>I confirm I am 18+</Text>
+            </View>
+            <View style ={{flexDirection: 'row', alignItems: 'center', marginTop: Scale(20), marginHorizontal: Scale(10)}}>
+            <TouchableOpacity
+              style={styles.container}
+              onPress={() => dispatch(setIsNotify(!isNotify))}>
+              <View style={[styles.circle, isNotify && styles.checkedCircle]}>
+                {isNotify && (
+                  <Ionicons name="checkmark" size={14} color="#fff" />
+                )}
+              </View>
+              
+            </TouchableOpacity>
+            <Text style={styles.label}>
+                Allow us to notify you important winning information through
+                this mobile number
+              </Text>
+            </View>
           </View>
 
           {/* Login Button */}
-          <TouchableOpacity onPress={
-            () => navigation.navigate('SignUpSetPassword')
-          } style={styles.buttonWrapper}>
+          <TouchableOpacity
+          disabled={!mobileNumber || !otp || !referralCode || !isEighteenPlus || !isNotify}
+          
+            onPress={() => handleOtpVerify()}
+            style={[styles.buttonWrapper, 
+              { opacity: isFormValid ? 1 : 0.5 }
+            ]}>
             <LinearGradient
               colors={['#FF4140', '#FFAD45']}
               start={{x: 0, y: 0}}
@@ -150,11 +263,12 @@ const SignUpScreen = ({navigation}: any) => {
               <Text style={styles.signInButtonText}>NEXT</Text>
             </LinearGradient>
           </TouchableOpacity>
-          <View style ={styles.accountTextView}>
-            <Text style ={styles.accountText}>
+          <View style={styles.accountTextView}>
+            <Text style={styles.accountText}>
               Already have an account? {''}
             </Text>
-            <TouchableOpacity onPress={()=>navigation.navigate('SignInScreen')}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('SignInScreen')}>
               <Text style={styles.siginText}>Sign in</Text>
             </TouchableOpacity>
           </View>
@@ -288,7 +402,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: Scale(30),
   },
-  siginText:{
+  siginText: {
     color: '#ff5f5f',
     fontSize: Scale(16),
     fontWeight: 'bold',
@@ -306,9 +420,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   container: {
-    flexDirection: 'row',
+
     alignItems: 'center',
-    margin: 16,
   },
   circle: {
     width: 24,
@@ -327,11 +440,12 @@ const styles = StyleSheet.create({
     fontSize: Scale(16),
     color: 'white',
     fontWeight: '400',
+    marginHorizontal: Scale(10),
   },
   leftArrow: {
     width: Scale(24),
     height: Scale(24),
     marginTop: Scale(20),
     marginLeft: Scale(10),
-},
+  },
 });

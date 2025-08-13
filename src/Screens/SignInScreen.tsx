@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   ImageBackground,
+  Alert,
 } from 'react-native';
 import Scale from '../Components/Scale';
 import CommonTextInput from '../Components/CommonTextInput';
@@ -25,6 +26,7 @@ const SignInScreen = ({ navigation }: any) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
+  const [isShowAlert, setIsShowAlert] = useState(false);
 
   const handleGetOtp = () => {
     console.log('GET OTP triggered');
@@ -32,6 +34,7 @@ const SignInScreen = ({ navigation }: any) => {
 
   const handleSignIn = () => {
     console.log('Sign In clicked');
+    // setIsShowAlert(true);
   };
 
   return (
